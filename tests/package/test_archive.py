@@ -21,6 +21,7 @@ class ArchiveBoundaries(unittest.TestCase):
                     member.mode, member.size = 0o644, len(body)
                     out.addfile(member, io.BytesIO(body))
                 if extra:
+                    extra.mode = 0o644
                     out.addfile(extra, io.BytesIO(b''))
             return checker.check(path)
 
@@ -37,6 +38,9 @@ class ArchiveBoundaries(unittest.TestCase):
                      'docs/internal-report.md', 'node_modules/a.js', 'js/main.js.map']:
             with self.subTest(path=path), self.assertRaises(ValueError):
                 self.run_archive(tarfile.TarInfo('werkstattmanager/' + path))
+
+    def test_approved_documentation(self):
+        self.assertEqual(self.run_archive(tarfile.TarInfo('werkstattmanager/docs/operations.md'))[0], '0.1.5')
 
     def test_symlinks_and_duplicate(self):
         link = tarfile.TarInfo('werkstattmanager/lib/link.php')
