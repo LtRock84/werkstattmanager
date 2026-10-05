@@ -76,6 +76,25 @@ class Client:
         return json.loads(response.read())
 
 
+def wait_for_http(base):
+    # occ can report installed before the image entrypoint starts Apache.
+    redirect = Redirect()
+    redirect.base = base
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), redirect)
+    deadline = time.monotonic() + 60
+    while True:
+        try:
+            with opener.open(base + '/status.php', timeout=5) as response:
+                status = json.load(response)
+            if status.get('installed') and not status.get('maintenance') and not status.get('needsDbUpgrade'):
+                return
+        except (OSError, json.JSONDecodeError):
+            pass
+        if time.monotonic() >= deadline:
+            raise RuntimeError('Disposable Nextcloud HTTP startup timed out')
+        time.sleep(2)
+
+
 def workflow(base, passwords):
     m = Client(base, 'ci-master', passwords['master'])
     tablets = [Client(base, 'ci-tablet', passwords['tablet']) for _ in range(2)]
@@ -202,6 +221,7 @@ def main():
             assert ipaddress.ip_address(address).is_private
             occ('config:system:set', 'trusted_domains', '1', '--value=' + address)
             base = 'http://' + address
+            wait_for_http(base)
             workflow(base, passwords)
             occ('app:disable', 'werkstattmanager')
             occ('app:enable', 'werkstattmanager')
