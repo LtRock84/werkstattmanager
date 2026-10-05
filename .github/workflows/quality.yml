@@ -1,0 +1,129 @@
+name: Quality and installation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - run: npm install --global npm@11.16.0
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm audit --omit=dev
+      - run: npm run build
+
+  php:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: gd, mbstring, dom, xml, fileinfo
+          tools: composer:2
+          coverage: none
+      - run: composer validate --strict
+      - if: matrix.php != '8.5'
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - if: matrix.php == '8.5'
+        name: Install runtime only (Psalm 6 requires PHP below 8.5)
+        run: composer install --no-dev --no-interaction --prefer-dist --no-progress
+      - if: matrix.php != '8.5'
+        run: composer check-platform-reqs
+      - if: matrix.php == '8.5'
+        run: composer check-platform-reqs --no-dev
+      - run: composer lint
+      - run: composer test:unit
+      - if: matrix.php == '8.3'
+        run: composer cs:check
+      - if: matrix.php == '8.3'
+        run: composer psalm
+
+  package:
+    needs: [frontend, php]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - run: npm install --global npm@11.16.0
+      - run: npm ci
+      - run: npm run build
+      - run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+      - name: Validate official metadata schema
+        run: |
+          curl --fail --location --proto '=https' --tlsv1.2 https://apps.nextcloud.com/schema/apps/info.xsd -o /tmp/info.xsd
+          sha256sum /tmp/info.xsd
+          python3 scripts/validate-metadata.py /tmp/info.xsd
+      - run: python3 -m unittest discover -s tests/package -v
+      - name: Create and check exact internal candidate
+        run: |
+          python3 scripts/package.py --candidate --schema /tmp/info.xsd
+          python3 scripts/check-package.py dist/*-candidate.tar.gz
+          sha256sum dist/*-candidate.tar.gz > /tmp/package.sha256
+          python3 scripts/package.py --candidate --schema /tmp/info.xsd
+          sha256sum --check /tmp/package.sha256
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: internal-candidate-${{ github.sha }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
+
+  installation:
+    needs: package
+    permissions:
+      contents: read
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [postgres, mariadb]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Fetch exact package tested above
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download "$GITHUB_RUN_ID" --name "internal-candidate-$GITHUB_SHA" --dir dist
+      - run: python3 scripts/check-package.py dist/*-candidate.tar.gz
+      - name: Install package and run real SQL/API checks
+        env:
+          WM_TEST_DATABASE: ${{ matrix.database }}
+        run: python3 tests/integration/run.py dist/*-candidate.tar.gz

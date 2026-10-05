@@ -1,0 +1,26 @@
+node_modules/
+vendor/
+dist/
+coverage/
+.phpunit.cache/
+.env
+.DS_Store
+.tools/
+
+# Private deployment evidence and local machine metadata
+docs/deployment/
+._*
+.AppleDouble/
+*.log
+
+# Credentials, certificates and local runtime state
+.env.*
+!.env.example
+secrets/
+credentials/
+*.key
+*.pem
+*.p12
+*.pfx
+__pycache__/
+*.pyc

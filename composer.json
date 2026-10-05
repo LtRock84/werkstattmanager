@@ -1,0 +1,35 @@
+{
+  "name": "werkstattmanager/werkstattmanager",
+  "description": "Fahrzeugakten und Werkstattauftr\u00e4ge f\u00fcr Nextcloud",
+  "type": "project",
+  "license": "AGPL-3.0-or-later",
+  "require": {
+    "php": ">=8.3 <8.6",
+    "ext-json": "*",
+    "ext-gd": "*"
+  },
+  "require-dev": {
+    "nextcloud/ocp": "dev-stable35",
+    "phpunit/phpunit": "^11.5",
+    "vimeo/psalm": "^6.0",
+    "nextcloud/coding-standard": "^1.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "OCA\\Werkstattmanager\\": "lib/"
+    }
+  },
+  "scripts": {
+    "lint": "find lib templates appinfo -name '*.php' -print0 | xargs -0 -n1 php -l",
+    "test:unit": "php tests/php/run.php",
+    "cs:check": "php-cs-fixer fix --dry-run --diff",
+    "psalm": "psalm"
+  },
+  "config": {
+    "allow-plugins": false,
+    "sort-packages": true,
+    "platform": {
+      "php": "8.3.0"
+    }
+  }
+}
