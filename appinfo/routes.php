@@ -2,11 +2,11 @@
 
 return [
 	'routes' => [
-        ['name' => 'mailSettings#settings', 'url' => '/api/v1/mail-settings', 'verb' => 'GET'],
-        ['name' => 'mailSettings#configure', 'url' => '/api/v1/mail-settings', 'verb' => 'PUT'],
-        ['name' => 'company#profile', 'url' => '/public/v1/company', 'verb' => 'GET'],
-        ['name' => 'company#logo', 'url' => '/public/v1/company/logo/{hash}', 'verb' => 'GET'],
-        ['name' => 'company#save', 'url' => '/api/v1/company', 'verb' => 'POST'],
+		['name' => 'mailSettings#settings', 'url' => '/api/v1/mail-settings', 'verb' => 'GET'],
+		['name' => 'mailSettings#configure', 'url' => '/api/v1/mail-settings', 'verb' => 'PUT'],
+		['name' => 'company#profile', 'url' => '/public/v1/company', 'verb' => 'GET'],
+		['name' => 'company#logo', 'url' => '/public/v1/company/logo/{hash}', 'verb' => 'GET'],
+		['name' => 'company#save', 'url' => '/api/v1/company', 'verb' => 'POST'],
 		['name' => 'access#settings', 'url' => '/api/v1/access-settings', 'verb' => 'GET'],
 		['name' => 'access#save', 'url' => '/api/v1/access-settings', 'verb' => 'PUT'],
 		['name' => 'access#search', 'url' => '/api/v1/access-users', 'verb' => 'GET'],
