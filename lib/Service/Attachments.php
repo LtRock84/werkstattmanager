@@ -37,6 +37,7 @@ final class Attachments {
 			$parentTable = 'defects';
 			$parent = $d;
 		} else {
+			$this->access->workshop();
 			$role = $this->access->role();
 			if (!empty($target['order_id'])) {
 				$o = $this->catalog->visibleOrder(Rules::text($target['order_id'], 32, true));
@@ -159,6 +160,7 @@ final class Attachments {
 	}
 	/** @return array{meta: array{name: string, mime: string}, content: string} */
 	public function download(string $id): array {
+		$this->access->workshop();
 		$role = $this->access->role();
 		$a = $this->store->get('attachments', $id);
 		if (!$a['ready']) {

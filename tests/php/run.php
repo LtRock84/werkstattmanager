@@ -91,11 +91,28 @@ namespace {
                 $limit,
             );
         }
+        public function planningRows(string $table,string $from,string $to,int $offset=0): array {
+            return array_slice(array_values(array_filter($this->rows[$table]??[],static function($r)use($table,$from,$to){
+                if($table==='capacity'){return $r['date']>=$from&&$r['date']<=$to;}
+                if($table==='orders'&&!in_array($r['status'],['open','active','paused','review','completed'],true)){return false;}
+                $first=$r['first_day']??null;$last=$r['last_day']??null;
+                if(!$first&&($r['planned_start']??null)){$first=$last=(new \DateTimeImmutable($r['planned_start']))->setTimezone(new \DateTimeZone('Europe/Berlin'))->format('Y-m-d');}
+                return $first&&$first<=$to&&$last>=$from;
+            })), $offset,500);
+        }
+        public function serviceCounts(): array {
+            return array_count_values(array_column($this->find('service_usage', [], 500), 'service_id'));
+        }
+        public function usageBackfillPage(string $table, string $cursor): array {
+            $rows = array_filter($this->rows[$table] ?? [], fn ($r) => strcmp($r['id'], $cursor) > 0);
+            uasort($rows, fn ($a, $b) => strcmp($a['id'], $b['id']));
+            return array_slice(array_values($rows), 0, 100);
+        }
         public function insert(string $table, array $data): array
         {
             $row =
                 [
-                    'id' => bin2hex(random_bytes(16)),
+                    'id' => $data['id'] ?? bin2hex(random_bytes(16)),
                     'version' => 1,
                     'created_at' => time(),
                     'updated_at' => time(),
@@ -107,7 +124,7 @@ namespace {
                 foreach ($this->rows[$table] ?? [] as $existing) {
                     $same = true;
                     foreach ($columns as $k) {
-                        $same = $same && $existing[$k] === $row[$k];
+                        $same = $same && $row[$k] !== null && $existing[$k] === $row[$k];
                     }
                     if ($same) {
                         throw new \OCP\DB\Exception('Unique');
@@ -152,7 +169,7 @@ namespace {
         public function isInGroup(string $uid, string $gid)
         {
             return ($uid === 'master' && $gid === 'werkstatt-meister') ||
-                ($uid === 'tablet' && $gid === 'werkstatt-tablet');
+                ($uid === 'tablet' && $gid === 'werkstatt-tablet') || ($uid === 'reception' && $gid === 'werkstatt-annahme');
         }
         public function get(string $gid)
         {
@@ -161,9 +178,11 @@ namespace {
     }
     final class Config implements \OCP\IConfig
     {
+        public array $values = [];
+        public function setAppValue(string $app, string $key, string $value): void { $this->values[$key] = $value; }
         public function getAppValue(string $app, string $key, string $default = '')
         {
-            return $default;
+            return $this->values[$key] ?? ($key === 'reception_group' ? 'werkstatt-annahme' : $default);
         }
     }
     final class Session implements \OCP\ISession
@@ -572,5 +591,71 @@ namespace {
             same(0, preg_match('/\{(?:action|caller|_route)\}/', $route['url']));
         }
     });
+    test('audit context resolves references and respects anonymized employee names', function () {
+        [$s, $u, $a, $c, $j, $o, $v, $e] = setup();
+        $order = create($o, $v);
+        $order = $o->action(
+            $order['id'],
+            'start',
+            payload(['version' => 1, 'employee_id' => $e['id'], 'reason' => 'Old default pause']),
+        );
+        $part = $o->requestPart(
+            $order['id'],
+            payload([
+                'employee_id' => $e['id'],
+                'title' => 'Ölfilter',
+                'quantity' => 2,
+                'pause' => true,
+            ]),
+        );
+        $audit = $c->list('audit', 0, ['vehicle_id' => $v['id']])['items'];
+        $request = array_values(
+            array_filter($audit, fn($r) => $r['action'] === 'part.requested'),
+        )[0];
+        same(true, $request['details']['paused']);
+        same('Ölfilter', $request['context']['part']['title']);
+        same(2, $request['context']['part']['quantity']);
+        same($order['id'], $request['context']['order']['id']);
+        same('A', $request['context']['employee']['name']);
+        same(false, isset($request['context']['employee']['id']));
+        $start = array_values(array_filter($audit, fn($r) => $r['action'] === 'order.start'))[0];
+        same('', $start['details']['reason']);
+        same(false, isset($s->get('audit', $request['id'])['context']));
+        $s->update('employees', $s->get('employees', $e['id']), ['name' => 'Anonymisiert']);
+        same('Anonymisiert', $j->withContext([$request])[0]['context']['employee']['name']);
+        $s->delete('parts', $part['id']);
+        same(null, $j->withContext([$request])[0]['context']['part']);
+    });
+    test('audit and enriched context reject tablet access', function () {
+        [$s, $u, $a, $c, $j] = setup();
+        $u->uid = 'tablet';
+        rejects(fn() => $c->list('audit'), 'forbidden');
+        rejects(fn() => $j->withContext($s->find('audit')), 'forbidden');
+    });
+    test('finish audit retains actual work notes and steps', function () {
+        [$s, $u, $a, $c, $j, $o, $v, $e] = setup();
+        $order = create($o, $v);
+        $order = $o->action(
+            $order['id'],
+            'start',
+            payload(['version' => 1, 'employee_id' => $e['id']]),
+        );
+        $o->action(
+            $order['id'],
+            'finish',
+            payload([
+                'version' => $order['version'],
+                'employee_id' => $e['id'],
+                'note' => 'Probefahrt ohne Befund',
+                'steps' => ['Öl gewechselt'],
+            ]),
+        );
+        $entry = $s->find('audit', ['action' => 'order.finish'])[0];
+        same('Probefahrt ohne Befund', $entry['details']['note']);
+        same(['Öl gewechselt'], $entry['details']['steps']);
+        same('', $entry['details']['reason']);
+    });
+    require __DIR__.'/planning.php';
+    require __DIR__.'/company-mail.php';
     echo "$passed unit scenarios passed. Nextcloud/SQL concurrency integration is separate.\n";
 }

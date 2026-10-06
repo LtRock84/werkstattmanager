@@ -15,12 +15,17 @@ final class Orders {
 		private Access $access,
 		private Catalog $catalog,
 		private Journal $journal,
+		private ?ServiceLibrary $library = null,
+		private ?PlanningLedger $ledger = null,
 	) {
 	}
 	public function create(array $input): array {
 		$this->access->master();
 		return $this->idempotent($input, 'create', function () use ($input) {
+			$this->ledger?->lock();
+			$lines = $this->library?->lines($input['service_lines'] ?? []) ?? [];
 			$v = [
+				'service_lines' => $lines,
 				'vehicle_id' => $this->catalog->reference(
 					$input['vehicle_id'] ?? null,
 					'vehicles',
@@ -40,9 +45,33 @@ final class Orders {
 				'status' => Rules::choice($input['status'] ?? 'open', ['draft', 'open']),
 			];
 			Rules::schedule($v['planned_start'], $v['due_at']);
+			if ($v['planned_start'] && !$v['minutes']) {
+				throw new Problem('validation', 'Für eine verbindliche Tagesplanung bitte die Arbeitsdauer ergänzen.');
+			}
+			$allocations
+				= $this->ledger?->allocations(
+					$input['planning_days'] ?? null,
+					$v['minutes'] ?? 0,
+					$v['planned_start'],
+				) ?? [];
+			$v['planning_days'] = $allocations;
+			if ($this->ledger) {
+				$v += $this->ledger->bounds($allocations, $v['planned_start']);
+			}
+			if ($v['status'] === 'open') {
+				$this->ledger?->check(
+					[
+						'allocations' => $allocations,
+						'planned_start' => $v['planned_start'],
+						'vehicle_id' => $v['vehicle_id'],
+					],
+					Rules::text($input['override_reason'] ?? '', 2000),
+				);
+			}
 			// Serialise creation against vehicle archival.
 			$this->store->update('vehicles', $this->store->get('vehicles', $v['vehicle_id']), []);
 			$order = $this->store->insert('orders', $v);
+			$this->library?->usage()->order($order);
 			if (!empty($input['defect_id'])) {
 				$d = $this->store->get('defects', Rules::text($input['defect_id'], 32, true));
 				if (
@@ -59,12 +88,13 @@ final class Orders {
 				'order.created',
 				$v['vehicle_id'],
 				$order['id'],
+				details: ['override_reason' => Rules::text($input['override_reason'] ?? '', 2000)],
 			);
 			return $order;
 		});
 	}
 	public function action(string $id, string $action, array $input): array {
-		$this->access->role();
+		$this->access->workshop();
 		if (!in_array($action, ['start', 'pause', 'finish'], true)) {
 			$this->access->master();
 		}
@@ -73,6 +103,9 @@ final class Orders {
 			$action,
 			$input,
 		) {
+			if (in_array($action, ['release','rework','cancel'], true)) {
+				$this->ledger?->lock();
+			}
 			$o = $this->catalog->visibleOrder($id);
 			if (($input['version'] ?? null) !== $o['version']) {
 				throw new Problem(
@@ -82,6 +115,20 @@ final class Orders {
 				);
 			}
 			$next = Rules::transition($o['status'], $action);
+			if (
+				in_array($action, ['release', 'rework'], true)
+				&& !$this->store->find('appointments', ['order_id' => $id, 'status' => 'confirmed'], 1)
+			) {
+				$this->ledger?->check(
+					[
+						'allocations' => $o['planning_days'] ?? [],
+						'planned_start' => $o['planned_start'],
+						'vehicle_id' => $o['vehicle_id'],
+					],
+					Rules::text($input['override_reason'] ?? '', 2000),
+					$id,
+				);
+			}
 			if (in_array($action, ['start', 'release', 'rework'], true)) {
 				$vehicle = $this->store->get('vehicles', $o['vehicle_id']);
 				if ($vehicle['archived']) {
@@ -183,13 +230,23 @@ final class Orders {
 				$changes['completed_at'] = null;
 			}
 			$o = $this->store->update('orders', $o, $changes);
+			if (in_array($action, ['release', 'cancel'], true)) {
+				$this->library?->usage()->order($o);
+			}
 			$this->journal->record(
 				$this->access->uid(),
 				'order.' . $action,
 				$o['vehicle_id'],
 				$id,
 				$employee,
-				['reason' => Rules::text($input['reason'] ?? '', 1000)],
+				[
+					'override_reason' => in_array($action, ['release', 'rework'], true) ? Rules::text($input['override_reason'] ?? '', 2000) : '',
+					'reason' => in_array($action, ['pause', 'cancel', 'rework'], true)
+						? Rules::text($input['reason'] ?? '', 1000)
+						: '',
+					'note' => in_array($action, ['pause', 'finish'], true) ? $note ?? '' : '',
+					'steps' => in_array($action, ['pause', 'finish'], true) ? $steps ?? [] : [],
+				],
 			);
 			if ($action === 'finish') {
 				$this->journal->notify('review', $id);
@@ -198,7 +255,7 @@ final class Orders {
 		});
 	}
 	public function requestPart(string $id, array $input): array {
-		$this->access->role();
+		$this->access->workshop();
 		return $this->idempotent($input, $id . ':part', function () use ($id, $input) {
 			$o = $this->catalog->visibleOrder($id);
 			$a = $this->store->find('active', ['order_id' => $id], 1)[0] ?? null;
@@ -234,7 +291,7 @@ final class Orders {
 				$o['vehicle_id'],
 				$id,
 				$a['employee_id'],
-				['part_id' => $p['id']],
+				['part_id' => $p['id'], 'paused' => ($input['pause'] ?? false) === true],
 			);
 			$this->journal->notify('part', $p['id']);
 			return $p;

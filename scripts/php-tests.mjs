@@ -22,7 +22,7 @@ function run(args) {
 }
 function walk(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
-    e.isDirectory() ? walk(join(dir, e.name)) : e.name.endsWith('.php') ? [join(dir, e.name)] : [],
+    e.isDirectory() ? walk(join(dir, e.name)) : !e.name.startsWith('._') && e.name.endsWith('.php') ? [join(dir, e.name)] : [],
   )
 }
 for (const file of ['lib', 'appinfo', 'templates', 'tests/php'].flatMap(walk)) run(['-l', file])

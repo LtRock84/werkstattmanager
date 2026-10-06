@@ -169,7 +169,7 @@ final class ApiController extends Controller {
 					);
 				}
 			}
-			if ($master_group === $tablet_group) {
+			if ($master_group === $tablet_group || in_array($this->config->getAppValue('werkstattmanager', 'reception_group', ''), [$master_group, $tablet_group], true)) {
 				throw new Problem('group', 'Meister- und Tabletgruppe müssen verschieden sein.');
 			}
 			$this->config->setAppValue('werkstattmanager', 'master_group', $master_group);

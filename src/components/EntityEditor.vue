@@ -3,13 +3,16 @@ import { ref, computed, onMounted } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import Modal from './Modal.vue'
 import { all, post, message } from '../api'
+import { useDirtySnapshot, confirmDiscard } from '../dirty'
 import { t, vehicleLabel } from '../format'
 import type { Editable, Row, Customer, Vehicle } from '../types'
-const props = defineProps<{ kind: Editable; row?: Row; vehicleId?: string }>()
-const emit = defineEmits<{ close: []; saved: [] }>()
+const props = defineProps<{ closeLabel?: string; kind: Editable; row?: Row; vehicleId?: string; customerId?: string }>()
+const emit = defineEmits<{ close: []; saved: [Row] }>()
 type FormValue = string | number | boolean | null
 const form = ref<Record<string, FormValue>>({
-  kind: 'fleet',
+  kind: props.customerId ? 'customer' : 'fleet',
+  customer_id: props.customerId ?? '',
+  vehicle_class: 'car',
   position: 0,
   favorite: false,
   archived: false,
@@ -76,6 +79,8 @@ const fields = computed<Field[]>(
       ],
     })[props.kind],
 )
+const { dirty, reset } = useDirtySnapshot(() => ({ ...Object.fromEntries(fields.value.map(f => [f.key, form.value[f.key] ?? ''])), kind: form.value.kind, vehicleClass: form.value.vehicle_class, customer: form.value.customer_id, vehicle: form.value.vehicle_id, archived: form.value.archived, favorite: form.value.favorite }))
+function close() { if (!busy.value && confirmDiscard(dirty.value)) emit('close') }
 onMounted(async () => {
   if (props.row)
     for (const [k, v] of Object.entries(props.row)) {
@@ -83,6 +88,7 @@ onMounted(async () => {
       else if (v === null || ['string', 'number', 'boolean'].includes(typeof v))
         form.value[k] = v as FormValue
     }
+  reset()
   try {
     if (props.kind === 'vehicles') customers.value = await all('customers')
     if (props.kind === 'deadlines') vehicles.value = await all('vehicles')
@@ -104,8 +110,9 @@ async function save() {
       data.warning_days = String(data.warning_days ?? '30,7')
         .split(',')
         .map((x) => Number(x.trim()))
-    await post(`/api/v1/records/${props.kind}`, { id: props.row?.id ?? null, data })
-    emit('saved')
+    const saved = await post<Row>(`/api/v1/records/${props.kind}`, { id: props.row?.id ?? null, data })
+    reset()
+    emit('saved', saved)
   } catch (e) {
     error.value = message(e)
   } finally {
@@ -114,7 +121,7 @@ async function save() {
 }
 </script>
 <template>
-  <Modal :title="labels[kind]" @close="!busy && emit('close')">
+  <Modal :dirty="dirty" :locked="busy" :close-label="closeLabel" :title="labels[kind]" @close="!busy && emit('close')">
     <form class="wm-form" @submit.prevent="save">
       <p class="wm-muted">
         {{
@@ -145,7 +152,8 @@ async function save() {
             {{ vehicleLabel(v) }}
           </option>
         </select></label>
-      <label v-for="field in fields" :key="field.key">{{ field.label }}{{ field.required ? ' · ' + t('Pflichtfeld') : ''
+      <label v-if="kind === 'vehicles'">{{ t('Fahrzeugklasse') }}<select v-model="form.vehicle_class"><option value="car">{{ t('PKW') }}</option><option value="van">{{ t('Leichter Transporter') }}</option></select></label>
+<label v-for="field in fields" :key="field.key">{{ field.label }}{{ field.required ? ' · ' + t('Pflichtfeld') : ''
         }}<textarea
           v-if="field.type === 'textarea'"
           :value="String(form[field.key] ?? '')"
@@ -170,7 +178,7 @@ async function save() {
       </p>
       <p v-if="error" role="alert" class="wm-error">{{ error }}</p>
       <footer class="wm-actions">
-        <NcButton :disabled="busy" @click="emit('close')">{{ t('Abbrechen') }}</NcButton><NcButton variant="primary" :disabled="busy" @click="save">{{ t('Speichern') }}</NcButton>
+        <NcButton :disabled="busy" @click="close">{{ t('Abbrechen') }}</NcButton><NcButton variant="primary" :disabled="busy" @click="save">{{ t('Speichern') }}</NcButton>
       </footer>
     </form>
   </Modal>

@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import { get, put, message } from '../api'
+import { t } from '../format'
+const props = defineProps<{ admin: boolean }>()
+const form = ref({ calendar_url: '', calendar_user: '', has_password: false }), password = ref(''), error = ref(''), notice = ref(''), busy = ref(false)
+onMounted(async () => { try { form.value = await get('/api/v1/calendar-settings') } catch (e) { error.value = message(e) } })
+async function save(remove = false) { if (!props.admin) return; busy.value = true; try { form.value = await put('/api/v1/calendar-settings', { data: { ...form.value, password: password.value, remove_password: remove } }); password.value = ''; notice.value = t('Kalenderzugang gespeichert. Ausstehende Zustellungen werden vom Hintergrundjob wiederholt.') } catch (e) { error.value = message(e) } finally { busy.value = false } }
+</script>
+<template>
+  <section class="wm-card wm-form"><h2>{{ t('Nextcloud-Kalender verbinden') }}</h2><p>{{ t('Ein eigenes Integrationskonto und einen Kalender „Werkstatt“ anlegen. Den Kalender mit der Meistergruppe nur zum Lesen teilen. Bearbeitet werden Termine im Werkstattmanager. Hier die HTTPS-CalDAV-Adresse dieses Kalenders und ein App-Passwort hinterlegen.') }}</p><label>{{ t('Integrationskonto') }}<input v-model="form.calendar_user" :disabled="!admin" autocomplete="off" /></label><label>{{ t('CalDAV-Adresse des Kalenders (eigene Nextcloud, HTTPS)') }}<input v-model="form.calendar_url" type="url" :disabled="!admin" autocomplete="off" /></label><label v-if="admin">{{ t('App-Passwort (leer lassen, um das vorhandene zu behalten)') }}<input v-model="password" type="password" autocomplete="new-password" /></label><p>{{ form.has_password ? t('Ein verschlüsseltes App-Passwort ist hinterlegt.') : t('Noch kein App-Passwort hinterlegt.') }}</p><p>{{ t('Auch die öffentliche Nextcloud-Adresse für Hintergrundjobs (overwrite.cli.url) muss auf diese HTTPS-Instanz zeigen. Das stellt der Administrator in der Nextcloud-Konfiguration ein.') }}</p><p>{{ t('Kunden-E-Mails verwenden den eingerichteten Werkstatt-Absender. Ohne eingerichteten Kalender bleibt das Terminbuch nutzbar; Zustellfehler stehen im Terminbuch.') }}</p><p v-if="error" role="alert" class="wm-error">{{ error }}</p><p v-if="notice" role="status">{{ notice }}</p><div v-if="admin" class="wm-actions"><NcButton :disabled="busy" @click="save()">{{ t('Kalenderzugang speichern') }}</NcButton><NcButton :disabled="busy || !form.has_password" @click="save(true)">{{ t('Gespeichertes App-Passwort entfernen') }}</NcButton></div></section>
+</template>

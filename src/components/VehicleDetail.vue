@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import QRCode from 'qrcode'
 import Modal from './Modal.vue'
+import { auditEntry } from '../audit'
 import { all, post, url, upload, message } from '../api'
 import { t, vehicleLabel, stamp, date, statusText, orderNumber } from '../format'
 import type { Vehicle, Order, Defect, Deadline, Attachment, Audit, Mileage } from '../types'
-const props = defineProps<{ vehicle: Vehicle }>()
+const props = withDefaults(defineProps<{ vehicle: Vehicle; active?: boolean }>(), { active: true })
 const emit = defineEmits<{
   close: []
   edit: [Vehicle]
@@ -17,7 +18,7 @@ const emit = defineEmits<{
   changed: []
 }>()
 const v = ref(props.vehicle),
-  tab = ref('history'),
+  tab = ref('overview'),
   orders = ref<Order[]>([]),
   defects = ref<Defect[]>([]),
   deadlines = ref<Deadline[]>([]),
@@ -49,6 +50,23 @@ onMounted(async () => {
     error.value = message(e)
   }
 })
+watch(
+  () => props.active,
+  async (active) => {
+    if (!active) return
+    error.value = ''
+    try {
+      const rows = await all('vehicles', { id: v.value.id })
+      if (rows[0]) v.value = rows[0]
+      await load()
+    } catch (e) {
+      error.value = message(e)
+    }
+  },
+)
+const history = computed(() =>
+  audit.value.map((entry) => ({ ...entry, presentation: auditEntry(entry) })),
+)
 async function saveKm() {
   busy.value = true
   try {
@@ -129,6 +147,7 @@ async function download(a: Attachment) {
 }
 const print = () => window.print()
 const tabs = [
+  ['overview', t('Fahrzeugdaten')],
   ['history', t('Historie')],
   ['orders', t('Aufträge')],
   ['defects', t('Mängel')],
@@ -138,51 +157,59 @@ const tabs = [
 ]
 </script>
 <template>
-  <Modal :title="vehicleLabel(v)" @close="!busy && emit('close')">
-    <div class="wm-form">
-      <p class="wm-guide wm-no-print">
-        {{
-          t(
-            'Hier gehört alles zu diesem Fahrzeug zusammen. „Neuer Auftrag“ übernimmt das Fahrzeug automatisch. Über die Schaltflächen unten wechseln Sie zwischen Aufträgen, Mängeln und Terminen.',
-          )
-        }}
-      </p>
-      <div class="wm-actions wm-no-print">
+  <Modal :title="vehicleLabel(v)" :active="active" @close="!busy && emit('close')">
+    <template #navigation>
+      <div class="wm-actions wm-no-print wm-vehicle-actions">
         <NcButton variant="primary" :disabled="v.archived" @click="emit('create')">
-          {{ t('Neuer Auftrag') }}
-</NcButton><NcButton @click="emit('edit', v)">{{ t('Stammdaten bearbeiten') }}</NcButton>
+{{
+          t('Neuer Auftrag')
+        }}
+</NcButton>
+        <NcButton @click="emit('edit', v)">{{ t('Stammdaten bearbeiten') }}</NcButton>
       </div>
-      <div class="wm-three">
-        <div>
-          <small>{{ t('FIN') }}</small><strong>{{ v.vin || '–' }}</strong>
-        </div>
-        <div>
-          <small>{{ t('Erstzulassung') }}</small><strong>{{ date(v.registration) }}</strong>
-        </div>
-        <div>
-          <small>{{ t('Kilometerstand') }}</small><strong>{{ v.mileage ?? '–' }} km</strong><small>{{ date(v.mileage_date) }}</small>
-        </div>
-      </div>
-      <p class="wm-preserve">{{ v.notes }}</p>
-      <fieldset class="wm-no-print">
-        <legend>{{ t('Kilometerstand bestätigen / Erledigungsdaten') }}</legend>
-        <div class="wm-two">
-          <label>{{ t('Kilometer') }}<input v-model.number="km" type="number" min="0" /></label><label>{{ t('Datum') }}<input v-model="kmDate" type="date" /></label>
-        </div>
-        <NcButton :disabled="busy || km === null" @click="saveKm">
-          {{ t('Kilometerstand bestätigen') }}
-        </NcButton>
-      </fieldset>
       <nav class="wm-tabs wm-no-print" :aria-label="t('Fahrzeugakte')">
         <NcButton
           v-for="[key, label] in tabs"
           :key="key"
           :aria-pressed="tab === key"
+          :variant="tab === key ? 'primary' : 'secondary'"
           @click="tab = key"
         >
           {{ label }}
         </NcButton>
       </nav>
+    </template>
+    <div class="wm-form">
+      <section v-if="tab === 'overview'">
+        <p class="wm-guide wm-no-print">
+          {{
+            t(
+              'Hier gehört alles zu diesem Fahrzeug zusammen. „Neuer Auftrag“ übernimmt das Fahrzeug automatisch. Über die Leiste oben wechseln Sie jederzeit zwischen Fahrzeugdaten, Historie, Aufträgen und weiteren Bereichen.',
+            )
+          }}
+        </p>
+        <div class="wm-three">
+          <div>
+            <small>{{ t('FIN') }}</small><strong>{{ v.vin || '–' }}</strong>
+          </div>
+          <div>
+            <small>{{ t('Erstzulassung') }}</small><strong>{{ date(v.registration) }}</strong>
+          </div>
+          <div>
+            <small>{{ t('Kilometerstand') }}</small><strong>{{ v.mileage ?? '–' }} km</strong><small>{{ date(v.mileage_date) }}</small>
+          </div>
+        </div>
+        <p class="wm-preserve">{{ v.notes }}</p>
+      </section>
+        <fieldset v-if="tab === 'overview' || tab === 'deadlines'" class="wm-no-print">
+          <legend>{{ t('Kilometerstand bestätigen / Erledigungsdaten') }}</legend>
+          <div class="wm-two">
+            <label>{{ t('Kilometer') }}<input v-model.number="km" type="number" min="0" /></label><label>{{ t('Datum') }}<input v-model="kmDate" type="date" /></label>
+          </div>
+          <NcButton :disabled="busy || km === null" @click="saveKm">
+            {{ t('Kilometerstand bestätigen') }}
+          </NcButton>
+        </fieldset>
       <section v-if="tab === 'orders'">
         <article v-for="o in orders" :key="o.id" class="wm-log">
           <NcButton @click="emit('order', o)">{{ orderNumber(o.id) }} · {{ o.title }}</NcButton><span class="wm-badge">{{ statusText(o.status) }}</span>
@@ -260,12 +287,19 @@ const tabs = [
       </section>
       <section v-if="tab === 'history'">
         <h3>{{ t('Kilometerhistorie') }}</h3>
+        <p v-if="!mileage.length">{{ t('Noch keine Kilometerstände bestätigt.') }}</p>
         <p v-for="m in mileage" :key="m.id">{{ date(m.date) }} · {{ m.value }} km</p>
         <h3>{{ t('Änderungsprotokoll') }}</h3>
-        <article v-for="a in audit" :key="a.id" class="wm-log">
-          <strong>{{ a.action }}</strong> · {{ stamp(a.created_at) }}
-          <p>{{ a.actor }}</p>
-          <pre v-if="Object.keys(a.details).length">{{ JSON.stringify(a.details, null, 2) }}</pre>
+        <p v-if="!history.length">{{ t('Noch keine Änderungen protokolliert.') }}</p>
+        <article v-for="a in history" :key="a.id" class="wm-log">
+          <strong>{{ a.presentation.title }}</strong>
+          <p class="wm-muted">{{ stamp(a.created_at) }} · {{ a.presentation.actor }}</p>
+          <dl class="wm-history-details">
+            <template v-for="line in a.presentation.lines" :key="line.label">
+              <dt>{{ line.label }}</dt>
+              <dd class="wm-preserve">{{ line.value }}</dd>
+            </template>
+          </dl>
         </article>
       </section>
       <p v-if="error" role="alert" class="wm-error">{{ error }}</p>

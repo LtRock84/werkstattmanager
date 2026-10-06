@@ -2,16 +2,15 @@ import axios, { isAxiosError } from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import type { Page, Table, Tables } from './types'
 import { t } from './format'
+import { requestId } from './request-id'
 export const url = (path: string) => generateUrl(`/apps/werkstattmanager${path}`)
 export async function get<T>(path: string): Promise<T> {
   return (await axios.get<T>(url(path))).data
 }
 export async function post<T>(path: string, data: unknown): Promise<T> {
-  if (!navigator.onLine) throw new Error(t('Keine Verbindung. Es wurde nichts gebucht.'))
   return (await axios.post<T>(url(path), data)).data
 }
 export async function put<T>(path: string, data: unknown): Promise<T> {
-  if (!navigator.onLine) throw new Error(t('Keine Verbindung. Es wurde nichts gespeichert.'))
   return (await axios.put<T>(url(path), data)).data
 }
 export async function list<K extends Table>(
@@ -38,7 +37,7 @@ export async function command<T>(path: string, payload: Record<string, unknown>)
   const signature = path + JSON.stringify(payload)
   let request_id = pending.get(signature)
   if (!request_id) {
-    request_id = crypto.randomUUID()
+    request_id = requestId()
     pending.set(signature, request_id)
   }
   try {

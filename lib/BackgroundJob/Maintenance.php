@@ -22,6 +22,7 @@ final class Maintenance extends TimedJob {
 		private Access $access,
 		private Journal $journal,
 		private Attachments $attachments,
+		private \OCA\Werkstattmanager\Service\Company $company,
 		private IManager $notifications,
 		private IConfig $config,
 		private LoggerInterface $logger,
@@ -32,6 +33,7 @@ final class Maintenance extends TimedJob {
 	}
 	protected function run($argument): void {
 		$this->attachments->cleanup();
+		$this->company->cleanup();
 		$offset = (int)$this->config->getAppValue('werkstattmanager', 'deadline_cursor', '0');
 		$rows = $this->store->find('deadlines', ['status' => 'open'], 100, $offset);
 		$today = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Berlin')))->format(

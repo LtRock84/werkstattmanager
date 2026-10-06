@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import CompanyHeader from './CompanyHeader.vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import { get, post, upload, message } from '../api'
 import { t, vehicleLabel, stamp } from '../format'
 import type { DriverView } from '../types'
+import { requestId as newRequestId } from '../request-id'
 const view = ref<DriverView | null>(null),
   error = ref(''),
   notice = ref(''),
@@ -15,7 +17,8 @@ const view = ref<DriverView | null>(null),
   mileage = ref<number | null>(null),
   files = ref<File[]>([]),
   received = ref<string | null>(null)
-const requestId = ref(crypto.randomUUID())
+const requestId = ref(newRequestId())
+const photoInput = ref<HTMLInputElement | null>(null)
 onMounted(async () => {
   busy.value = true
   try {
@@ -63,12 +66,13 @@ async function submit() {
       await upload('/public/v1/photos', files.value[0], { defect_id: received.value })
       files.value.shift()
     }
+    if (photoInput.value) photoInput.value.value = ''
     notice.value = t('Ihre Meldung ist in der Werkstatt eingegangen. Vielen Dank.')
     description.value = ''
     reporter.value = ''
     mileage.value = null
     received.value = null
-    requestId.value = crypto.randomUUID()
+    requestId.value = newRequestId()
     view.value = await get('/public/v1/vehicle')
   } catch (e) {
     error.value =
@@ -93,6 +97,7 @@ async function more() {
 <template>
   <main class="wm-driver">
     <header>
+      <CompanyHeader />
       <span class="wm-eyebrow">{{ t('WERKSTATTMANAGER') }}</span>
       <h1>{{ t('Mangel melden') }}</h1>
       <p v-if="view" class="wm-vehicle-title">{{ vehicleLabel(view.vehicle) }}</p>
@@ -153,6 +158,7 @@ async function more() {
         </fieldset>
         <label>{{ t('Fotos: maximal fünf, jeweils 8 MB und 12 Megapixel')
           }}<input
+            ref="photoInput"
             type="file"
             multiple
             accept="image/jpeg,image/png,image/webp"

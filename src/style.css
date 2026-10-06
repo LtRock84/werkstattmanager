@@ -724,3 +724,96 @@
 
 .wm-dialog > header h2 { min-width: 0; overflow-wrap: anywhere; }
 .wm-dialog > header .button-vue { flex-shrink: 0; }
+
+/* Vehicle sections scroll independently so navigation remains reachable. */
+.wm-dialog--sectioned[open] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.wm-dialog--sectioned > header,
+.wm-dialog-navigation {
+  flex-shrink: 0;
+}
+.wm-dialog-navigation {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--wm-border, #dce4e2);
+}
+.wm-dialog-navigation .wm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wm-vehicle-actions {
+  margin-bottom: 12px;
+}
+.wm-dialog-content {
+  min-height: 0;
+  overflow-y: auto;
+  padding-top: 20px;
+  overscroll-behavior: contain;
+}
+.wm-history-details {
+  display: grid;
+  grid-template-columns: minmax(110px, 160px) minmax(0, 1fr);
+  gap: 6px 16px;
+  margin: 12px 0 0;
+}
+#werkstattmanager .wm-history-details dt,
+#werkstattmanager .wm-history-details dd {
+  min-width: 0;
+  width: auto;
+  padding: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+#werkstattmanager .wm-history-details dt { font-weight: 600; white-space: normal; }
+#werkstattmanager .wm-history-details dd { margin: 0; }
+@media (max-width: 480px) {
+  .wm-history-details { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  #werkstattmanager .wm-history-details dd { margin-bottom: 8px; }
+}
+@media print {
+  .wm-dialog-navigation { display: none; }
+  .wm-dialog--sectioned[open], .wm-dialog-content { display: block; overflow: visible; }
+}
+
+.wm-service-results { max-height: 320px; overflow: auto; margin-block: 12px; }
+.wm-service-result { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 6px; border-bottom: 1px solid var(--color-border); }
+.wm-service-line { padding: 12px; margin-block: 10px; border: 1px solid var(--color-border); border-radius: var(--border-radius); }
+.wm-book-toolbar { position: sticky; top: 0; background: var(--color-main-background); padding: 10px; z-index: 2; }
+.wm-book-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 16px; margin-block: 16px; }
+.wm-book-day { min-width: 0; }
+.wm-book-day progress { width: 100%; accent-color: var(--color-primary-element); }
+.wm-overbooked { border: 2px solid var(--color-error, #b00020); }
+.wm-appointment { border-block-start: 1px solid var(--color-border); padding-block: 12px; }
+.wm-appointment-open { display: flex; flex-direction: column; gap: 4px; width: 100%; text-align: start; background: var(--color-background-hover); color: var(--color-main-text); border: 0; border-radius: 8px; padding: 12px; min-height: 48px; cursor: pointer; }
+.wm-capacity-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; border-block-end: 1px solid var(--color-border); padding-block: 10px; }
+.wm-price-comparison { padding-block: 12px; }
+@media print {
+  .wm-sidebar, .wm-top, .wm-book-toolbar, .wm-book .wm-actions, .wm-page-footer, .wm-book .wm-help, .wm-book button { display: none !important; }
+  .wm-main { padding: 0; }
+  .wm-book-days { display: block; }
+  .wm-book-day { break-inside: avoid; border: 1px solid #777; margin-block: 10px; color: #000; background: #fff; }
+  .wm-appointment-open { display: flex !important; color: #000; background: #fff; }
+}
+
+@media print { .wm-book-day.wm-not-print-day { display: none !important; } }
+
+.wm-calculation-fields { border: 0; padding: 0; margin: 0; min-width: 0; }
+
+/* Appointment intake: compact week cards work without horizontal scrolling. */
+.wm-intake-calendar { padding: 12px; border: 1px solid var(--color-border); border-radius: var(--border-radius-large); }
+.wm-intake-calendar-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 12px; margin-top: 12px; }
+.wm-intake-calendar-days .wm-card { padding: 12px; margin: 0; min-width: 0; }
+.wm-intake-calendar-days h4 { font-weight: 700; }
+.wm-intake-calendar-days progress { width: 100%; }
+.wm-day-selected { outline: 2px solid var(--color-primary-element); outline-offset: -2px; }
+.wm-calendar-entries { padding-inline-start: 18px; overflow-wrap: anywhere; }
+.wm-calendar-entries li { margin-bottom: 10px; }
+.wm-reception { padding: 20px; overflow-y: auto; height: 100%; }
+
+.wm-company-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; min-width: 0; }
+.wm-company-header img { max-width: 160px; max-height: 64px; width: auto; height: auto; object-fit: contain; }
+.wm-company-header strong { overflow-wrap: anywhere; font-size: 1.2rem; }
+@media (max-width: 600px) { .wm-company-header { flex-wrap: wrap; } .wm-company-header img { max-width: 120px; max-height: 48px; } }

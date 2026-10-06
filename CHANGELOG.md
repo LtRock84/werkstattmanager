@@ -1,5 +1,151 @@
 # Changelog
 
+## GitHub-Aktualisierung vom 6. Oktober 2026: 0.1.6 → 0.2.4
+
+Diese Aktualisierung enthält die nachfolgend beschriebenen Versionen 0.1.7 bis
+0.2.4. Das Repository bleibt privat; eine Store-Veröffentlichung oder
+Produktionsfreigabe ist damit nicht verbunden.
+
+### Neue Funktionen
+
+- **Leistungskatalog:** 295 unterschiedliche Leistungen für PKW und leichte
+  Transporter, mit Kategorien, Suchbegriffen, Favoriten, bearbeitbaren Zeiten,
+  Mengen und Arbeitsschritten. Dieselben Leistungen sind für Termine,
+  Mechanikeraufträge und Kalkulation verfügbar. Eigene Leistungen und Pakete
+  ergänzen den Katalog; Hinweise helfen, enthaltene Arbeiten nicht doppelt anzusetzen.
+- **Vergleichspreise:** 334 veröffentlichte Preisangaben von 32 Preisgebern,
+  mit Quellen und getrennten Gruppen für Region, Fahrzeugklasse, Arbeitsumfang,
+  Material, Umsatzsteuer sowie Fest- und Einstiegspreise. 57 Leistungen besitzen
+  mindestens eine Preisangabe; für 238 fehlen geeignete Quellen. Einzelangebote
+  werden nicht als belastbarer Durchschnitt ausgegeben.
+- **Terminbuch:** Tages-, Wochen- und Monatsansicht, Arbeitsstundenbudgets,
+  Fahrzeuglimits, Schließtage und Mehrtagesplanung. Mehrere ausgewählte Arbeiten
+  addieren ihre Dauer. Überbuchungen benötigen eine Begründung; ein Termin und
+  sein Arbeitsauftrag belegen Kapazität nur einmal.
+- **Terminannahme:** Wochenkalender direkt im Formular mit Wochentagen,
+  vorhandenen Terminen, Ankunft und Abholung, freien Stunden und Auslastung.
+  Normales Speichern bestätigt den Termin; Entwürfe bleiben getrennt.
+  Freie Tage suchen, Folgetermine vorbereiten, Statusfilter, Annahme-/Abholcheckliste
+  und Hinweise auf bereits offene Fahrzeugaufträge erleichtern den Ablauf.
+- **Vom Termin zum Auftrag:** Ein verknüpfter Auftragsentwurf übernimmt Leistungen,
+  Arbeitsschritte und Sollzeit. Die Freigabe für Mechaniker bleibt ausdrücklich.
+  Spätere Katalog- oder Terminänderungen überschreiben gespeicherte Arbeitsinhalte
+  nicht unbemerkt.
+- **Weitere Benutzerzugänge:** Administratoren können einzelne Nextcloud-Benutzer
+  als zusätzliche Meister oder ausschließlich für Terminannahme freigeben.
+  Die Assistenz sieht benötigte Termin-, Kunden- und Fahrzeuginformationen;
+  Werkstattaktionen, interne Notizen, Preise, Zeiten und Verwaltungsfunktionen
+  bleiben serverseitig gesperrt. Benutzerlöschung entfernt direkte Freigaben.
+- **Dynamische Vorschläge:** Die acht meistverwendeten Leistungen stehen zuerst.
+  Bestätigte Termine und freigegebene Aufträge zählen je Leistung und Vorgang einmal;
+  Wiederholungen, Mengen und verknüpfte Termine/Aufträge führen nicht zu Doppelzählungen.
+- **Preisrechner:** Jahreskosten und abrechenbare Stunden ergeben einen
+  kostendeckenden Nettostundensatz. Gewinnaufschlag, Material, Fremdleistungen,
+  Umsatzsteuer und Bruttopreis werden getrennt berechnet. Die Übernahme von
+  Vergleichspreisen oder eigenen Preisen in den Katalog erfolgt ausdrücklich.
+- **Kalender und Kundennachrichten:** Einseitige Übertragung bestätigter Termine
+  in einen eingerichteten Nextcloud-Kalender über HTTPS-CalDAV; Bestätigung,
+  Änderung, Absage und optionale Erinnerung mit Kalenderdatei. Wiederholbare
+  Hintergrundaufträge und sichtbare Fehler unterstützen die Zustellung.
+- **Firmenprofil und Werkstatt-Mail:** Firmenname und geprüftes Logo erscheinen
+  in den Appkopfbereichen. Ein Administrator kann ein eigenes Konto aus Nextcloud
+  Mail als gemeinsamen Werkstatt-Absender delegieren. Zugangsdaten verbleiben
+  in Nextcloud Mail. Rechteentzug und Kontowechsel lösen keinen stillen
+  Absenderwechsel aus; „an Mail übergeben“ bedeutet keinen Zustellnachweis.
+
+### Verbesserungen und Fehlerkorrekturen
+
+- Fahrzeughistorie mit verständlichen Ereignissen, Aufträgen, Mitarbeitern,
+  Teilemengen, Notizen und Zeitkorrekturen; feststehende Bereichsleiste und
+  Rückkehr zum vorherigen Fahrzeugbereich.
+- Schutz ungespeicherter Eingaben, verständlichere Statusmeldungen,
+  korrigierte Monats-/Datumsdarstellung und Erhalt manueller Auftragstitel.
+- Katalogaktualisierungen erhalten eigene Anpassungen. Veraltete Such- und
+  Preisantworten überschreiben keine neueren Eingaben.
+- Fahrerformular: sichere Wiederholung nach Antwortverlust, Prüfung von Fotos
+  und Kilometerständen sowie Zurücksetzen der Fotoauswahl nach vollständigem Erfolg.
+- Schreibaktionen funktionieren auch in einer lokalen HTTP-Demo, wenn der Browser
+  `crypto.randomUUID` nicht bereitstellt: UUIDs werden weiterhin kryptografisch
+  erzeugt. Produktionszugänge bleiben auf HTTPS ausgelegt.
+
+### Prüfungen und begleitende Demo
+
+- Neue Regressionen und reale SQL-/HTTP-Prüfungen für Rollen, Rangliste,
+  konkurrierende Buchungen, Termin-/Auftragsverknüpfungen, Fahrer-Mangel/km/Fotos,
+  Teile, Nacharbeit, Abnahme, Fristen, Exporte, Kalender und Mail.
+- Dokumentierter Stand: 90 Frontendtests für 0.2.4; 53 native PHP-Szenarien und
+  echte Nextcloud-Mail-/SMTP-/IMAP-Prüfung für den unveränderten Backendstand 0.2.3.
+  Installations- und Upgrade-Ergebnisse sind im [Prüfbericht](docs/test-report.md)
+  ihrer jeweiligen Version zugeordnet.
+- Separat zur App wurde die lokale Demo für Tablet-Zugriff im gemeinsamen WLAN,
+  Adressverwaltung, Start/Stop und Wachhalten vorbereitet. Die Demo-Laufzeit erhielt
+  eine JIT-Korrektur und einen gesicherten Redis-Start; keine Nextcloud-Coredateien
+  wurden geändert. Diese lokalen Starter sind nicht Bestandteil des App-Repositories.
+- Separate Tutorialvideos erklären den gesamten Werkstattablauf und Fahrer-QR,
+  Mangelmeldung und Kilometerstand. Zusätzliche Fassungen enthalten leise eigene
+  Hintergrundmusik. Videos und interne Aufnahmeskripte sind nicht Teil dieses Uploads.
+- Physisches iPad/Touch/Kamerascan, reale NAS-/Office-/Mailbox-Abnahme,
+  vollständige Barrierefreiheits- und Dauerlastprüfung bleiben offen.
+
+## 0.2.4 – Lokale Tablet-Demo
+
+- Schreibaktionen und Fahrerformular funktionieren auch auf lokalen HTTP-Adressen: kryptografische UUIDs bleiben verfügbar, wenn der Browser randomUUID nur über HTTPS anbietet.
+- Keine Änderung an Berechtigungen, Datenmodell oder Migrationen. Produktivzugänge weiterhin über HTTPS betreiben.
+
+## 0.2.3 – Firmenprofil und Werkstatt-Absender
+
+- Firmenname und geprüftes Logo in allen Appkopfbereichen; Pflege unter Stammdaten.
+- Gemeinsames eigenes Konto aus Nextcloud Mail als ausdrücklich delegierter Absender, einschließlich Erinnerungen; Credentials bleiben in Mail.
+- Rechteentzug/Kontowechsel/Benutzerlöschung ohne stillen SMTP-Fallback, sichere Übergabestatus.
+
+
+## 0.2.2 – Terminannahme, zusätzliche Zugänge und häufige Leistungen
+
+- Administratoren können einzelne Nextcloud-Benutzer für den vollständigen Meisterbereich oder ausschließlich für die Terminannahme freigeben; optional eigene Terminannahmegruppe. Benutzerlöschung entfernt zusätzliche Freigaben.
+- Assistenz sieht nur Termine und benötigte Kunden-/Fahrzeugdaten. Werkstatt, Dateien, interne Checklisten, Kalkulation, Exporte und Kapazitätsänderungen sind serverseitig gesperrt.
+- Die acht häufigsten Leistungen erscheinen zuerst, auch bei Auftragserstellung. Wiederholungen, Mengen und verknüpfte Termine/Aufträge erhöhen die Rangliste nicht mehrfach; Entwürfe und abgesagte Vorgänge zählen nicht. Bestandsdaten werden in begrenzten, wiederholbaren Schritten übernommen.
+- Wochenkalender direkt im Terminformular: Wochentage, vorhandene Ankunfts-/Abholtermine, freie Stunden, Auslastung, Fahrzeuglimit und explizite Datumswahl.
+- Reguläres Speichern bestätigt den Termin. „Bestätigt“ ersetzt die missverständliche Anzeige „Geplant“; Entwürfe bleiben ausdrücklich getrennt.
+- Neue additive Nutzungsmigration, Rechte-/Ranglisten-/Kalenderregressionen. Keine Änderung der produktiven Nextcloud und kein Store-Release.
+
+## 0.2.1 – Annahme und tägliche Terminübersicht
+
+- Ankunftszeit in der Fahrzeughistorie als lesbares Berliner Datum mit Uhrzeit; sichere Anzeige auch bei ungültigen Alteinträgen.
+
+- Interne Fahrzeugannahme-/Abholcheckliste mit Kilometer-, Zustands- und Rückrufnotiz; nachvollziehbare Änderungen in der Fahrzeughistorie.
+- Terminsuche und Statusfilter, schnelle Übersicht wartender und abholbereiter Fahrzeuge; vollständige Tagesauslastung trotz Filter.
+- Freie Tage für den Arbeitsumfang unter Berücksichtigung des Fahrzeuglimits suchen.
+- Folgetermine aus Arbeitskopien vorbereiten, ohne alte Absprachen oder interne Notizen zu übernehmen.
+- Vorhandene unerledigte Fahrzeugaufträge bei Annahme und Auftragserstellung anzeigen.
+- Additive Migration, Checklistenvalidierung und zusätzliche Frontend-/PHP-/API-Regressionen.
+
+## 0.2.0 – Leistungskatalog, Terminbuch und Preisrechner
+
+- Eingaben beim Bereichswechsel bewahren und geänderte Formulare vor Verwerfen schützen.
+- Monatswechsel korrigieren, Tagesanteile/Auftragsstatus sichtbar und schnelle Terminstatusaktionen anbieten.
+- Absagen ausdrücklich bestätigen; neuen Kunden vorauswählen und freie Zusatzarbeiten direkt aufnehmen.
+- Veraltete Preisantworten verwerfen und Katalogübernahme an aktuellen Eingabestand binden.
+- 295 unterschiedliche Leistungen für PKW und leichte Transporter; gemeinsame Auswahl mit Mengen, Zeiten, bearbeitbaren Schritten, Kategorien, Synonymen und Favoriten.
+- 334 nachvollziehbare öffentliche Preisangaben von 32 Preisgebern; getrennte Vergleichsgruppen, Quellen und ausdrücklich sichtbare Datenlücken. Keine erfundenen Preise oder Herstellerzeiten.
+- Tages-, Wochen- und Monatsplanung, Tagesbudgets, Ausnahmen, Mehrtagesarbeiten und begründete Überbuchungen.
+- Genau ein verknüpfter Arbeitsauftrag als Entwurf; unveränderliche Leistungskopien und keine doppelte Kapazitätszählung.
+- Einseitiges HTTPS-CalDAV und Nextcloud-Mail mit Kalenderdatei über dauerhafte Warteschlangen; Fehleranzeige und kontrollierte Wiederholung.
+- Bewusste Übernahme regionaler Vergleichszielpreise mit Netto-Umrechnung und Umfangsbestätigung; feldweises Katalogupdate erhält eigene Änderungen.
+- Automatische Leistungsüberschriften erhalten manuelle Titel; Vorlagenzeit und zusätzliche Leistungen werden addiert.
+- Versandfehler zeigen Termin/Fahrzeug; entfallende Abholung erhält gesonderte Kunden-ICS-Absage.
+- Jahreskostenrechner mit produktiven Stunden, Gewinn-/Materialaufschlag, Fremdleistungen und getrennten Netto-/Steuer-/Bruttobeträgen.
+- Neue additive Migration, Meisterrechte und reduzierte Tabletantworten. Bestehende Verbesserungen von 0.1.7 erhalten.
+- Internes, unsigniertes Paket; GitHub bleibt privat, keine Store-Einreichung und keine Änderung einer produktiven Nextcloud.
+
+## 0.1.7 – Verständliche Fahrzeughistorie und Bereichswechsel
+
+- Ereignisse im Änderungsprotokoll in Alltagssprache, mit Auftrag, Mitarbeiter, Teilemenge, Arbeitsnotizen und Zeitkorrekturen.
+- Bereichsleiste der Fahrzeugakte bleibt beim Scrollen sichtbar.
+- Aufträge, Mängel und Bearbeitungsdialoge führen zurück zur gewählten Fahrzeugansicht; Tastaturfokus bleibt erhalten.
+- Verbindungsanzeige anhand tatsächlicher Serverantworten; ein irreführender Offline-Hinweis des Browsers sperrt erreichbare Nextcloud-Instanzen nicht.
+- Lange Historienbeschriftungen brechen auch mit den Nextcloud-Standardstilen um.
+- Keine neue Datenbankmigration; zusätzliche Regressionstests für Anzeige, Rücknavigation und Meisterrechte.
+
 ## 0.1.6 – Veröffentlichungsvorbereitung
 
 - Öffentliche Dokumentation auf allgemeine Installation, Bedienung und Prüfergebnisse begrenzt.
@@ -50,3 +196,8 @@
 - Meister können fehlgeschlagene Benachrichtigungen prüfen und erneut vormerken; Rechteentzug, Doppelklick und Versuchshistorie werden berücksichtigt.
 - Reale Nextcloud-35.0.1-Installation: reservierte Aktionsparameter im Routing ersetzt; initiale Vorlagen zusätzlich im Install-Repair-Hook angelegt.
 - Isolierte Testinstanz mit fiktiven Beispieldaten und erfolgreichen PostgreSQL-Paralleltests.
+
+
+### Fahrerformular: erfolgreiche Fotoauswahl zurücksetzen
+
+Nach vollständig bestätigter Meldung samt Fotos wird auch das Dateiauswahlfeld geleert. Bei fehlgeschlagenen Foto-Uploads bleibt die Auswahl für den erneuten Versuch erhalten.

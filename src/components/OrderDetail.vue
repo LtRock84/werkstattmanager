@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import Modal from './Modal.vue'
+import { useDirtySnapshot, confirmDiscard } from '../dirty'
 import { all, command, post, upload, message } from '../api'
 import {
   t,
@@ -26,6 +27,7 @@ import type {
 } from '../types'
 const printReport = () => window.print()
 const props = defineProps<{
+  closeLabel?: string
   order: Order
   vehicle?: Vehicle
   master: boolean
@@ -47,6 +49,7 @@ const employee = ref(''),
   busy = ref(false),
   error = ref(''),
   notice = ref('')
+const overrideReason = ref('')
 const partForm = ref(false),
   partTitle = ref(''),
   quantity = ref(1),
@@ -59,6 +62,8 @@ const correcting = ref<Interval | null>(null),
   correctionEnd = ref(''),
   correctionReason = ref(''),
   changeReason = ref('')
+const { dirty, reset: resetDraft } = useDirtySnapshot(() => ({ note: note.value, steps: selectedSteps.value, reason: reason.value, resolved: resolved.value, override: overrideReason.value, part: partForm.value ? [partTitle.value, quantity.value, partNumber.value, partNote.value, partPriority.value, partFile.value?.name] : null, correction: correcting.value ? [correctionStart.value, correctionEnd.value, correctionReason.value] : null, changeReason: changeReason.value }))
+function close() { if (!busy.value && confirmDiscard(dirty.value)) emit('close') }
 const running = computed(() => active.value.find((a) => a.order_id === current.value.id))
 const elapsed = computed(() => total(intervals.value))
 const employeeName = (id: string) =>
@@ -96,10 +101,12 @@ async function act(action: string) {
       steps: selectedSteps.value,
       reason: ['rework', 'cancel'].includes(action) ? changeReason.value : reason.value,
       resolved_defects: resolved.value,
+      override_reason: overrideReason.value,
     })
     employee.value = ''
     note.value = ''
     selectedSteps.value = []
+    resetDraft()
     emit('changed')
     notice.value =
       (
@@ -152,6 +159,7 @@ async function requestPart(pause: boolean) {
       }
     }
     partForm.value = false
+    resetDraft()
     employee.value = ''
     await refreshOrder()
     emit('changed')
@@ -251,8 +259,9 @@ async function reload() {
 }
 </script>
 <template>
-  <Modal :title="orderNumber(current.id) + ' · ' + current.title" @close="!busy && emit('close')">
+  <Modal :dirty="dirty" :locked="busy" :close-label="closeLabel" :title="orderNumber(current.id) + ' · ' + current.title" @close="!busy && emit('close')">
     <div class="wm-form wm-printable">
+      <label v-if="master && (error.includes('kapazität') || overrideReason)">{{ t('Begründung für Überbuchung') }}<input v-model="overrideReason" maxlength="2000" /></label>
       <p v-if="error" role="alert" class="wm-error">{{ error }}</p>
       <p v-if="notice" role="status" class="wm-success wm-no-print">{{ notice }}</p>
       <div v-if="current.status === 'review'" class="wm-guide wm-no-print">
@@ -286,6 +295,7 @@ async function reload() {
           <small>{{ t('Fertig bis') }}</small><strong>{{ stamp(current.due_at) }}</strong>
         </div>
       </div>
+      <ul v-if="current.service_lines?.length"><li v-for="(l, i) in current.service_lines" :key="i">{{ l.quantity }} × {{ l.title }} · {{ l.minutes == null ? t('Ohne Zeitvorgabe') : l.quantity * l.minutes + ' min' }}</li></ul>
       <ul v-if="current.steps.length">
         <li v-for="(s, n) in current.steps" :key="n">{{ s }}</li>
       </ul>
@@ -558,7 +568,7 @@ async function reload() {
         /></label>
       </section>
       <footer class="wm-actions wm-no-print">
-        <NcButton :disabled="busy" @click="reload">{{ t('Aktualisieren') }}</NcButton><NcButton v-if="master" @click="printReport()">{{ t('Auftragsbericht drucken') }}</NcButton><NcButton :disabled="busy" @click="emit('close')">{{ t('Schließen') }}</NcButton>
+        <NcButton :disabled="busy" @click="reload">{{ t('Aktualisieren') }}</NcButton><NcButton v-if="master" @click="printReport()">{{ t('Auftragsbericht drucken') }}</NcButton><NcButton :disabled="busy" @click="close">{{ t('Schließen') }}</NcButton>
       </footer>
     </div>
   </Modal>

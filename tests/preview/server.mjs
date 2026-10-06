@@ -14,6 +14,12 @@ const db={
  defects:[{...base('d1'),vehicle_id:'v1',description:'Kontrollleuchte leuchtet während der Fahrt.',reporter:'Testfahrer',status:'new',priority:'normal',public_text:'',published:false,mileage:null,mileage_confirmed:false,order_id:null}],
  deadlines:[{...base('f1'),vehicle_id:'v1',title:'Hauptuntersuchung',due_date:new Date((now+7*86400)*1000).toISOString().slice(0,10),due_km:null,warning_days:[30,7],status:'open'}],customers:[],attachments:[],audit:[],mileage:[]
 }
+// A long history exercises the fixed section navigation with realistic, non-production context.
+db.audit=Array.from({length:24},(_,i)=>({
+ ...base(`audit-${i}`),created_at:now-i*3600,vehicle_id:'v1',order_id:db.orders[0].id,employee_id:'e1',actor:'werkstatt-tablet',action:i%2?'order.finish':'part.requested',
+ details:i%2?{note:'Probefahrt ohne Befund.',steps:['Öl gewechselt','Bremsanlage geprüft']}:{part_id:'p1',paused:true},
+ context:{order:{id:db.orders[0].id,title:db.orders[0].title},employee:{name:'Alex'},part:i%2?null:{title:'Ölfilter',quantity:2,part_number:'TEST-FILTER',priority:'normal',note:'Passend zum Fahrzeug'},defect:null,deadline:null},
+}))
 const header=`<!DOCTYPE html><html lang="de"><head data-requesttoken="fixture-only"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Werkstattmanager · UI-Testdaten</title><style>:root{--color-main-background:#fff;--color-main-text:#172b29;--color-background-hover:#f2f5f4;--color-border:#dce4e2;--color-primary-element:#087c71;--color-primary-element-text:#fff;--color-primary-element-light:#e2f1ed;--color-primary-element-light-text:#12493d;--color-text-maxcontrast:#52645f;--default-font-size:15px;--default-clickable-area:44px;--default-line-height:1.5;--border-radius:8px;--border-radius-element:8px;--border-width-input:1px;--animation-quick:100ms;--font-face:system-ui}body{margin:0;font-family:system-ui}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:default}#fixture-banner{background:#fff2c7;padding:7px 16px;font-size:12px;color:#674800}a{color:var(--color-primary-element)}*{box-sizing:border-box}</style><link rel="stylesheet" href="/css/main.css"><script>window.OC={config:{modRewriteWorking:true},coreApps:[]};window._oc_webroot='';window._oc_appswebroots={werkstattmanager:'/apps/werkstattmanager'};window._nc_l10n_locale='de_DE';window._nc_l10n_language='de';</script></head>`
 const server=createServer(async(req,res)=>{
  try{

@@ -2,12 +2,12 @@
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
  <id>werkstattmanager</id><name>Werkstattmanager</name><summary>Fahrzeuge, Aufträge und Werkstattzeiten</summary>
  <description>Fahrzeugakten, schnelle Auftragserstellung, Werkstatt-Tablet und externe Mängelmeldungen. Interne Pilotversion; vor Produktiveinsatz auf der Zielinstallation prüfen.</description>
- <version>0.1.6</version><licence>AGPL-3.0-or-later</licence><author>LtRock84</author><namespace>Werkstattmanager</namespace><category>organization</category>
+ <version>0.2.4</version><licence>AGPL-3.0-or-later</licence><author>LtRock84</author><namespace>Werkstattmanager</namespace><category>organization</category>
  <website>https://github.com/LtRock84/werkstattmanager</website>
  <bugs>https://github.com/LtRock84/werkstattmanager/issues</bugs>
  <repository type="git">https://github.com/LtRock84/werkstattmanager.git</repository>
  <dependencies><php min-version="8.3" max-version="8.5"/><database>pgsql</database><database>mysql</database><nextcloud min-version="35" max-version="35"/></dependencies>
- <background-jobs><job>OCA\Werkstattmanager\BackgroundJob\Maintenance</job></background-jobs>
- <repair-steps><post-migration><step>OCA\Werkstattmanager\Repair\InstallLibrary</step></post-migration><install><step>OCA\Werkstattmanager\Repair\InstallLibrary</step></install></repair-steps>
+ <background-jobs><job>OCA\Werkstattmanager\BackgroundJob\Maintenance</job><job>OCA\Werkstattmanager\BackgroundJob\AppointmentDispatch</job></background-jobs>
+ <repair-steps><post-migration><step>OCA\Werkstattmanager\Repair\InstallLibrary</step><step>OCA\Werkstattmanager\Repair\InstallPlanning</step><step>OCA\Werkstattmanager\Repair\InstallUsage</step></post-migration><install><step>OCA\Werkstattmanager\Repair\InstallLibrary</step><step>OCA\Werkstattmanager\Repair\InstallPlanning</step><step>OCA\Werkstattmanager\Repair\InstallUsage</step></install></repair-steps>
  <navigations><navigation><name>Werkstattmanager</name><route>werkstattmanager.page.index</route><icon>app.svg</icon><order>20</order></navigation></navigations>
 </info>

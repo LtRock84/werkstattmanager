@@ -1,0 +1,33 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import { get, post, message } from '../api'
+import { useDirtySnapshot, confirmDiscard } from '../dirty'
+import { t } from '../format'
+import { money, lineMinutes } from '../services'
+import type { ServiceDefinition, ServiceLine } from '../types'
+import Modal from './Modal.vue'
+import ServicePicker from './ServicePicker.vue'
+import PriceComparison from './PriceComparison.vue'
+const coverage = ref<{providers:number; observations:number; services:{key:string; observations:number}[]} | null>(null)
+const items = ref<ServiceDefinition[]>([]), search = ref(''), category = ref(''), error = ref(''), busy = ref(false)
+const edit = ref<Partial<ServiceDefinition> | null>(null), steps = ref(''), synonyms = ref(''), ownPrice = ref<number | null>(null), packageLines = ref<ServiceLine[]>([])
+const { dirty, reset } = useDirtySnapshot(() => ({ edit: edit.value, steps: steps.value, synonyms: synonyms.value, price: ownPrice.value, lines: packageLines.value }))
+function close() { if (!busy.value && confirmDiscard(dirty.value || pendingWork.value)) { edit.value = null; pendingWork.value = false; reset() } }
+const pendingWork = ref(false)
+const filtered = computed(() => items.value.filter(s => (!category.value || s.category === category.value) && [s.title, ...s.synonyms].join(' ').toLowerCase().includes(search.value.toLowerCase())).sort((a, b) => Number(b.favorite) - Number(a.favorite) || a.title.localeCompare(b.title)))
+const categories = computed(() => [...new Set(items.value.map(s => s.category))].sort())
+async function load() { try { const result = await get<{ items: ServiceDefinition[]; coverage: typeof coverage.value }>('/api/v1/services'); items.value = result.items; coverage.value = result.coverage } catch (e) { error.value = message(e) } }
+onMounted(load)
+function open(s?: ServiceDefinition) { edit.value = s ? JSON.parse(JSON.stringify(s)) : { title: '', category: t('Eigene Leistungen'), description: '', unit: t('Leistung'), vehicle_classes: ['car', 'van'], favorite: true, archived: false, minutes: null, position: 0 }; steps.value = (s?.steps ?? []).join('\n'); synonyms.value = (s?.synonyms ?? []).join('\n'); ownPrice.value = s?.own_price == null ? null : s.own_price / 100; packageLines.value = []; pendingWork.value = false; reset() }
+function usePackage() { if (!edit.value) return; edit.value.minutes = lineMinutes(packageLines.value); steps.value = packageLines.value.flatMap(l => [l.quantity + ' × ' + l.title, ...l.steps]).join('\n') }
+async function save() { busy.value = true; try { await post('/api/v1/services', { data: { ...edit.value, steps: steps.value.split('\n').map(s => s.trim()).filter(Boolean), synonyms: synonyms.value.split('\n').map(s => s.trim()).filter(Boolean), own_price: ownPrice.value == null || String(ownPrice.value).trim() === '' ? null : Math.round(ownPrice.value * 100), includes: packageLines.value.length ? packageLines.value.map(l => l.key).filter(Boolean) : edit.value?.includes } }); edit.value = null; pendingWork.value = false; reset(); await load() } catch (e) { error.value = message(e) } finally { busy.value = false } }
+</script>
+<template>
+  <section>
+<div class="wm-actions"><NcButton variant="primary" @click="open()">+ {{ t('Eigene Leistung / Paket anlegen') }}</NcButton></div><p>{{ items.length }} {{ t('Leistungen vorhanden. Eigene Änderungen bleiben bei Updates erhalten.') }}</p><div class="wm-two"><label>{{ t('Leistung suchen') }}<input v-model="search" type="search" /></label><label>{{ t('Bereich') }}<select v-model="category"><option value="">{{ t('Alle Bereiche') }}</option><option v-for="c in categories" :key="c">{{ c }}</option></select></label></div><p v-if="error" class="wm-error" role="alert">{{ error }}</p>
+    <p v-if="coverage" class="wm-guide">{{ coverage.observations }} {{ t('veröffentlichte Preisangaben von') }} {{ coverage.providers }} {{ t('Preisgebern. Varianten zählen als Preisangaben. Nicht jede Angabe eignet sich für einen Vergleich.') }}</p>
+    <div class="wm-grid"><article v-for="s in filtered" :key="s.id" class="wm-card"><h2>{{ s.favorite ? '★ ' : '' }}{{ s.title }}</h2><p>{{ s.category }} · {{ s.archived ? t('Archiviert') : s.unit }}</p><p>{{ s.minutes == null ? t('Arbeitsdauer bei Planung ergänzen') : s.minutes + ' min' }} · {{ t('Eigener Nettopreis') }}: {{ money(s.own_price) }}</p><p v-if="!coverage?.services.find(c => c.key === s.seed_key)?.observations">{{ t('Noch kein belastbarer Vergleichspreis') }}</p><NcButton @click="open(s)">{{ t('Ansehen / bearbeiten') }}</NcButton></article></div>
+    <Modal v-if="edit" :title="t('Leistung / Paket bearbeiten')" :dirty="dirty || pendingWork" :locked="busy" @close="edit = null; pendingWork = false; reset()"><form class="wm-form" @submit.prevent="save"><label>{{ t('Bezeichnung') }}<input v-model="edit.title" required maxlength="255" /></label><label>{{ t('Bereich') }}<input v-model="edit.category" required maxlength="255" /></label><label>{{ t('Kurze Erklärung') }}<textarea v-model="edit.description" maxlength="10000"></textarea></label><label>{{ t('Arbeitsdauer je Einheit (Minuten)') }}<input v-model.number="edit.minutes" type="number" min="1" /></label><label>{{ t('Einheit') }}<input v-model="edit.unit" required maxlength="50" /></label><label>{{ t('Eigener Nettopreis je Einheit (Euro, optional)') }}<input v-model.number="ownPrice" type="number" min="0" step="0.01" /></label><label>{{ t('Arbeitsschritte – eine Zeile je Schritt') }}<textarea v-model="steps" rows="5"></textarea></label><label>{{ t('Weitere Suchbegriffe – eine Zeile je Begriff') }}<textarea v-model="synonyms" rows="2"></textarea></label><label class="wm-check"><input v-model="edit.favorite" type="checkbox" />{{ t('Als Favorit anbieten') }}</label><label class="wm-check"><input v-model="edit.archived" type="checkbox" />{{ t('Aus der Auswahl ausblenden') }}</label><details class="wm-help"><summary>{{ t('Paket aus mehreren Leistungen zusammenstellen') }}</summary><ServicePicker v-model="packageLines" @draft-change="pendingWork = $event" /><NcButton @click="usePackage">{{ t('Schritte und Gesamtzeit ins Paket übernehmen') }}</NcButton></details><PriceComparison v-if="edit.seed_key" :service-key="edit.seed_key" /><p v-if="error" role="alert" class="wm-error">{{ error }}</p><footer class="wm-actions"><NcButton :disabled="busy" @click="close">{{ t('Abbrechen') }}</NcButton><NcButton :disabled="busy" variant="primary" type="submit">{{ t('Speichern') }}</NcButton></footer></form></Modal>
+  </section>
+</template>

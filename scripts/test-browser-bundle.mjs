@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs'
 import { JSDOM } from 'jsdom'
 
 const bundle = readFileSync(new URL('../js/werkstattmanager-main.js', import.meta.url), 'utf8')
-for (const mode of ['master', 'tablet', 'driver']) {
+for (const mode of ['master', 'tablet', 'driver', 'reception']) {
   const state = Buffer.from(JSON.stringify(mode)).toString('base64')
   const dom = new JSDOM(
     `<input type="hidden" id="initial-state-werkstattmanager-mode" value="${state}"><div id="werkstattmanager"></div>`,
@@ -18,7 +18,7 @@ for (const mode of ['master', 'tablet', 'driver']) {
     assert.ok(root.children.length > 0, `${mode}: blank application root`)
     assert.ok(root.textContent.trim().length > 30, `${mode}: no visible application text`)
     assert.equal(root.querySelector('h1')?.textContent, {
-      master: 'Übersicht', tablet: 'Werkstattaufträge', driver: 'Mangel melden',
+      reception: 'Terminannahme', master: 'Übersicht', tablet: 'Werkstattaufträge', driver: 'Mangel melden',
     }[mode], `${mode}: expected role-specific main heading`)
     console.log(`PASS browser bundle startup: ${mode}`)
   } finally {

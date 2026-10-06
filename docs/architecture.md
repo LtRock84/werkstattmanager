@@ -100,3 +100,98 @@ und Versuchszahl. `POST /api/v1/actions/notification-retry` mit `data.id` und
 Bei entzogenen Empfängerrechten wird sie stattdessen verworfen. Tablet-Zugriff ist
 gesperrt. Ein Versionskonflikt verhindert doppeltes Zurücksetzen; vorherige Versuche
 bleiben im Audit nachvollziehbar.
+
+## Darstellung der Fahrzeughistorie (0.1.7)
+
+`Catalog::list('audit')` ergänzt für jede Seite einen begrenzten Kontext über
+`Journal::withContext`. Meisterrechte werden in beiden Einstiegspunkten geprüft.
+Referenzen werden pro Objekttyp gesammelt und in höchstens fünf Abfragen geladen;
+die Antwort enthält nur die für die Anzeige benötigten Felder. Der Kontext wird
+nicht in der Audit-Tabelle gespeichert. Mitarbeiteranonymisierung wirkt dadurch
+auch auf alte Ereignisse. `src/audit.ts` übersetzt bekannte Ereignisse und
+formatiert freigegebene Details; unbekannte Ereignisse erhalten einen neutralen
+Text ohne rohe Kennungen oder JSON. Neue Pause-/Fertigmeldungen speichern die
+validierten Arbeitsnotizen und Schritte, Teileanforderungen zusätzlich das Pausenflag.
+
+Die Fahrzeugkomponente bleibt beim Detailaufruf montiert und hält ihren Bereich.
+Ihr nativer Dialog wird vorübergehend geschlossen, danach erneut geöffnet und
+aktualisiert; es gibt jeweils einen aktiven modalen Arbeitsbereich.
+
+## Verbindungsanzeige (0.1.7)
+
+Die App prüft die Erreichbarkeit durch ihre API-Antworten. Browserereignisse
+`online`/`offline` lösen eine erneute Prüfung aus; `navigator.onLine` ist kein
+Grund, einen tatsächlich erreichbaren Server zu sperren. Sichtbare Seiten fragen
+auch nach einem Verbindungsfehler wieder alle zehn Sekunden an, sofern kein
+Bearbeitungsdialog offen ist. Schreibaktionen benötigen immer eine Serverantwort;
+es gibt keine Offline-Warteschlange. Bei ungewissem Ausgang behält eine explizite
+Wiederholung denselben Idempotenzschlüssel. Netzwerkheuristik dokumentiert bei
+[MDN](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/onLine), geprüft am 2026-10-05.
+
+## Leistungskatalog und Planung ab 0.2.0
+
+Neue Migration `Version000200Date20261005000000` ergänzt `wm_services`, `wm_prices`,
+`wm_planning`, `wm_appointments`, `wm_capacity`, `wm_cost_profiles`, `wm_deliveries`.
+Aufträge erhalten Arbeitskopien/Tagesverteilungen sowie indizierte Datumsgrenzen;
+Fahrzeuge eine PKW-/Transporterklasse. Historische Migrationen bleiben unverändert.
+Initialisierung verwendet stabile IDs; vorhandene Katalogzeilen werden nicht überschrieben.
+Preisbeobachtungen sind nach Inhaltskennung versioniert. Bundle-Version 2026-10-05.1.
+
+`ServiceLibrary` autorisiert Meister, validiert eigene Leistungen und speichert ausschließlich
+freigegebene Arbeitsfelder in Vorgängen. `Pricing` berechnet vergleichbare Anbietergruppen
+und Centbeträge. `AppointmentBook` koordiniert Termin, Kapazität, Wiederholungsantwort,
+Historie und Warteschlange in einer Transaktion. `PlanningLedger` verwendet eine versionierte
+Singleton-Zeile für konkurrierende Kapazitätsänderungen. Gleichzeitige Änderungen können
+HTTP 409 auslösen; sie verlieren keine Buchung. Aktive Zeitbuchungen brauchen diesen
+Planungslock nicht. Ein Unique Constraint sichert die Termin-Auftrag-Verknüpfung.
+
+Datumsgrenzen begrenzen SQL-Abfragen; Seiten von 500, maximal 2.000 Termine pro Anfrage
+und ein Jahr Zeitraum. Verknüpfungen außerhalb des sichtbaren Zeitraums werden zusätzlich
+geprüft, damit Aufträge nicht doppelt zählen. Große Bestände bleiben im Pilot zu vermessen.
+
+Neue Meister-APIs unter `/api/v1`: `services`, `services/{key}/prices`, `appointments`,
+`appointments/{id}/order`, `capacity`, `pricing`, `deliveries`, `deliveries/{id}/retry`,
+`calendar-settings`. Kalenderkonfiguration zusätzlich nur Administrator; Tablet und Fahrer
+haben keinen Zugriff. Bestehende Auftrags-APIs nehmen validierte Leistungskopien entgegen.
+
+`AppointmentDispatch` (60 Sekunden, kein paralleler Lauf) verarbeitet fällige Zustellungen
+mit begrenztem Batch und 45-Sekunden-Budget zwischen Aufträgen. `AppointmentDelivery`
+beansprucht Zeilen optimistisch, verwirft überholte Daten und unterscheidet reine interne
+Statusänderungen von kundenrelevanten Änderungen. Kalenderereignisse verwenden je
+stabiler UID eine separate Ressource. Wiederholtes PUT/DELETE erzeugt keine Duplikate.
+SMTP kann nach Verbindungsverlust keinen genau-einmal-Versand garantieren: unklarer
+Ausgang oder abgestürzter Versand erfordert manuelle Prüfung/Wiederholung. Vorbereitungs-
+und CalDAV-Fehler verwenden Backoff, nach zehn Versuchen `failed`.
+
+`CalendarDelivery` nutzt öffentliche `IClientService`, `ICrypto`, `IURLGenerator`, `IConfig`;
+Mail `IMailer`. HTTPS ist verpflichtend, Weiterleitungen aus, TLS-Prüfung an. Zielhost/Port
+und Installationspfad müssen zur eigenen Nextcloud gehören; Kalenderpfad ist auf das
+Integrationskonto begrenzt. Keine fremde DAV-Implementierung und keine privaten App-APIs.
+Die kanonische Cron-Adresse `overwrite.cli.url` muss konsistent konfiguriert sein.
+
+Kalender-/Mailintegration: [Betrieb](operations.md#kalender-und-kundennachrichten-ab-020).
+Öffentliche Preisquellen bleiben statische Bundle-Daten; keine Werkstattdaten gehen an
+Rechercheanbieter. Native Prüfungen gegen installierte Nextcloud 35 bestätigen die
+DI und öffentlichen Verträge. API-Grundlagen: [NC-35-App-Dokumentation](https://docs.nextcloud.com/server/35/developer_manual/app_development/index.html),
+[CalDAV](https://docs.nextcloud.com/server/stable/admin_manual/groupware/calendar.html),
+[Kalenderfreigaben](https://docs.nextcloud.com/server/35/user_manual/en/groupware/calendar.html).
+Prüfdatum 2026-10-05; konkrete Testergebnisse getrennt im Prüfbericht.
+
+`CatalogueUpdate` führt einen feldweisen Drei-Wege-Vergleich zwischen aktuellem Eintrag,
+letzter Seed-Baseline und neuem Seed aus. Nullable `services.seed_snapshot` wird durch
+zusätzliche Migration `Version000200Date20261005210000` eingeführt; ursprüngliche
+Migration bleibt unverändert. Version-1-Alteinträge sind unbearbeitet; ältere bearbeitete
+Zeilen ohne Baseline erhalten ihre Inhalte zunächst vollständig. Eigene Preise und
+Einstellungen bleiben stets erhalten. Ein erneuter Repair mit identischem Seed ändert
+keine Version. Tests und echte DB-Upgrades belegen den jeweiligen Stand im Prüfbericht.
+
+Vergleichszielpreise sind ausdrücklich ausgewählte Browser-Kalkulationsdaten; sie
+verändern keinen Arbeitslohn oder Materialeinkauf automatisch. Bestätigung der
+Einheitenzuordnung und Quellen-VAT-Umrechnung gehen der Übernahme voraus. Erst eine
+weitere ausdrückliche Aktion speichert den Nettopreis über die versionsgeprüfte Meister-API.
+
+### Interne Termincheckliste (0.2.1)
+
+Additive nullable JSON-Spalte `wm_appointments.checklist`; Domainvalidator mit festen Boolean-/Text-/Kilometerschlüsseln. Altclients bewahren vorhandene Checklisten bei fehlendem Feld; vollständige explizite Objekte ersetzen sie. Schreiben bleibt in derselben transaktionalen, versionierten und idempotenten Meisteraktion. Das Journal speichert geänderte Felder mit vorher/nachher. Auslieferungen verwenden weiterhin die bestehende Feld-Whitelist ohne Checkliste; Auftragskopien/Tabletantworten erhalten keine Annahme- oder Kundennotizen. Datenschutzexport und kontrollierte Fahrzeuglöschung behandeln den bestehenden Terminbereich vollständig.
+
+Vorschläge freier Tage sind reine Frontend-Auswertung der bestehenden serverseitig berechneten Tagesbudgets. Die endgültige Bestätigung prüft konkurrierende Kapazitätsänderungen erneut. Terminfilter verändern keine Budgets. Folgetermine kopieren ausschließlich geplante Arbeitsinhalte; aktuelle Fahrzeug-/Kundenreferenzen liefern die E-Mail.

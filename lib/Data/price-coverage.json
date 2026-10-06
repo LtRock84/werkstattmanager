@@ -1,0 +1,1781 @@
+{
+  "checked": "2026-10-05",
+  "providers": 32,
+  "observations": 334,
+  "targets": {
+    "providers": 30,
+    "observations": 300
+  },
+  "services": [
+    {
+      "key": "kleine-inspektion",
+      "title": "Kleine Inspektion",
+      "observations": 4,
+      "status": "source_found"
+    },
+    {
+      "key": "grosse-inspektion",
+      "title": "Große Inspektion",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ol-und-filterwechsel",
+      "title": "Öl- und Filterwechsel",
+      "observations": 10,
+      "status": "source_found"
+    },
+    {
+      "key": "luftfilter-erneuern",
+      "title": "Luftfilter erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "innenraumfilter-erneuern",
+      "title": "Innenraumfilter erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kraftstofffilter-erneuern",
+      "title": "Kraftstofffilter erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "zundkerzen-erneuern",
+      "title": "Zündkerzen erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "gluhkerzen-erneuern",
+      "title": "Glühkerzen erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "serviceanzeige-zurucksetzen",
+      "title": "Serviceanzeige zurücksetzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "digitalen-servicenachweis-pflegen",
+      "title": "Digitalen Servicenachweis pflegen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "flussigkeitsstande-prufen",
+      "title": "Flüssigkeitsstände prüfen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "wartungsplan-prufen",
+      "title": "Wartungsplan prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "olprobe-entnehmen",
+      "title": "Ölprobe entnehmen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "motorolstand-prufen",
+      "title": "Motorölstand prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "olverbrauch-untersuchen",
+      "title": "Ölverbrauch untersuchen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "olfiltergehause-erneuern",
+      "title": "Ölfiltergehäuse erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "olablassschraube-instand-setzen",
+      "title": "Ölablassschraube instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "olwanne-erneuern",
+      "title": "Ölwanne erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "olwanne-abdichten",
+      "title": "Ölwanne abdichten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "motorraum-reinigen",
+      "title": "Motorraum reinigen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bremsen-prufen",
+      "title": "Bremsen prüfen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "bremsbelage-erneuern",
+      "title": "Bremsbeläge erneuern",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "bremsscheiben-und-belage-erneuern",
+      "title": "Bremsscheiben und Beläge erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bremssattel-erneuern",
+      "title": "Bremssattel erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bremssattel-instand-setzen",
+      "title": "Bremssattel instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bremsschlauch-erneuern",
+      "title": "Bremsschlauch erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bremsleitung-erneuern",
+      "title": "Bremsleitung erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bremsflussigkeit-wechseln",
+      "title": "Bremsflüssigkeit wechseln",
+      "observations": 4,
+      "status": "source_found"
+    },
+    {
+      "key": "bremsanlage-entluften",
+      "title": "Bremsanlage entlüften",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hauptbremszylinder-erneuern",
+      "title": "Hauptbremszylinder erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bremskraftverstarker-erneuern",
+      "title": "Bremskraftverstärker erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "abs-sensor-erneuern",
+      "title": "ABS-Sensor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "abs-hydraulikblock-erneuern",
+      "title": "ABS-Hydraulikblock erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "feststellbremse-einstellen",
+      "title": "Feststellbremse einstellen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "feststellbremsseil-erneuern",
+      "title": "Feststellbremsseil erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "elektrische-feststellbremse-warten",
+      "title": "Elektrische Feststellbremse warten",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "bremstrommeln-und-bremsbacken-erneuern",
+      "title": "Bremstrommeln und Bremsbacken erneuern",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "radbremszylinder-erneuern",
+      "title": "Radbremszylinder erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bremsenprufstandmessung",
+      "title": "Bremsenprüfstandmessung",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "bremsflussigkeit-prufen",
+      "title": "Bremsflüssigkeit prüfen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "saisonaler-raderwechsel",
+      "title": "Saisonaler Räderwechsel",
+      "observations": 27,
+      "status": "source_found"
+    },
+    {
+      "key": "reifen-montieren-und-auswuchten",
+      "title": "Reifen montieren und auswuchten",
+      "observations": 157,
+      "status": "source_found"
+    },
+    {
+      "key": "lose-rader-auswuchten",
+      "title": "Lose Räder auswuchten",
+      "observations": 11,
+      "status": "source_found"
+    },
+    {
+      "key": "rader-demontieren-und-auswuchten",
+      "title": "Räder demontieren und auswuchten",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "reifen-reparieren",
+      "title": "Reifen reparieren",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "reifen-einlagern",
+      "title": "Reifen einlagern",
+      "observations": 6,
+      "status": "source_found"
+    },
+    {
+      "key": "raderwechsel-mit-einlagerung",
+      "title": "Räderwechsel mit Einlagerung",
+      "observations": 6,
+      "status": "source_found"
+    },
+    {
+      "key": "rader-reinigen",
+      "title": "Räder reinigen",
+      "observations": 4,
+      "status": "source_found"
+    },
+    {
+      "key": "reifenprofil-prufen",
+      "title": "Reifenprofil prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "reifendruck-prufen",
+      "title": "Reifendruck prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "rdks-sensor-erneuern",
+      "title": "RDKS-Sensor erneuern",
+      "observations": 3,
+      "status": "source_found"
+    },
+    {
+      "key": "rdks-anlernen",
+      "title": "RDKS anlernen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "rdks-fehler-diagnostizieren",
+      "title": "RDKS-Fehler diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "reifenventil-erneuern",
+      "title": "Reifenventil erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "radschrauben-erneuern",
+      "title": "Radschrauben erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "radschraubengewinde-instand-setzen",
+      "title": "Radschraubengewinde instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "reifen-auf-schaden-prufen",
+      "title": "Reifen auf Schäden prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "radzierblenden-montieren",
+      "title": "Radzierblenden montieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "spurplatten-montieren",
+      "title": "Spurplatten montieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "felgenschaden-prufen",
+      "title": "Felgenschäden prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "stossdampfer-prufen",
+      "title": "Stoßdämpfer prüfen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "stossdampfer-erneuern",
+      "title": "Stoßdämpfer erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "fahrwerksfedern-erneuern",
+      "title": "Fahrwerksfedern erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "domlager-erneuern",
+      "title": "Domlager erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "querlenker-erneuern",
+      "title": "Querlenker erneuern",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "querlenkerbuchsen-erneuern",
+      "title": "Querlenkerbuchsen erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "traggelenk-erneuern",
+      "title": "Traggelenk erneuern",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "koppelstange-erneuern",
+      "title": "Koppelstange erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "stabilisatorlager-erneuern",
+      "title": "Stabilisatorlager erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "spurstangenkopf-erneuern",
+      "title": "Spurstangenkopf erneuern",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "spurstange-erneuern",
+      "title": "Spurstange erneuern",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "lenkgetriebe-erneuern",
+      "title": "Lenkgetriebe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "servopumpe-erneuern",
+      "title": "Servopumpe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "servolenkungsol-wechseln",
+      "title": "Servolenkungsöl wechseln",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "radlager-erneuern",
+      "title": "Radlager erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "radnabe-erneuern",
+      "title": "Radnabe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "achsvermessung-ohne-einstellung",
+      "title": "Achsvermessung ohne Einstellung",
+      "observations": 9,
+      "status": "source_found"
+    },
+    {
+      "key": "achsvermessung-mit-einstellung",
+      "title": "Achsvermessung mit Einstellung",
+      "observations": 9,
+      "status": "source_found"
+    },
+    {
+      "key": "lenkwinkelsensor-kalibrieren",
+      "title": "Lenkwinkelsensor kalibrieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "fahrwerk-prufen",
+      "title": "Fahrwerk prüfen",
+      "observations": 3,
+      "status": "source_found"
+    },
+    {
+      "key": "luftfederung-diagnostizieren",
+      "title": "Luftfederung diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "luftfederbalg-erneuern",
+      "title": "Luftfederbalg erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "niveauregulierung-kalibrieren",
+      "title": "Niveauregulierung kalibrieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "zahnriemen-erneuern",
+      "title": "Zahnriemen erneuern",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "steuerkette-erneuern",
+      "title": "Steuerkette erneuern",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "wasserpumpe-erneuern",
+      "title": "Wasserpumpe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "keilrippenriemen-erneuern",
+      "title": "Keilrippenriemen erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "riemenspanner-erneuern",
+      "title": "Riemenspanner erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "umlenkrolle-erneuern",
+      "title": "Umlenkrolle erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ventildeckeldichtung-erneuern",
+      "title": "Ventildeckeldichtung erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "zylinderkopfdichtung-erneuern",
+      "title": "Zylinderkopfdichtung erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kurbelwellendichtring-erneuern",
+      "title": "Kurbelwellendichtring erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "nockenwellendichtring-erneuern",
+      "title": "Nockenwellendichtring erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "motorlager-erneuern",
+      "title": "Motorlager erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "turbolader-erneuern",
+      "title": "Turbolader erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ladedruckschlauch-erneuern",
+      "title": "Ladedruckschlauch erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ladeluftkuhler-erneuern",
+      "title": "Ladeluftkühler erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kompression-prufen",
+      "title": "Kompression prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "druckverlustprufung-durchfuhren",
+      "title": "Druckverlustprüfung durchführen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "motor-endoskopieren",
+      "title": "Motor endoskopieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ventilspiel-prufen-und-einstellen",
+      "title": "Ventilspiel prüfen und einstellen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "olpumpe-erneuern",
+      "title": "Ölpumpe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "oldruck-prufen",
+      "title": "Öldruck prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "motor-austauschen",
+      "title": "Motor austauschen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "motorsteuerzeiten-prufen",
+      "title": "Motorsteuerzeiten prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "injektor-prufen",
+      "title": "Injektor prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "injektor-erneuern",
+      "title": "Injektor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "injektor-codieren",
+      "title": "Injektor codieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "injektordichtung-erneuern",
+      "title": "Injektordichtung erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kraftstoffpumpe-erneuern",
+      "title": "Kraftstoffpumpe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hochdruckpumpe-erneuern",
+      "title": "Hochdruckpumpe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kraftstoffdruck-prufen",
+      "title": "Kraftstoffdruck prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kraftstoffleitung-erneuern",
+      "title": "Kraftstoffleitung erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kraftstofftank-erneuern",
+      "title": "Kraftstofftank erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "tankentluftung-prufen",
+      "title": "Tankentlüftung prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "drosselklappe-reinigen",
+      "title": "Drosselklappe reinigen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "drosselklappe-erneuern",
+      "title": "Drosselklappe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "drosselklappe-anlernen",
+      "title": "Drosselklappe anlernen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ansaugkrummer-erneuern",
+      "title": "Ansaugkrümmer erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ansaugkrummer-abdichten",
+      "title": "Ansaugkrümmer abdichten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "luftmassenmesser-erneuern",
+      "title": "Luftmassenmesser erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ansaugsystem-auf-undichtigkeit-prufen",
+      "title": "Ansaugsystem auf Undichtigkeit prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "einspritzanlage-reinigen",
+      "title": "Einspritzanlage reinigen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "endschalldampfer-erneuern",
+      "title": "Endschalldämpfer erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "mittelschalldampfer-erneuern",
+      "title": "Mittelschalldämpfer erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "abgasrohr-erneuern",
+      "title": "Abgasrohr erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "abgaskrummer-erneuern",
+      "title": "Abgaskrümmer erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "abgaskrummer-abdichten",
+      "title": "Abgaskrümmer abdichten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "flexrohr-erneuern",
+      "title": "Flexrohr erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "katalysator-erneuern",
+      "title": "Katalysator erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "lambdasonde-erneuern",
+      "title": "Lambdasonde erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "agr-ventil-erneuern",
+      "title": "AGR-Ventil erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "agr-kuhler-erneuern",
+      "title": "AGR-Kühler erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "dpf-regenerieren",
+      "title": "DPF regenerieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "dpf-ausbauen-und-reinigen-lassen",
+      "title": "DPF ausbauen und reinigen lassen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "dpf-erneuern",
+      "title": "DPF erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "differenzdrucksensor-erneuern",
+      "title": "Differenzdrucksensor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "abgastemperatursensor-erneuern",
+      "title": "Abgastemperatursensor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "nox-sensor-erneuern",
+      "title": "NOx-Sensor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "adblue-pumpe-erneuern",
+      "title": "AdBlue-Pumpe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "adblue-injektor-erneuern",
+      "title": "AdBlue-Injektor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "adblue-system-diagnostizieren",
+      "title": "AdBlue-System diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "abgasleck-prufen",
+      "title": "Abgasleck prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kupplung-erneuern",
+      "title": "Kupplung erneuern",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "zweimassenschwungrad-erneuern",
+      "title": "Zweimassenschwungrad erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kupplungsgeberzylinder-erneuern",
+      "title": "Kupplungsgeberzylinder erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kupplungsnehmerzylinder-erneuern",
+      "title": "Kupplungsnehmerzylinder erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kupplung-entluften",
+      "title": "Kupplung entlüften",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "schaltgetriebeol-wechseln",
+      "title": "Schaltgetriebeöl wechseln",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "automatikgetriebeol-und-filter-wechseln",
+      "title": "Automatikgetriebeöl und Filter wechseln",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "automatikgetriebe-spulen",
+      "title": "Automatikgetriebe spülen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "getriebeadaption-durchfuhren",
+      "title": "Getriebeadaption durchführen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "schaltgestange-einstellen",
+      "title": "Schaltgestänge einstellen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "getriebelager-erneuern",
+      "title": "Getriebelager erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "antriebswelle-erneuern",
+      "title": "Antriebswelle erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "antriebswellengelenk-erneuern",
+      "title": "Antriebswellengelenk erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "achsmanschette-erneuern",
+      "title": "Achsmanschette erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kardanwelle-erneuern",
+      "title": "Kardanwelle erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kardanwellenmittellager-erneuern",
+      "title": "Kardanwellenmittellager erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "differentialol-wechseln",
+      "title": "Differentialöl wechseln",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "verteilergetriebeol-wechseln",
+      "title": "Verteilergetriebeöl wechseln",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "getriebedichtring-erneuern",
+      "title": "Getriebedichtring erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "getriebe-austauschen",
+      "title": "Getriebe austauschen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "led-scheinwerferlampen-nachrusten",
+      "title": "LED-Scheinwerferlampen nachrüsten",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "starterbatterie-prufen",
+      "title": "Starterbatterie prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "starterbatterie-erneuern-und-anlernen",
+      "title": "Starterbatterie erneuern und anlernen",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "batterie-laden",
+      "title": "Batterie laden",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ruhestrom-prufen",
+      "title": "Ruhestrom prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "starter-erneuern",
+      "title": "Starter erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "lichtmaschine-erneuern",
+      "title": "Lichtmaschine erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ladesystem-prufen",
+      "title": "Ladesystem prüfen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "masseverbindung-instand-setzen",
+      "title": "Masseverbindung instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kabelbruch-suchen",
+      "title": "Kabelbruch suchen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kabelbaum-instand-setzen",
+      "title": "Kabelbaum instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "sicherung-erneuern",
+      "title": "Sicherung erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "relais-erneuern",
+      "title": "Relais erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "leuchtmittel-erneuern",
+      "title": "Leuchtmittel erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "scheinwerfer-erneuern",
+      "title": "Scheinwerfer erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ruckleuchte-erneuern",
+      "title": "Rückleuchte erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "scheinwerfer-einstellen",
+      "title": "Scheinwerfer einstellen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "lichtanlage-prufen",
+      "title": "Lichtanlage prüfen",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "scheibenwischermotor-erneuern",
+      "title": "Scheibenwischermotor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "scheibenwaschpumpe-erneuern",
+      "title": "Scheibenwaschpumpe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "zundspule-erneuern",
+      "title": "Zündspule erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "fehlerspeicher-auslesen",
+      "title": "Fehlerspeicher auslesen",
+      "observations": 6,
+      "status": "source_found"
+    },
+    {
+      "key": "fehlerspeicher-auslesen-und-loschen",
+      "title": "Fehlerspeicher auslesen und löschen",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "gezielte-fehlerdiagnose",
+      "title": "Gezielte Fehlerdiagnose",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "diagnose-mit-live-daten",
+      "title": "Diagnose mit Live-Daten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "oszilloskopdiagnose",
+      "title": "Oszilloskopdiagnose",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "steuergerat-erneuern-und-codieren",
+      "title": "Steuergerät erneuern und codieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "steuergeratesoftware-aktualisieren",
+      "title": "Steuergerätesoftware aktualisieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "grundeinstellung-durchfuhren",
+      "title": "Grundeinstellung durchführen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "frontkamera-kalibrieren",
+      "title": "Frontkamera kalibrieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "radarsensor-kalibrieren",
+      "title": "Radarsensor kalibrieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "parksensor-diagnostizieren",
+      "title": "Parksensor diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "parksensor-erneuern",
+      "title": "Parksensor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ruckfahrkamera-diagnostizieren",
+      "title": "Rückfahrkamera diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ruckfahrkamera-kalibrieren",
+      "title": "Rückfahrkamera kalibrieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "tempomat-diagnostizieren",
+      "title": "Tempomat diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "airbag-system-diagnostizieren",
+      "title": "Airbag-System diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "can-bus-prufen",
+      "title": "CAN-Bus prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "wegfahrsperre-diagnostizieren",
+      "title": "Wegfahrsperre diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "klimaservice-r134a",
+      "title": "Klimaservice R134a",
+      "observations": 9,
+      "status": "source_found"
+    },
+    {
+      "key": "klimaservice-r1234yf",
+      "title": "Klimaservice R1234yf",
+      "observations": 3,
+      "status": "source_found"
+    },
+    {
+      "key": "klimaanlage-desinfizieren",
+      "title": "Klimaanlage desinfizieren",
+      "observations": 3,
+      "status": "source_found"
+    },
+    {
+      "key": "klimaanlage-auf-dichtheit-prufen",
+      "title": "Klimaanlage auf Dichtheit prüfen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "klimakompressor-erneuern",
+      "title": "Klimakompressor erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "klimakondensator-erneuern",
+      "title": "Klimakondensator erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "klimatrockner-erneuern",
+      "title": "Klimatrockner erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "klimaexpansionsventil-erneuern",
+      "title": "Klimaexpansionsventil erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "klimaleitung-erneuern",
+      "title": "Klimaleitung erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "innenraumgeblase-erneuern",
+      "title": "Innenraumgebläse erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "geblaseregler-erneuern",
+      "title": "Gebläseregler erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "heizungswarmetauscher-erneuern",
+      "title": "Heizungswärmetauscher erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kuhlmittel-wechseln",
+      "title": "Kühlmittel wechseln",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kuhlsystem-auf-dichtheit-prufen",
+      "title": "Kühlsystem auf Dichtheit prüfen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "thermostat-erneuern",
+      "title": "Thermostat erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "motorkuhler-erneuern",
+      "title": "Motorkühler erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kuhlerschlauch-erneuern",
+      "title": "Kühlerschlauch erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kuhlerlufter-erneuern",
+      "title": "Kühlerlüfter erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ausgleichsbehalter-erneuern",
+      "title": "Ausgleichsbehälter erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "standheizung-warten",
+      "title": "Standheizung warten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "korrosion-prufen",
+      "title": "Korrosion prüfen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "steinschlag-reparieren",
+      "title": "Steinschlag reparieren",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "frontscheibe-erneuern",
+      "title": "Frontscheibe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "heckscheibe-erneuern",
+      "title": "Heckscheibe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "seitenscheibe-erneuern",
+      "title": "Seitenscheibe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "scheibendichtheit-prufen",
+      "title": "Scheibendichtheit prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "beule-ohne-lackierung-entfernen",
+      "title": "Beule ohne Lackierung entfernen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "roststelle-instand-setzen",
+      "title": "Roststelle instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "kotflugel-erneuern",
+      "title": "Kotflügel erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "stossfanger-erneuern",
+      "title": "Stoßfänger erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "tur-erneuern-und-einstellen",
+      "title": "Tür erneuern und einstellen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "motorhaube-erneuern-und-einstellen",
+      "title": "Motorhaube erneuern und einstellen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "karosserieschaden-beurteilen",
+      "title": "Karosserieschaden beurteilen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "karosserie-vermessen",
+      "title": "Karosserie vermessen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "unterbodenschutz-auftragen",
+      "title": "Unterbodenschutz auftragen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hohlraum-konservieren",
+      "title": "Hohlraum konservieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "bauteil-lackieren",
+      "title": "Bauteil lackieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "lackschaden-polieren",
+      "title": "Lackschaden polieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "scheinwerfer-aufbereiten",
+      "title": "Scheinwerfer aufbereiten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "fensterheber-erneuern",
+      "title": "Fensterheber erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "fensterheber-anlernen",
+      "title": "Fensterheber anlernen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "turschloss-erneuern",
+      "title": "Türschloss erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "zentralverriegelung-diagnostizieren",
+      "title": "Zentralverriegelung diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "turdichtung-erneuern",
+      "title": "Türdichtung erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "sitzverstellung-instand-setzen",
+      "title": "Sitzverstellung instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "sitzheizung-diagnostizieren",
+      "title": "Sitzheizung diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "sicherheitsgurt-erneuern",
+      "title": "Sicherheitsgurt erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "anhangekupplung-nachrusten",
+      "title": "Anhängekupplung nachrüsten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "anhangersteckdose-instand-setzen",
+      "title": "Anhängersteckdose instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "anhangerelektrik-prufen",
+      "title": "Anhängerelektrik prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "parksystem-nachrusten",
+      "title": "Parksystem nachrüsten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ruckfahrkamera-nachrusten",
+      "title": "Rückfahrkamera nachrüsten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "radio-nachrusten",
+      "title": "Radio nachrüsten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "navigationssystem-aktualisieren",
+      "title": "Navigationssystem aktualisieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "innenraumverkleidung-instand-setzen",
+      "title": "Innenraumverkleidung instand setzen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "schiebetur-einstellen",
+      "title": "Schiebetür einstellen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "schiebeturrollen-erneuern",
+      "title": "Schiebetürrollen erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hu-vorbereitung",
+      "title": "HU-Vorbereitung",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "hu-und-au-organisieren",
+      "title": "HU und AU organisieren",
+      "observations": 6,
+      "status": "source_found"
+    },
+    {
+      "key": "abgasuntersuchung",
+      "title": "Abgasuntersuchung",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "urlaubscheck",
+      "title": "Urlaubscheck",
+      "observations": 4,
+      "status": "source_found"
+    },
+    {
+      "key": "wintercheck",
+      "title": "Wintercheck",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "gebrauchtwagencheck",
+      "title": "Gebrauchtwagencheck",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "sicherheitscheck",
+      "title": "Sicherheitscheck",
+      "observations": 4,
+      "status": "source_found"
+    },
+    {
+      "key": "probefahrt-durchfuhren",
+      "title": "Probefahrt durchführen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "reparatur-nachprufen",
+      "title": "Reparatur nachprüfen",
+      "observations": 2,
+      "status": "source_found"
+    },
+    {
+      "key": "kostenvoranschlag-erstellen",
+      "title": "Kostenvoranschlag erstellen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "flottenfahrzeug-durchsehen",
+      "title": "Flottenfahrzeug durchsehen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "fahrzeugubergabe-dokumentieren",
+      "title": "Fahrzeugübergabe dokumentieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "fahrzeugaussenwasche",
+      "title": "Fahrzeugaußenwäsche",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "innenraum-reinigen",
+      "title": "Innenraum reinigen",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "polster-reinigen",
+      "title": "Polster reinigen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "lack-aufbereiten",
+      "title": "Lack aufbereiten",
+      "observations": 1,
+      "status": "source_found"
+    },
+    {
+      "key": "unterboden-reinigen",
+      "title": "Unterboden reinigen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "transporter-laderaum-prufen",
+      "title": "Transporter-Laderaum prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ladefehler-diagnostizieren",
+      "title": "Ladefehler diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ladeanschluss-prufen",
+      "title": "Ladeanschluss prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ladeanschluss-erneuern",
+      "title": "Ladeanschluss erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "ladekabel-prufen",
+      "title": "Ladekabel prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hochvoltbatterie-zustand-prufen",
+      "title": "Hochvoltbatterie-Zustand prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hochvolt-isolation-prufen",
+      "title": "Hochvolt-Isolation prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hochvoltsystem-freischalten",
+      "title": "Hochvoltsystem freischalten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hochvoltsystem-wieder-in-betrieb-nehmen",
+      "title": "Hochvoltsystem wieder in Betrieb nehmen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hochvolt-kuhlkreislauf-warten",
+      "title": "Hochvolt-Kühlkreislauf warten",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "traktionsbatterie-kuhlpumpe-erneuern",
+      "title": "Traktionsbatterie-Kühlpumpe erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "onboard-ladegerat-diagnostizieren",
+      "title": "Onboard-Ladegerät diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "onboard-ladegerat-erneuern",
+      "title": "Onboard-Ladegerät erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "dc-dc-wandler-diagnostizieren",
+      "title": "DC-DC-Wandler diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "dc-dc-wandler-erneuern",
+      "title": "DC-DC-Wandler erneuern",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "elektrischen-antrieb-diagnostizieren",
+      "title": "Elektrischen Antrieb diagnostizieren",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "hybrid-wartung-durchfuhren",
+      "title": "Hybrid-Wartung durchführen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "elektrofahrzeug-wartung-durchfuhren",
+      "title": "Elektrofahrzeug-Wartung durchführen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    },
+    {
+      "key": "12-volt-system-am-elektrofahrzeug-prufen",
+      "title": "12-Volt-System am Elektrofahrzeug prüfen",
+      "observations": 0,
+      "status": "no_qualified_public_offer_yet"
+    }
+  ]
+}

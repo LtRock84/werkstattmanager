@@ -29,6 +29,7 @@ final class Privacy {
 					'deadlines',
 					'mileage',
 					'audit',
+					'appointments',
 				],
 				true,
 			)
@@ -114,12 +115,36 @@ final class Privacy {
 			throw new Problem('confirmation', 'Fahrzeug-ID zur Bestätigung erforderlich.');
 		}
 		return $this->store->transaction(function () use ($id) {
+			$lock = $this->store->get('planning', PlanningLedger::ID);
+			$this->store->update('planning', $lock, []);
 			$v = $this->store->get('vehicles', $id);
 			if (!$v['archived']) {
 				throw new Problem('archive', 'Fahrzeug zuerst archivieren.', 409);
 			}
 			$this->store->update('vehicles', $v, []);
 			$deleted = [$id => true];
+			foreach ($this->all('appointments', ['vehicle_id' => $id]) as $a) {
+				if ($a['status'] !== 'cancelled') {
+					throw new Problem('active', 'Termine zuerst absagen.', 409);
+				}
+				foreach ($this->all('deliveries', ['appointment_id' => $a['id']]) as $d) {
+					if (
+						in_array($d['status'], ['pending', 'sending', 'uncertain', 'failed'], true)
+					) {
+						throw new Problem(
+							'active',
+							'Kalender und Kundenbenachrichtigungen zuerst abschließen.',
+							409,
+						);
+					}
+					$this->store->delete('deliveries', $d['id']);
+				}
+				$deleted[$a['id']] = true;
+				foreach ($this->all('service_usage', ['origin' => 'a:' . $a['id']]) as $usage) {
+					$this->store->delete('service_usage', $usage['id']);
+				}
+				$this->store->delete('appointments', $a['id']);
+			}
 			// Export/backup is an explicit operator step; attachment deletion is deferred and recoverable until cleanup.
 			foreach ($this->all('orders', ['vehicle_id' => $id]) as $o) {
 				if (in_array($o['status'], ['draft', 'open', 'active', 'paused', 'review'], true)) {
@@ -132,6 +157,9 @@ final class Privacy {
 					}
 				}
 				$deleted[$o['id']] = true;
+				foreach ($this->all('service_usage', ['origin' => 'o:' . $o['id']]) as $usage) {
+					$this->store->delete('service_usage', $usage['id']);
+				}
 				$this->store->delete('orders', $o['id']);
 			}
 			foreach ($this->all('attachments', ['vehicle_id' => $id]) as $a) {

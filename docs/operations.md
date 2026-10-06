@@ -1,6 +1,6 @@
 # Betrieb und Datenschutz
 
-Stand: 2026-10-02. Gilt für den internen Prüfkandidaten, nicht als Betriebsfreigabe.
+Stand: 2026-10-05. Gilt für den internen Prüfkandidaten, nicht als Betriebsfreigabe.
 
 ## Einrichtung und laufender Betrieb
 
@@ -45,7 +45,8 @@ keine automatische Deinstallationsroutine zum Löschen von Werkstattakten.
 
 Kundenkontakte, Mitarbeiterzuordnungen, Fahrername, Kilometerstände, Mängel, Fotos,
 Auftragsprotokolle und Zeitintervalle werden lokal in Nextcloud gespeichert. Keine
-Lieferantenanbindung, Telemetrie oder Weitergabe an externe Dienste. Browsercode enthält
+Lieferantenanbindung oder Telemetrie. Ab 0.2.0 werden bestätigte Kundentermine bei
+eingerichteter Integration an den eigenen Kalender und die angegebene Kundenadresse gesendet. Browsercode enthält
 keine Secrets. Die Entwicklung lädt Bibliotheken; das ist kein Datenfluss aus Fahrzeugakten.
 
 Fachobjekte werden standardmäßig archiviert. Vor Produktivbetrieb muss der Betreiber
@@ -67,3 +68,80 @@ Bei mehr als 100 offenen Fristen ist zusätzlich die vollständige Fristenliste 
 die Übersicht garantiert derzeit keine globale Dringlichkeitssortierung. Detailhistorien
 und Auswahlbibliotheken werden seitenweise vollständig nachgeladen. Große Bestände müssen
 im Pilot vermessen werden. Keine automatische Einsatzplanung oder Offline-Zeitbuchung.
+
+## Kalender und Kundennachrichten ab 0.2.0
+
+1. In Nextcloud ein dediziertes Integrationskonto ohne allgemeine Werkstattrechte anlegen.
+2. Mit diesem Konto einen Kalender „Werkstatt“ erstellen und mit der Meistergruppe nur
+   zum Lesen teilen. Meister bearbeiten Termine ausschließlich im Werkstattmanager.
+3. Die CalDAV-Adresse des einzelnen Kalenders kopieren, nicht die Adresse der gesamten
+   Kalenderliste. Sie endet beispielsweise auf `/remote.php/dav/calendars/integration/werkstatt/`.
+4. Ein App-Passwort des Integrationskontos erzeugen; unter Werkstatt-Einstellungen als
+   Administrator Benutzer, HTTPS-Adresse und Passwort speichern. Es wird verschlüsselt
+   mit Nextcloud `ICrypto` gespeichert und nicht an den Browser zurückgegeben.
+5. Öffentliche HTTPS-Adresse und `overwrite.cli.url` prüfen, insbesondere bei Reverseproxy.
+   Der Hintergrundjob muss dieselbe eigene Instanz erreichen. Ein öffentlich gültiges oder
+   systemseitig vertrauenswürdiges Zertifikat verwenden; TLS-Prüfung bleibt eingeschaltet.
+6. Nextcloud-System-Cron und SMTP konfigurieren. Ausschließlich mit eigener Testadresse
+   Bestätigung, Terminänderung, Absage und ICS-Datei prüfen; erst danach Kundennachrichten nutzen.
+
+Cron führt den Zustelljob frühestens nach 60 Sekunden aus. Kalenderressourcen enthalten
+Ankunft, gegebenenfalls Abholung und Arbeitsplanung. Ohne feste Arbeitsuhrzeit entsteht
+für den Arbeitstag ein ausdrücklich gekennzeichnetes ganztägiges Planungselement.
+Interne Ressourcen enthalten keine Teilnehmer und lösen keine zweite Einladung aus.
+
+Bei Zustellfehlern den Bereich im Terminbuch prüfen. Kalenderfehler werden mit Backoff
+wiederholt. SMTP-Ausgänge können unklar sein; deshalb vor „Erneut zustellen“ kontrollieren,
+ob die erste Nachricht bereits angekommen ist. Ein erfolgreiches Vormerken ist noch kein
+Versandnachweis. Kunden erhalten eine Kalenderdatei; deren Import/Absagenbehandlung hängt
+von ihrem Kalenderprogramm ab. Ein Kalendereintrag ist keine automatische Zeitbuchung.
+
+Das Integrationskonto kontrolliert seinen eigenen Kalender. Lesefreigaben bleiben eine
+Nextcloud-Einstellung, die die App nicht automatisch erzeugt. Konto/Passwort/Widerruf
+administrativ pflegen. Fehlende Kalenderkonfiguration verhindert nicht das Terminbuch;
+ausstehende Kalenderaufträge erscheinen als Fehler, bis sie eingerichtet ist.
+
+Termine und Zustellkopien enthalten Fahrzeugkennung, Titel, Kundenadresse und Zeiten.
+Interne Notizen gehören nicht in Kundennachrichten. Kundendaten-Anonymisierung ändert
+historische Termin-/Versandkopien und Freitexte nicht automatisch; diese beim Löschvorgang
+gezielt prüfen. Fahrzeuglöschung setzt abgesagte Termine und abgeschlossene/verworfene
+Zustellungen voraus. CSV-Export enthält auch Termine. Backups umfassen neue Tabellen
+und verschlüsselte Integrationszugänge samt Nextcloud-Konfiguration.
+
+Vor Upgrade sichern und Migration auf einer separaten Kopie testen. Zurück auf 0.1.7
+nur durch Wiederherstellung des zusammengehörigen Sicherungsstands; kein Schema-Downgrade.
+
+### Vergleichszielpreise und Katalogupdates
+
+Im Preisrechner die passende Vergleichsgruppe öffnen, Umfang/Einheit/Material und
+Fahrzeugklasse prüfen und bestätigen. Der Zielpreis wird mit Quellen-Umsatzsteuer
+nach netto umgerechnet und neben der eigenen Kalkulation angezeigt. Öffentliche
+Einstiegspreise bleiben „ab“-Preise. Die zweite Aktion zum Katalogspeichern übernimmt
+bewusst den Nettopreis je bestätigter Einheit; die Leistungsmengen teilen diesen
+Zielpreis nicht nochmals. Eigene Kosten oder bereits angelegte Aufträge ändern sich nicht.
+
+Updates aktualisieren nur unveränderte Seed-Felder. Eigene Preise, Favoriten und Zeiten
+bleiben bestehen. Bereits bearbeitete frühere Einträge ohne Baseline werden zunächst
+vollständig erhalten. Fehlende recherchierte Zeiten werden nicht nachträglich erfunden.
+
+## Annahme und Tagesgeschäft (0.2.1)
+
+Im Terminformular „Fahrzeugannahme, Rückfrage und Abholung“ öffnen. Nur durchgeführte Schritte abhaken, bei offenen Kundenfragen den entsprechenden Terminstand wählen. Mit „Terminänderungen speichern“ werden interne Angaben übernommen; Statusänderungen allein bewahren sie. Der Annahmekilometerstand verändert nicht automatisch den bestätigten Fahrzeugstand.
+
+„Passende freie Tage finden“ ist bei neuen eintägigen Terminen verfügbar, sobald eine Dauer feststeht. Vorschläge verwenden den aktuellen Tagesstand, buchen nichts und berücksichtigen keine individuellen Mechaniker oder Bühnen. Mehrtägige Arbeiten bitte wie bisher aufteilen. „Folgetermin vorbereiten“ speichert nichts; neue Zusagen und Empfänger prüfen. Terminfilter betreffen den gewählten Zeitraum, nicht die errechnete Auslastung.
+
+Upgrade von 0.2.0 über das vollständige Paket und reguläres `occ upgrade`: nullable Checklistenspalte wird durch eine neue Migration ergänzt. Keine älteren Migrationen zurücksetzen oder App-Tabellen manuell verändern. Interne Checklisten sind in Datenschutzexport/-löschung enthalten, nicht in Kunden-ICS oder Tabletaufträgen.
+
+## Zusätzliche Benutzer und Terminassistenz ab0.2.2
+
+Als Nextcloud-Administrator Werkstattmanager → Einstellungen → „Zugänge für Meister und Terminannahme“ öffnen. Rolle wählen, vorhandenen Benutzer suchen, hinzufügen, **Zugänge speichern** drücken. Mehrere Personen möglich; „Entfernen“ wird ebenfalls erst durch Speichern wirksam. Vollständiger Meisterzugang gibt dieselben Fachrechte wie dem Meister. Für Assistenz **Nur Terminannahme** wählen; diese öffnet dieselbe Appadresse und landet im Terminbuch. Assistenz benutzt vorhandene Kunden/Fahrzeuge; neue Stammdaten legt ein Meister an. Optional vorhandene Nextcloud-Gruppe als Terminannahmegruppe eintragen. Nextcloud-Administratoren und Mitglieder der Meistergruppe bleiben Meister, auch bei zusätzlicher eingeschränkter Zuordnung. Entzug erfolgt sofort bei Folgeanfragen; zum Wechsel der sichtbaren Ansicht Seite neu laden.
+
+Ranking wird ohne Datenaustausch automatisch aktualisiert. Bei mehr als100Altdatensätzen je Vorgangsart übernimmt Cron den verbleibenden Bestand; vor Abschluss können alte Vorgänge noch fehlen. Entwürfe zählen nicht. Kein Reset oder manuelles Hochzählen nötig. Beim Upgrade Datenbank, Konfiguration, Appcode und AppData gemeinsam sichern; neues Schema benötigt Wiederherstellung des vollständigen Backups für ein Downgrade. Produktive Einführung weiterhin erst nach Zielinstallations-/Geräte-/Betriebsabnahme.
+
+## Firmenprofil / Werkstattadresse
+
+Unter Stammdaten Firmenname/Logo pflegen; beides ist im öffentlichen Fahrerformular sichtbar. Alte Logos nach24h durch Maintenancebereinigung, aktuellesLogo im AppData-Sicherungsbestand enthalten.
+
+Administrator richtet Werkstattkonto zuerst in Nextcloud Mail ein und wählt es unter Einstellungen → Werkstatt-E-Mailadresse ausdrücklich aus. Erlaubt damit gemeinsame Nutzung für Kundentermine und Cron-Erinnerungen, unabhängig vom angemeldeten Bearbeiter. Zugangsdaten bleiben inMail; ein aktiver, dauerhaft berechtigter Kontoinhaber erforderlich. DessenLöschung sperrt Versand biserneuter Auswahl. Keine heimlicheSMTP-Alternative. „An Mail übergeben“ ist keinZustellbeleg: Postausgang/Senden/Sentstatus imMailclient prüfen. Mailkonto muss IMAP undSMTP zuverlässig erreichen undgesendeteNachrichten verwalten können. UnklarerVersandausgang nur nachPrüfung wiederholen. Einstellungen/Sicherungen enthaltenKontobezug/Adresse, keineMailpasswörter; Mailclient eigenerDatenspeicher/Sicherung/Löschregeln.
+
+Geprüfte öffentliche APIs: [Mailprovider NC35](https://docs.nextcloud.com/server/stable/developer_manual/digging_deeper/groupware/mail_provider.html), [Mail5.12.3 Provider](https://github.com/nextcloud/mail/tree/v5.12.3/lib/Provider). Prüfung06.10.2026 gegen installierteNC35.0.1-Interfaces undveröffentlichtenMailcode. Mail ist optionaleIntegration, keineApppflicht.

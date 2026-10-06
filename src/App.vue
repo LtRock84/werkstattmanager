@@ -2,7 +2,8 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import { loadState } from '@nextcloud/initial-state'
-import { all, list, get, put, post, url, message } from './api'
+import { isAxiosError } from '@nextcloud/axios'
+import { all, list, get, post, url, message } from './api'
 import { t, vehicleLabel, stamp, date, statusText, orderNumber, deadlineState } from './format'
 import type {
   Role,
@@ -20,7 +21,15 @@ import type {
   Page,
   FailedNotification,
 } from './types'
+import CompanyHeader from './components/CompanyHeader.vue'
+import CompanySettings from './components/CompanySettings.vue'
 import DriverForm from './components/DriverForm.vue'
+import AccessSettings from './components/AccessSettings.vue'
+import AppointmentBook from './components/AppointmentBook.vue'
+import ServiceCatalogue from './components/ServiceCatalogue.vue'
+import PriceCalculator from './components/PriceCalculator.vue'
+import MailSettings from './components/MailSettings.vue'
+import CalendarSettings from './components/CalendarSettings.vue'
 import OrderComposer from './components/OrderComposer.vue'
 import OrderDetail from './components/OrderDetail.vue'
 import VehicleDetail from './components/VehicleDetail.vue'
@@ -28,6 +37,7 @@ import DefectDetail from './components/DefectDetail.vue'
 import EntityEditor from './components/EntityEditor.vue'
 const role = loadState<Role>('werkstattmanager', 'mode', 'tablet'),
   master = role === 'master'
+const pricingVisited = ref(false)
 const page = ref(master ? 'dashboard' : 'orders'),
   search = ref(''),
   status = ref(master ? '' : 'open'),
@@ -78,6 +88,9 @@ const navigation = computed(() =>
   master
     ? [
         ['dashboard', t('Übersicht')],
+        ['appointments', t('Terminbuch')],
+        ['services', t('Leistungskatalog')],
+        ['pricing', t('Preise kalkulieren')],
         ['orders', t('Aufträge')],
         ['vehicles', t('Fahrzeuge')],
         ['deadlines', t('Termine & Fristen')],
@@ -94,6 +107,9 @@ const heading = computed(
 const pageHelp = computed(
   () =>
     ({
+      appointments: [t('Termine einfach annehmen'), t('Leistungen auswählen, Arbeitszeit prüfen und einen freien Tag wählen. Aus einem bestätigten Termin kann ein Arbeitsauftrag entstehen.')],
+      services: [t('Alle Werkstattleistungen an einem Ort'), t('Leistungen, eigene Zeiten, Pakete und Vergleichspreise für Terminannahme und Auftragserstellung pflegen.')],
+      pricing: [t('Preise nachvollziehbar kalkulieren'), t('Jahreskosten eintragen, abrechenbare Stunden festlegen und Leistungen auswählen. Preise erst nach eigener Prüfung in den Katalog übernehmen.')],
       dashboard: [
         t('Was steht heute an?'),
         t(
@@ -161,7 +177,6 @@ const due = computed(() =>
   deadlines.value.filter((d) => deadlineState(d, vehicleById(d.vehicle_id)) !== 'later'),
 )
 function selectVehicleOrder(order: Order) {
-  selectedVehicle.value = null
   selectedOrder.value = order
 }
 function defectSaved() {
@@ -197,7 +212,7 @@ async function visiblePage<K extends Table>(
   return { items, more, offset: 0 }
 }
 async function load(append = false) {
-  if (role === 'driver') return
+  if (role === 'driver' || role === 'reception') return
   if (refreshing.value) {
     queuedRefresh = true
     return
@@ -299,7 +314,9 @@ async function load(append = false) {
       for (const v of result.items) vehicleCache.value[v.id] = v
     }
     lastUpdated.value = Date.now() / 1000
+    online.value = true
   } catch (e) {
+    if (isAxiosError(e)) online.value = !!e.response
     error.value = message(e)
   } finally {
     refreshing.value = false
@@ -344,7 +361,7 @@ async function moreNotifications() {
   }
 }
 async function initial() {
-  if (role === 'driver') return
+  if (role === 'driver' || role === 'reception') return
   busy.value = true
   try {
     ;[employees.value, vehicles.value] = await Promise.all([
@@ -353,14 +370,15 @@ async function initial() {
     ])
     await load()
   } catch (e) {
+    if (isAxiosError(e)) online.value = !!e.response
     error.value = message(e)
   } finally {
     busy.value = false
   }
 }
 function connectivity() {
-  online.value = navigator.onLine
-  if (online.value) void load()
+  // Browser network heuristics cannot determine whether this Nextcloud is reachable.
+  void load()
 }
 onMounted(() => {
   void initial()
@@ -368,7 +386,6 @@ onMounted(() => {
     if (
       page.value !== 'settings' &&
       !document.hidden &&
-      online.value &&
       !selectedOrder.value &&
       !selectedVehicle.value &&
       !selectedDefect.value &&
@@ -387,6 +404,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('offline', connectivity)
 })
 watch([page, library, status, employeeFilter], () => {
+  if (page.value === 'pricing') pricingVisited.value = true
   ++revision
   search.value = ''
   more.value = false
@@ -403,14 +421,12 @@ watch(search, () => {
   searchTimer = setTimeout(() => void load(), 250)
 })
 function create(v?: Vehicle, d?: Defect) {
-  selectedVehicle.value = null
   selectedDefect.value = null
   composeVehicle.value = v
   composeDefect.value = d
   composer.value = true
 }
 function edit(kind: Editable, row?: Row, vehicleId?: string) {
-  selectedVehicle.value = null
   editor.value = { kind, row, vehicleId }
 }
 async function refresh() {
@@ -430,7 +446,6 @@ async function openOrder(id: string) {
     let o = orders.value.find((x) => x.id === id) || review.value.find((x) => x.id === id)
     if (!o) o = (await list('orders', { id })).items[0]
     if (o) {
-      selectedVehicle.value = null
       selectedOrder.value = o
       await ensureVehicle(o.vehicle_id)
     }
@@ -438,6 +453,7 @@ async function openOrder(id: string) {
     error.value = message(e)
   }
 }
+async function openAppointmentOrder(o: Order) { await ensureVehicle(o.vehicle_id); selectedOrder.value = o }
 async function ensureVehicle(id: string) {
   if (!vehicleById(id)) {
     const v = (await list('vehicles', { id })).items[0]
@@ -447,7 +463,6 @@ async function ensureVehicle(id: string) {
 async function openDefect(d: Defect) {
   try {
     await ensureVehicle(d.vehicle_id)
-    selectedVehicle.value = null
     selectedDefect.value = d
   } catch (e) {
     error.value = message(e)
@@ -463,17 +478,6 @@ async function openVehicle(id: string) {
 }
 function rowTitle(r: Row): string {
   return 'title' in r ? r.title : 'name' in r ? r.name : 'plate' in r ? vehicleLabel(r) : r.id
-}
-async function saveSettings() {
-  busy.value = true
-  try {
-    await put('/api/v1/settings', settings.value)
-    notice.value = t('Gruppen gespeichert.')
-  } catch (e) {
-    error.value = message(e)
-  } finally {
-    busy.value = false
-  }
 }
 async function exportCsv(kind: Table) {
   busy.value = true
@@ -525,6 +529,7 @@ async function erase() {
 </script>
 <template>
   <DriverForm v-if="role === 'driver'" />
+  <main v-else-if="role === 'reception'" class="wm-app wm-reception"><CompanyHeader /><h1>{{ t('Terminannahme') }}</h1><p class="wm-guide">{{ t('Kundentermine vereinbaren, ändern oder absagen. Arbeitsaufträge und Werkstattverwaltung übernimmt der Meister.') }}</p><AppointmentBook :reception="true" /></main>
   <div v-else class="wm-shell" :class="{ 'wm-tablet': !master }">
     <aside class="wm-sidebar">
       <div class="wm-brand">
@@ -558,6 +563,7 @@ async function erase() {
     <main class="wm-main">
       <header class="wm-top">
         <div>
+<CompanyHeader />
           <span class="wm-eyebrow">{{
             master ? t('MEISTERBEREICH') : t('GEMEINSAM ARBEITEN')
           }}</span>
@@ -579,6 +585,9 @@ async function erase() {
       </p>
       <p v-if="notice" role="status" class="wm-success">{{ notice }}</p>
       <p v-if="busy" role="status">{{ t('Wird geladen …') }}</p>
+      <AppointmentBook v-if="master && page === 'appointments'" @order="openAppointmentOrder" />
+      <ServiceCatalogue v-if="master && page === 'services'" />
+      <PriceCalculator v-if="master && (page === 'pricing' || pricingVisited)" v-show="page === 'pricing'" />
       <template v-if="page === 'dashboard'">
         <p v-if="failedNotifications.length" role="status" class="wm-error">
           {{ t('Benachrichtigungen konnten nicht zugestellt werden.') }}
@@ -792,6 +801,7 @@ async function erase() {
         </section>
       </template>
       <template v-if="page === 'library'">
+        <CompanySettings />
         <div class="wm-toolbar">
           <label>{{ t('Bereich')
             }}<select v-model="library">
@@ -816,6 +826,8 @@ async function erase() {
         </section>
       </template>
       <template v-if="page === 'settings'">
+        <MailSettings :admin="settings.admin" />
+        <CalendarSettings :admin="settings.admin" />
         <section class="wm-card">
           <h2>{{ t('Fehlgeschlagene Benachrichtigungen') }}</h2>
           <p>
@@ -844,21 +856,7 @@ async function erase() {
           }}
 </NcButton>
         </section>
-        <section class="wm-card wm-form">
-          <h2>{{ t('Zugangsgruppen') }}</h2>
-          <p>
-            {{
-              t(
-                'Die Gruppen müssen in Nextcloud vorhanden sein. Tablet-Konten erhalten keine Meisterrechte.',
-              )
-            }}
-          </p>
-          <label>{{ t('Meistergruppe')
-            }}<input v-model="settings.master_group" :disabled="!settings.admin" /></label><label>{{ t('Tabletgruppe')
-            }}<input v-model="settings.tablet_group" :disabled="!settings.admin" /></label><NcButton v-if="settings.admin" variant="primary" :disabled="busy" @click="saveSettings">
-            {{ t('Gruppen speichern') }}
-          </NcButton>
-        </section>
+        <AccessSettings :admin="settings.admin" />
         <section class="wm-card">
           <h2>{{ t('Daten exportieren') }}</h2>
           <div class="wm-chips">
@@ -917,6 +915,7 @@ async function erase() {
     </main>
     <OrderComposer
       v-if="composer"
+      :close-label="selectedVehicle ? t('Zurück zur Fahrzeugakte') : undefined"
       :vehicle="composeVehicle"
       :defect-id="composeDefect?.id"
       :initial-description="composeDefect?.description"
@@ -926,6 +925,7 @@ async function erase() {
     <OrderDetail
       v-if="selectedOrder"
       :key="selectedOrder.id"
+      :close-label="selectedVehicle ? t('Zurück zur Fahrzeugakte') : undefined"
       :order="selectedOrder"
       :vehicle="vehicleById(selectedOrder.vehicle_id)"
       :master="master"
@@ -936,6 +936,7 @@ async function erase() {
     <VehicleDetail
       v-if="selectedVehicle"
       :vehicle="selectedVehicle"
+      :active="!selectedOrder && !selectedDefect && !editor && !composer"
       @close="selectedVehicle = null"
       @edit="edit('vehicles', $event)"
       @create="create(selectedVehicle ?? undefined)"
@@ -946,6 +947,7 @@ async function erase() {
     />
     <DefectDetail
       v-if="selectedDefect"
+      :close-label="selectedVehicle ? t('Zurück zur Fahrzeugakte') : undefined"
       :defect="selectedDefect"
       :vehicle="vehicleById(selectedDefect.vehicle_id)"
       @close="selectedDefect = null"
@@ -955,6 +957,7 @@ async function erase() {
     <EntityEditor
       v-if="editor"
       :key="editor.kind + (editor.row?.id ?? '')"
+      :close-label="selectedVehicle ? t('Zurück zur Fahrzeugakte') : undefined"
       :kind="editor.kind"
       :row="editor.row"
       :vehicle-id="editor.vehicleId"

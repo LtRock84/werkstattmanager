@@ -67,7 +67,7 @@ Keine fachliche Löschung bei Deaktivierung oder Entfernung der App.
 
 ## Grenzen
 Keine Abrechnung, Lagerbuchhaltung, Lieferanten-API, Telematik, automatische Personalplanung,
-Kalender-Synchronisation oder Offline-Zeitbuchung. Zunächst internes Paket/Pilotbetrieb.
+zweiseitige Kalender-Synchronisation oder Offline-Zeitbuchung. Einseitiges CalDAV ist ab 0.2.0 vorgesehen. Zunächst internes Paket/Pilotbetrieb.
 Produktionsfreigabe erst nach Installation und vollständiger Testmatrix auf
 der vorgesehenen Betriebsumgebung.
 
@@ -92,3 +92,155 @@ Buchungen nicht als Erfolg anzeigen, Eingaben beim Fehler erhalten. Fahrer könn
 versehentlich ausgewählte Fotos vor dem Senden entfernen. Keine Datenmodell- oder
 Berechtigungsänderung durch diese Überarbeitung. Visuelle Abnahme und Tests mit
 ungeübten Anwendern bleiben Voraussetzung für eine belegte Usabilitybewertung.
+
+## Fahrzeugakte: Historie und Navigation (2026-10-05)
+
+Die Bereichsleiste steht oberhalb des scrollenden Inhalts und bleibt sichtbar.
+Fahrzeugdaten, Historie, Aufträge, Mängel, Termine, Dokumente und Fahrer-QR sind
+direkt erreichbar. Beim Öffnen eines Details oder Bearbeitungsdialogs bleibt die
+Fahrzeugakte erhalten. „Zurück zur Fahrzeugakte“ kehrt zum gewählten Bereich zurück
+und stellt den Tastaturfokus wieder her; die Daten werden neu geladen.
+
+Das Änderungsprotokoll zeigt übersetzbare Ereignisnamen und fachliche Angaben
+statt interner Ereigniscodes und JSON: Auftrag, Mitarbeiter, Teilemenge/Nummer,
+Dringlichkeit, Pausenhinweis, Arbeitsnotiz, erledigte Arbeiten und Zeitkorrekturen.
+Die Anzeige nennt Nextcloud-Konto und ausgewählten Mitarbeiter getrennt.
+Mitarbeiternamen werden beim Lesen aufgelöst, damit Anonymisierung auch für die
+Historie gilt. Fehlende Referenzen werden verständlich gekennzeichnet.
+
+Bestandsereignisse erhalten die neue Darstellung ohne Migration. Historische
+Notizen oder Pausenflags, die bisher nicht gespeichert wurden, lassen sich nicht
+nachträglich rekonstruieren. Referenzangaben wie Auftragstitel und Teiletexte
+zeigen den derzeit gespeicherten Stand; sie sind keine historischen Schnappschüsse.
+
+Die Verbindungsanzeige bezieht sich auf die Erreichbarkeit dieser Nextcloud.
+Ein Offline-Hinweis des Browsers darf einen erreichbaren lokalen Server nicht
+sperren. Ohne Serverbestätigung wird keine Buchung als erfolgreich angezeigt;
+nach Verbindungsfehlern ist eine erneute Prüfung möglich. Offene Eingaben bleiben
+erhalten, automatische Hintergrundaktualisierungen setzen sie nicht zurück.
+
+## Erweiterung 0.2.0 – verbindlicher Umfang
+
+Ein gemeinsamer Katalog mit mindestens 250 unterschiedlichen Leistungen (geliefert: 295)
+für PKW und leichte Transporter. Varianten zählen nicht als eigenständige Leistungen.
+Suchbegriffe/Synonyme, Kategorien, Favoriten, kurze Erklärungen, bearbeitbare Schritte,
+Einheiten und Fahrzeugklassen. Eigene Leistungen und Pakete bleiben möglich. Mengen und
+Zeiten werden summiert, enthaltene Arbeiten warnen vor Doppelansätzen. Termine und
+Aufträge speichern Arbeitskopien ohne interne Preise. Archivierte Katalogeinträge
+verändern vorhandene Vorgänge nicht. Ein Fahrzeugklassenwechsel verlangt neue Zeiten.
+
+Kostenlose öffentliche Angebote tatsächlicher Betriebe werden mit Quelle, Ort, Datum,
+Preisart, Steuer, Material, Umfang, Einheit und Fahrzeugklasse geliefert. Gleiche zentrale
+Preislisten zählen als ein Preisgeber. Berlin/Brandenburg zuerst, bei weniger als fünf
+vergleichbaren Anbietern ausdrücklich Ostdeutschland. Ab fünf Anbietern Durchschnitt,
+Median und Spanne; drei/vier eingeschränkter Vergleich; ein/zwei nur Einzelangaben.
+Ab- und Festpreise, Klassen, Materialumfänge und Betriebstypen bleiben getrennt.
+Historische/abgelaufene, widersprüchliche oder steuerlich unklare Preise gehen nicht in
+Durchschnitte ein. Keine repräsentative Rechnungsstatistik. Fehlende Preise oder Zeiten
+bleiben als Lücke sichtbar. Eigene Änderungen bleiben bei erneuter Initialisierung erhalten.
+
+Terminbuch mit Tag/Woche/Monat, Fahrzeug/Kunde, mehreren Leistungen und Freitext.
+Ankunft, Arbeitsbeginn und Abholung getrennt; UTC intern, Europe/Berlin in der Anzeige.
+Bestätigung benötigt eine vollständige Arbeitsdauer. Wochenbudgets, Schließtage,
+einzelne Ausnahmen und optionale Fahrzeuggrenze. Mehrtagesstunden müssen die Gesamtdauer
+exakt ergeben und innerhalb Ankunft/Abholung liegen. Kunden, Flotte und direkte geplante
+Aufträge zählen gemeinsam; verknüpfte Termine/Aufträge nur einmal. Konkurrenz wird
+transaktional geprüft, Überbuchung nur mit dokumentiertem Grund. Entwürfe belegen keine
+Kapazität und senden keine Nachricht. Markierungen: eingetroffen, Teile fehlen,
+Kundenrückfrage, abholbereit, abgeholt, nicht erschienen. Druckansicht und Soll/Ist
+bleiben erreichbar. Ungeplante direkte Aufträge haben weiterhin optionale Zeiten.
+
+Aus bestätigtem Termin genau ein verknüpfter Auftragsentwurf mit Arbeitsschritten,
+Sollzeit und Planung. Tabletfreigabe ausdrücklich; spätere Änderungen überschreiben
+keinen Auftrag. Mechaniker erhalten Arbeitsinformationen, keine Kosten oder Marktpreise.
+
+Automatische einseitige Übertragung bestätigter Termine in einen eigenen Kalender
+über öffentliches HTTPS-CalDAV. Dediziertes Integrationskonto und Lesefreigabe für Meister
+werden einmalig administrativ eingerichtet. Passwort verschlüsselt, stabile Ereignis-IDs,
+getrennte Annahme/Abholung/Arbeitstage und wiederholbare PUT/DELETE-Aufträge.
+Kundennachrichten bei Bestätigung, Änderung und Absage über Nextcloud-Mail mit ICS;
+optionale Erinnerung 24 Stunden vorher, keine sofortige nachträgliche Erinnerung.
+Keine internen Notizen, Mitarbeiterzeiten oder Kalkulationsdaten. Kein ATTENDEE im
+internen Kalender, deshalb keine zweite Kalendereinladung. Versandfehler sind sichtbar;
+bei unklarem SMTP-Ausgang nur bewusste Wiederholung. ICS-Dateien müssen je nach
+Kunden-Kalenderprogramm importiert werden; automatische Annahme ist nicht zugesagt.
+
+Preisrechner: jährliche Arbeitgeberkosten, Unternehmerlohn, Miete, Energie, Versicherungen,
+Werkzeuge, Software und weitere Kosten / tatsächlich abrechenbare Jahresstunden.
+Kosten- und Verkaufssatz netto, ausdrücklicher Gewinnaufschlag auf Kosten, Material mit
+eigenem Aufschlag, Fremdleistungen, Netto/Umsatzsteuer/Brutto. Regionale Angaben ändern
+keinen eigenen Preis automatisch; kalkulierte Nettopreise werden ausdrücklich übernommen.
+Keine Doppelzählung direkten Materials unter allgemeinen Betriebskosten.
+
+Rechercheziele 30 Preisgeber/300 Angaben sind Datenumfangsziele, keine Garantie für
+250 belastbare Vergleichspreise. Maßgeblich sind die Abdeckung je Leistung und
+[Preisquellen](service-prices.md). Aktueller Implementierungs-/Prüfstand siehe
+[Prüfbericht](test-report.md). Einseitige Integration ersetzt weder Einsatzplanung
+noch Rechnungsstellung. GitHub bleibt privat; Veröffentlichung und produktive Installation
+sind nicht Teil dieser Erweiterung. Physischer iPad-Test bleibt offen.
+
+### Präzisierungen der Fortsetzung (2026-10-05)
+
+- Automatisch erzeugte Titel folgen der Vorlagen-/Leistungsauswahl; manuell geänderte
+  Titel bleiben auch bei Vorlagenwechsel erhalten. Zusätzliche Leistungen addieren
+  ihre mengenabhängige Zeit zur Vorlagenzeit; unbekannte Teilzeiten lassen die Summe offen.
+  Die Oberfläche warnt davor, bereits enthaltene Arbeit doppelt auszuwählen.
+- Regionale Vergleichsgruppen mit mindestens fünf unabhängigen Anbietern können nach
+  Bestätigung von Umfang, Einheit, Material und Fahrzeugklasse als Zielpreis übernommen
+  werden. Netto wird nur bei einheitlichem, bekanntem Quellen-Steuersatz berechnet.
+  Eigene Kosten bleiben unverändert; Katalogspeicherung ist eine zweite ausdrückliche Aktion.
+- Katalogupdates vergleichen Felder mit der zuletzt gespeicherten Seed-Baseline. Eigene
+  Preise, Favoriten, Archivierung, Sortierung und eigene Zeitangaben bleiben erhalten.
+  Bereits bearbeitete Alteinträge ohne Baseline werden beim ersten Übergang konservativ erhalten.
+- Entfällt eine zugesagte Abholung, erhält der Kunde zusätzlich eine ICS-Absage nur der
+  Abhol-UID. Versandfehler zeigen Termin, Fahrzeug und Ankunft ohne interne Notizen.
+
+## UX-Verbesserung nach Ablaufpruefung (2026-10-05)
+
+Kalkulation bleibt beim internen Bereichswechsel erhalten; keine automatische Profil-/Preis-Speicherung. Tatsaechtliche ungespeicherte Formulareingaben sind beim Schliessen und Neuladen geschuetzt. Unveraenderte Dialoge benoetigen keine Verwerf-Rueckfrage. Netzwerkaktionen sperren das Schliessen.
+
+Monatsnavigation waehlt den ersten Zielmonatstag und ueberspringt keine kurzen Monate. Terminkarten nennen Ankunft, an diesem Tag geplante Minuten, Gesamtdauer und verknuepften Auftragsstatus. Ankunft/Abholbereitschaft/Abholung sind versionierte explizite Aktionen. Abnahme setzt keine tatsaechliche Abholung automatisch.
+
+Absagen benoetigen eine eigene Bestaetigung und verwenden den gespeicherten Termin; ungespeicherte Nebenangaben werden dabei nicht uebernommen. Neue Kunden sind im folgenden Fahrzeugdialog als Kundenfahrzeug vorausgewaehlt. Eigene Arbeiten koennen ohne globale Katalogaenderung direkt ergaenzt werden. Preisantworten und Uebernahmen gelten nur fuer den unveraenderten Eingabestand.
+
+## Ausbau 0.2.1: Annahme und Tagesgeschäft
+
+- Interne Checkliste je Termin: Schlüsselannahme, Unterlagen, vorhandene Schäden, Arbeitsumfang abgesprochen, Abschlusskontrolle, Kundeninformation und Schlüsselrückgabe. Optional erfasster Kilometerstand sowie Zustands- und Rückrufnotiz. Haken bedeuten „durchgeführt“, nicht „nicht vorhanden“. Keine Unterschrift, technische Fahrzeugfreigabe oder automatische Kilometerbestätigung. Meister speichern ausdrücklich; bestehende Rollen, Versionsprüfung und Änderungsprotokoll bleiben erhalten. Interne Angaben gelangen weder ans Tablet noch in Kundenmail/CalDAV. Datenschutzexport enthält sie; kontrollierte Fahrzeuglöschung entfernt sie mit dem Termin.
+- Im gewählten Kalenderzeitraum nach Bezeichnung, Fahrzeugkennung und E-Mail suchen; Entwürfe, bestätigte Termine, Teile-/Kundenrückfragen und Abholbereitschaft filtern. Tagesbudgets bleiben bei Filterung vollständig, damit versteckte Termine nicht als freie Zeit erscheinen.
+- Bei neuer Terminannahme freie Tage für die eingeplante Dauer suchen (14 Kalendertage, offene Tage mit ausreichender Arbeits- und Fahrzeugkapazität). Es werden Tagesbudgets vorgeschlagen, keine Uhrzeit-/Mechanikerreservierungen. Erst die serverseitig geprüfte Bestätigung bucht. Mehrtagesplanung weiterhin ausdrücklich.
+- „Folgetermin vorbereiten“ kopiert nur Fahrzeug, Arbeitstitel, Leistungen und Dauer in einen neuen ungespeicherten Termin. Keine alte Bindung, Checkliste, Notizen, Erinnerung, Überbuchungsbegründung oder zugesagte Uhrzeiten. Aktuelle Fahrzeug-/Kundenzuordnung bestimmt die vorausgefüllte E-Mail. Entwurf versendet nichts.
+- Alte bereits veröffentlichte Migrationen bleiben unverändert; neue nullable JSON-Spalte via Version000201Date20261005230000. Kein neuer externer Dienst oder neue Abhängigkeit.
+
+- Vorhandene unerledigte Fahrzeugaufträge werden bei direkter Auftragserstellung und Terminannahme als Hinweis angezeigt; die vorhandene Terminverknüpfung wird ausgenommen. Kein automatisches Zusammenführen. Nach dem Speichern zeigt das Terminbuch den Ankunftstag und hebt versteckende Filter auf.
+
+### Nachprüfung der Fahrzeughistorie am 06.10.2026
+
+Ankunftszeitpunkte aus Kundenterminen erscheinen auch im Änderungsprotokoll als Datum und Uhrzeit in Europe/Berlin. Sommer-/Winterzeit und Tageswechsel dürfen keine technischen ISO-Fragmente oder falschen Kalendertage anzeigen. Ungültige Zeitangaben in Alteinträgen verhindern nicht das Lesen der übrigen Historie.
+
+### Fahrerformular: bestätigter Versand
+
+Nach vollständig bestätigter Meldung und allen Foto-Uploads werden Eingaben, Fotoliste und native Dateiauswahl zurückgesetzt. Bei Uploadfehlern bleiben noch nicht bestätigte Fotos ausgewählt; erneutes Senden legt keinen zweiten Mangel an.
+
+## Erweiterung 0.2.2: Zugänge, Leistungsrangliste und Kalender bei der Annahme
+
+Ein Nextcloud-Administrator vergibt unter **Einstellungen → Zugänge für Meister und Terminannahme** zusätzliche Einzelzugänge per Benutzersuche. Geschäftsleitung kann vollständigen Meisterzugang erhalten; dies umfasst auch sensible Kosten, Kundenakten und Exporte. Kein neu eingeführter Lesemodus. Eine Assistenz erhält ausschließlich Terminannahme (bestehende Kunden/Fahrzeuge auswählen, Termine einschließlich Leistungen vereinbaren, ändern, Entwürfe speichern und absagen). Stammdatenanlage, Arbeitsaufträge/Zeiten, Teile, Mängel, Dateien/QR, Kosten/Vergleichspreise, Exporte, Kapazitätsänderungen und Überbuchung bleiben gesperrt. Interne Fahrzeug-/Kundennotizen und Annahme-/Abholchecklisten werden nicht ausgegeben und bei Terminänderungen durch Assistenz erhalten. Eine bereits begründete Überbuchung kann in Kontaktdaten verändert werden, wenn Fahrzeug/Ankunftstag/Arbeitstage unverändert bleiben; neue Überbuchung erfordert Meister. Eine Nextcloud-Benutzerlöschung entfernt beide zusätzlichen Einzelzuordnungen über den öffentlichen UserDeletedEvent (getUid seitNC31); eine spätere Wiederverwendung der Benutzer-ID erbt keine direkte Freigabe. Jede Operation prüft den aktuellen Zugang, auch in vorhandenen Sitzungen. Administrator/Meister hat Vorrang, danach Terminannahme, dann Tablet. Assistenz darf deshalb nicht parallel Administrator/Meister sein. Einzelzugänge und optionale Gruppen gelten appweit, keine öffentlichen Freigabelinks.
+
+Das gemeinsame Leistungsfeld zeigt acht Vorschläge nach Nutzungshäufigkeit absteigend; bei Gleichstand Favorit, eigene Position, Bezeichnung und ID. Suche/Kategorie/gesamter Katalog bleiben erreichbar. Gezählt wird jede echte Katalogleistung höchstens einmal je bestätigtem Termin oder freigegebenem Auftrag, unabhängig von Menge und mehrfacher Auswahl. Ein verknüpfter Termin/Auftrag zählt zusammen einmal: sobald Auftrag freigegeben, gelten dessen unveränderliche Leistungen; andernfalls bestätigter Termin. Entwürfe, frei eingegebene Arbeiten, reine Kalkulation und abgesagte/stornierte Vorgänge zählen nicht. Ein abgesagter Termin mit weiterhin freigegebenem Auftrag zählt weiterhin dessen Arbeiten. Ranking bezeichnet Nutzung zur Planung, keinen Nachweis der tatsächlich abgerechneten Arbeit. Mengen, Zeiten und bestehende Momentaufnahmen bleiben unverändert. `wm_service_usage` enthält lediglich Vorgangsreferenz und Leistungs-ID; nur aggregierte Zahlen gelangen zum Browser. Uniqueindex, bestehender Planungslock und gemeinsame Transaktionen verhindern Doppelzählung. Beim Upgrade erste100Datensätze je Art, Rest per begrenztem Cronjob mit stabilem ID-Cursor; wiederholbar ohne Änderung der alten Termine/Aufträge. Kontrollierte Fahrzeuglöschung entfernt auch die Nutzungsreferenzen.
+
+Im Terminformular ist eine Wochenansicht sofort sichtbar. Tageskarten nennen Wochentag/Datum, freie/verfügbare Stunden, prozentuale Auslastung, Fahrzeugzahl/-limit und vorhandene Ankunfts-/Abholtermine samt Arbeitstitel. Abgesagte Termine sind ausgeblendet, Entwürfe ausdrücklich ohne Reservierung gekennzeichnet. Wochennavigation und Datumssprung verändern keine Formulareingaben. „Diesen Tag wählen“ übernimmt nur den Ankunftstag und erhält die Ankunftsuhrzeit; beim Wechsel Arbeitsbeginn/Abholung leeren und ausdrücklich neu festlegen. Mehrtagesverteilung wird nicht unbemerkt verschoben. Geschlossene Tage sind nicht per Vorschlag auswählbar. Kapazität zählt auch direkte Kunden-/Flottenaufträge und wird erst nach bestätigter Speicherung reserviert, transaktional nochmals geprüft. Die Übersicht zeigt Tagesbudgets, keine freien Mechanikerzeitfenster. Bestehende Fristen/Termine/Kalenderintegration bleiben unabhängig.
+
+Neue Termine werden ohne expliziten Entwurfstatus serverseitig bestätigt. Hauptaktion „Termin speichern & bestätigen“, Rückmeldung „gespeichert und bestätigt“. Der bisherige interne stage-Wert planned bleibt aus Kompatibilitätsgründen bestehen, wird für bestätigte Termine verständlich als „Bestätigt“ angezeigt. Entwurf bleibt Entwurf, ohne Kapazitätsbuchung/E-Mail. Hintergrundversand/Kalender bleiben getrennt von erfolgreicher Datenspeicherung.
+
+API-Ergänzung: administratorgeschützte GET/PUT `/api/v1/access-settings`, GET `/api/v1/access-users?q=…` (20 Ergebnisse, mindestens2Zeichen, keine E-Mail/Extras). CSRF bleibt unverändert. Bestehende Planungs-GET/POST erlauben zusätzlich Rolle reception mit reduzierten Antworten. `usage_count` ist berechnetes, ausschließlich lesbares Feld im Leistungskatalog. Neue Migration Version000202Date20261006090000; keine historische Migration geändert. Keine neue Bibliothek/ExApp/externen Datenflüsse.
+
+Öffentliche APIs am06.10.2026 geprüft: [IGroupManager v35.0.1](https://github.com/nextcloud/server/blob/v35.0.1/lib/public/IGroupManager.php); IUserManager get/searchDisplayName und QueryBuilder count/selectAlias zusätzlich anhand installierter Release-Interfaces/gebundener stable35-OCP-Stubs verifiziert. Browserprüfungen ersetzen keinen physischen iPad-Test.
+
+## Firmenprofil und gemeinsame Werkstattadresse (0.2.3)
+
+Meister pflegen Firmenname und Logo unter Stammdaten & Vorlagen. Öffentlich sichtbare Identität in allen Appkopfbereichen einschließlich Fahrerformular; keine vertraulichen Inhalte. PNG/JPEG/WebP maximal2MB/4MP, serverseitig als PNG bis1024px ohne Metadaten gespeichert. Austausch/Entfernung sperrt alten öffentlichen Zugriff, ungenutzte Dateien nach24h im begrenzten Maintenancejob löschen.
+
+Ein Administrator delegiert ausdrücklich eines seiner eigenen Nextcloud-Mailkonten als gemeinsame Werkstattadresse für alle Termine/Erinnerungen. Konfiguration global, unabhängig vom bearbeitenden Meister oder Assistenznutzer. Geheimnisse bleiben bei Mail. Öffentliche OCP-Mail-Provider-API seitNC30; geprüft gegen NC35.0.1 undMail5.12.3. Besitzer Enabled/Meisterberechtigung/Konto/primäreAdresse werden beim Job erneut geprüft; Löschung widerruft Delegation. Kein automatischer Systemfallback. Systemversand ist bewusste Alternative und bisheriger Default. Providererfolg bedeutet „an Mail übergeben“, kein Zustellbeleg; Status im Mailclient prüfen. Unklare Versandversuche weiterhin nur explizit wiederholen. Keine Testnachricht an echte Empfänger.
+
+## Lokale Vorführdemo mit iPad (06.10.2026)
+
+Der bestehende Mac-Starter bereitet den Zugang im gleichen lokalen WLAN bei jedem Start vor: Bonjourname mit .local und Port8787, konkret erlaubte Nextcloud-Domänen und aktuelle private IPv4-Adressen, automatischer Ruhezustand während der Demo verhindert. Anmeldung mit getrenntem Tabletkonto und unveränderten serverseitigen Rollen. Mac-Name bleibt bei WLAN-IP-Wechsel gleich; Umbenennung und isoliertes Gäste-WLAN sind Grenzen. Deckel geöffnet lassen. Die lokale HTTP-Vorführung verwendet fiktive Daten; Produktivbetrieb verwendet HTTPS. Request-IDs müssen auch auf einem lokalen HTTP-Origin kryptografisch zufällig und bei Wiederholung gleich bleiben; kein Ersatz durch schwache Zufallswerte. Physische Geräteabnahme gesondert.

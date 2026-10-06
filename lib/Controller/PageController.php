@@ -18,6 +18,7 @@ final class PageController extends Controller {
 		IRequest $request,
 		private Access $access,
 		private IInitialState $initialState,
+		private \OCA\Werkstattmanager\Service\Company $company,
 	) {
 		parent::__construct('werkstattmanager', $request);
 	}
@@ -29,12 +30,14 @@ final class PageController extends Controller {
 		} catch (\OCA\Werkstattmanager\Domain\Problem) {
 			return new TemplateResponse('werkstattmanager', 'denied', [], 'user', 403);
 		}
+		$this->initialState->provideInitialState('company', $this->company->profile());
 		$this->initialState->provideInitialState('mode', $role);
 		return new TemplateResponse('werkstattmanager', 'main');
 	}
 	#[PublicPage]
 	#[NoCSRFRequired]
 	public function driver(): TemplateResponse {
+		$this->initialState->provideInitialState('company', $this->company->profile());
 		$this->initialState->provideInitialState('mode', 'driver');
 		$r = new TemplateResponse('werkstattmanager', 'main', [], 'public');
 		$r->addHeader('Referrer-Policy', 'no-referrer');

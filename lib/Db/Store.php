@@ -76,6 +76,7 @@ class Store {
 				'orders' => ['title', 'description'],
 				'employees' => ['name'],
 				'templates', 'snippets' => ['title'],
+				'services' => ['title', 'category', 'description'],
 				default => [],
 			};
 			if ($columns) {
@@ -118,18 +119,118 @@ class Store {
 	/** Select eligible work before applying the batch limit, oldest first. */
 	public function pendingWork(string $table, int $cutoff): array {
 		[$field, $stateField, $state] = match ($table) {
-			'outbox' => ['next_try', 'status', 'pending'],
+			'outbox', 'deliveries' => ['next_try', 'status', 'pending'],
 			'attachments' => ['created_at', 'ready', false],
 			default => throw new \InvalidArgumentException('Unsupported work queue'),
 		};
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*')->from('wm_' . $table)
-			->where($qb->expr()->lte($field, $qb->createNamedParameter($cutoff, IQueryBuilder::PARAM_INT)))
-			->andWhere($qb->expr()->eq($stateField, $qb->createNamedParameter($state, $this->paramType($state))))
-			->orderBy($field, 'ASC')->addOrderBy('id', 'ASC')->setMaxResults(100);
+		$qb->select('*')
+			->from('wm_' . $table)
+			->where(
+				$qb
+					->expr()
+					->lte($field, $qb->createNamedParameter($cutoff, IQueryBuilder::PARAM_INT)),
+			)
+			->andWhere(
+				$qb
+					->expr()
+					->eq($stateField, $qb->createNamedParameter($state, $this->paramType($state))),
+			)
+			->orderBy($field, 'ASC')
+			->addOrderBy('id', 'ASC')
+			->setMaxResults(100);
 		$result = $qb->executeQuery();
 		try {
-			return array_map(fn (array $row) => $this->decode($table, $row), $result->fetchAllAssociative());
+			return array_map(
+				fn (array $row) => $this->decode($table, $row),
+				$result->fetchAllAssociative(),
+			);
+		} finally {
+			$result->closeCursor();
+		}
+	}
+	/** Indexed overlap window, with legacy orders selected by their UTC planned start. */
+	public function planningRows(string $table, string $from, string $to, int $offset = 0): array {
+		if (!in_array($table, ['orders', 'appointments', 'capacity'], true)) {
+			throw new \InvalidArgumentException('Unsupported planning table');
+		}
+		$q = $this->db->getQueryBuilder();
+		$q->select('*')
+			->from('wm_' . $table)
+			->orderBy('id', 'ASC')
+			->setMaxResults(500)
+			->setFirstResult($offset);
+		$e = $q->expr();
+		if ($table === 'capacity') {
+			$q->where($e->gte('date', $q->createNamedParameter($from)))->andWhere(
+				$e->lte('date', $q->createNamedParameter($to)),
+			);
+		} else {
+			$overlap = $e->andX(
+				$e->lte('first_day', $q->createNamedParameter($to)),
+				$e->gte('last_day', $q->createNamedParameter($from)),
+			);
+			if ($table === 'orders') {
+				$z = new \DateTimeZone('Europe/Berlin');
+				$utc = new \DateTimeZone('UTC');
+				$start = (new \DateTimeImmutable($from, $z))
+					->setTimezone($utc)
+					->format('Y-m-d\TH:i:s\Z');
+				$end = (new \DateTimeImmutable($to, $z))
+					->modify('+1 day')
+					->setTimezone($utc)
+					->format('Y-m-d\TH:i:s\Z');
+				$legacy = $e->andX(
+					$e->isNull('first_day'),
+					$e->gte('planned_start', $q->createNamedParameter($start)),
+					$e->lt('planned_start', $q->createNamedParameter($end)),
+				);
+				$overlap = $e->orX($overlap, $legacy);
+				$q->andWhere(
+					$e->in(
+						'status',
+						$q->createNamedParameter(
+							['open', 'active', 'paused', 'review', 'completed'],
+							IQueryBuilder::PARAM_STR_ARRAY,
+						),
+					),
+				);
+			}
+			$q->andWhere($overlap);
+		}
+		$result = $q->executeQuery();
+		try {
+			return array_map(
+				fn (array $row) => $this->decode($table, $row),
+				$result->fetchAllAssociative(),
+			);
+		} finally {
+			$result->closeCursor();
+		}
+	}
+	public function serviceCounts(): array {
+		$q = $this->db->getQueryBuilder();
+		$q->select('service_id')->selectAlias($q->func()->count('*'), 'uses')->from('wm_service_usage')->groupBy('service_id');
+		$result = $q->executeQuery();
+		try {
+			$counts = [];
+			while ($row = $result->fetchAssociative()) {
+				$counts[$row['service_id']] = (int)$row['uses'];
+			}
+			return $counts;
+		} finally {
+			$result->closeCursor();
+		}
+	}
+	public function usageBackfillPage(string $table, string $cursor): array {
+		if (!in_array($table, ['appointments', 'orders'], true)) {
+			throw new \InvalidArgumentException('Unsupported usage source');
+		}
+		$q = $this->db->getQueryBuilder();
+		$q->select('*')->from('wm_' . $table)->where($q->expr()->gt('id', $q->createNamedParameter($cursor)))->orderBy('id', 'ASC')->setMaxResults(100);
+		$result = $q->executeQuery();
+		try {
+			return array_map(fn ($row) => $this->decode($table, $row), $result->fetchAllAssociative());
 		} finally {
 			$result->closeCursor();
 		}
@@ -137,7 +238,7 @@ class Store {
 	public function insert(string $table, array $data): array {
 		$data
 			= [
-				'id' => bin2hex(random_bytes(16)),
+				'id' => $data['id'] ?? bin2hex(random_bytes(16)),
 				'version' => 1,
 				'created_at' => time(),
 				'updated_at' => time(),

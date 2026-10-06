@@ -62,3 +62,201 @@ Das genaue Kandidatenpaket anhand der [Pilotcheckliste](pilot-checklist.md) auf 
 vorgesehenen Testumgebung prüfen. Danach einen begrenzten Pilot nach
 [Pilot- und Rückkehrverfahren](pilot-rollout.md) durchführen. Store-Vorbereitung:
 [Release](release.md). Es findet keine automatische Veröffentlichung statt.
+
+## Nachprüfung 0.1.7 – Fahrzeughistorie und Navigation (2026-10-05)
+
+Version 0.1.7 verbessert die lesbare Fahrzeughistorie, die feste Bereichsnavigation
+und die Rückkehr aus Detaildialogen. Die Verbindung wird durch tatsächliche
+Serverantworten geprüft. Keine neue Migration und keine Abhängigkeitsaktualisierung.
+
+**Erfolgreich ausgeführt:**
+
+- Node 24.18.0/npm 11.16.0: Typecheck, ESLint ohne Warnungen, Produktionsbuild
+  und drei Starttests des fertigen Browserbundles (Meister, Tablet, Fahrer).
+- 25 Frontendtests: vorhandene Auftrags-/Tabletworkflows, lesbare Audittexte,
+  fehlende Referenzen, Rückkehr mit Bereich und Fokus, bearbeitbare Termin-Daten,
+  erreichbarer Server trotz Offline-Hinweis, tatsächlicher Verbindungsfehler und
+  Wiederholung ohne neue Buchungskennung. Dialogmethoden sind im Komponententest ersetzt.
+- Native PHP 8.3.35: 27 Fachtests, Coding Standard für 23 Dateien und Psalm 6.5
+  ohne Befunde. Zuvor 27 Fachtests und Syntaxprüfungen mit PHP-WASM 8.5.10 bestanden.
+  In-Memory-Tests ersetzen keine SQL-Integration.
+- Reale Nextcloud 35.0.1/PHP 8.5.11 mit PostgreSQL 17 und MariaDB 11.8:
+  Paketinstallation, konkurrierende Starts, parallele Aufträge, korrekte Zeitintervalle,
+  idempotente Pause, Übernahme, Fertigmeldung, Meisterabnahme, Rollen und Termine.
+  Zusätzlich tatsächliche Auditkontexte, Notizen/Schritte, Teileanforderungen mit und
+  ohne Pause und gesperrter Tablet-Zugriff auf das Änderungsprotokoll. Datenerhalt nach
+  Deaktivieren/Aktivieren und Containerneustart.
+- Lokales Upgrade von 0.1.5 auf 0.1.7 mit vorheriger Datenbank-/App-/Konfigurationssicherung.
+  Alle Datensätze aus 14 Werkstattbereichen unverändert: unter anderem drei Fahrzeuge,
+  sieben Aufträge, neun Zeitintervalle und 51 Auditereignisse. Neuer Anzeigekontext
+  wird beim Vergleich getrennt vom unveränderten gespeicherten Ereignis betrachtet.
+- Chrome mit realer Test-Nextcloud: lange Historie, feste Navigation beim Scrollen,
+  Auftrags-/Mängelrückkehr, Auftragserstellung mit vorbelegtem Fahrzeug und Rückkehr,
+  tatsächlicher Tastaturfokus sowie bearbeitbare Termin-Erledigungsdaten.
+  768×1024, 1024×768 und 390×844 ohne horizontalen Dialogüberlauf; lange
+  Historienbeschriftungen überlappen auch mit den Nextcloud-Standardstilen nicht.
+  Kein physischer iPad-/Safari-Test. Keine erfassten Browserwarnungen/-fehler.
+- Metadaten gegen frisch heruntergeladenes offizielles App-Store-XSD validiert,
+  sechs Paketgrenztests bestanden. Archiv mit 43 regulären Dateien auf sichere
+  Grenzen geprüft; interne Unterlagen und Entwicklungslaufzeiten ausgeschlossen.
+
+**Behobene Prüfprobleme:** Dateisystem-Begleitdateien sind vom Quelltextscan
+ausgeschlossen. Eine zunächst unvollständige Fokusrückgabe, lange nicht umbrechende
+Beschriftungen und eine irreführende Offline-Sperre wurden im echten Browser
+erkannt und korrigiert. Die zwischenzeitliche Browserblockade wurde bei der
+Fortsetzung nicht mehr gemeldet; die letzte Terminänderung ist nun visuell geprüft.
+
+**Nicht ausgeführt für 0.1.7:** Installation auf einer produktiven Zielinstallation,
+vollständige PHP-/DB-Versionsmatrix, neue vollständige HTTPS-/Office-Abnahme,
+physischer iPad-/Safari-Test und vollständige Accessibility-/Screenreader-/Dark-Mode-Abnahme.
+Frühere HTTPS-/Office-Prüfungen anderer Versionen ersetzen diese Nachweise nicht.
+GitHub-CI für diesen noch nicht hochgeladenen Stand ist nicht ausgeführt.
+
+**Grenzen der Historie:** Referenztexte spiegeln den aktuellen Datensatz wider.
+Neue Notizen/Arbeitsschritte und das Pausenflag werden ab 0.1.7 gespeichert;
+fehlende Angaben alter Ereignisse werden nicht nachträglich erfunden.
+Das interne Paket bleibt unsigniert und ohne vollständige Produktionsfreigabe.
+
+## Nachprüfung 0.2.0 – Katalog, Terminbuch und Kalkulation (2026-10-05)
+
+Der folgende Stand betrifft den aktuellen lokalen 0.2.0-Code. Frühere 0.1.x-Nachweise
+werden nicht als vollständige Prüfung der neuen Funktionen gewertet.
+
+### Erfolgreich ausgeführt
+
+- Node 24.18.0/npm 11.16.0: Typecheck, ESLint ohne Warnungen, **41 Frontendtests**, neuer
+  Produktionsbuild und drei Bundle-Startprüfungen (Meister, Tablet, Fahrer).
+  Zehn neue Regressionen sichern automatische/manuelle Titel, Mengen, Vorlagenzeit,
+  Entfernung, unbekannte Zeiten sowie ausdrücklich bestätigte Vergleichspreisübernahme.
+- Native PHP 8.3.35: **38 Fachszenarien**, darunter Drei-Wege-Katalogupdate mit erhaltenen
+  Eigenanpassungen, einzelne Kunden-Abholabsage und sichere Versandlistenantwort.
+- Nextcloud Coding Standard auf 36 PHP-Dateien; Psalm 6.5/errorLevel 4 ohne Fehler,
+  **111 Informationsbefunde**. Dies ist keine vollständige Befundfreiheit.
+- App-Metadaten gegen vorhandenes offizielles App-Store-XSD, sechs Archivgrenztests
+  und Paketgrenzen erfolgreich. Interne Pakete enthalten 60 reguläre Dateien,
+  einschließlich zusätzlicher additiver Migration; keine privaten Deploymentprotokolle.
+- Datenabdeckung unabhängig geprüft: 295 Leistungen / 15 Kategorien, 334 Beobachtungen
+  von 32 Preisgebern,248 zulässig/86 ausgeschlossen. 57 Leistungen mit Beobachtungen,
+  238 ohne; nur fünf recherchierte Zeitangaben. Keine erfundenen Ersatzwerte.
+
+### Integrations- und Browserstatus
+
+**Erfolgreich ausgeführt:** acht isolierte Installationen: Nextcloud 35.0.0 und
+35.0.1 mit PostgreSQL 17 bzw. MariaDB 11.8, jeweils frisch und Upgrade von 0.1.7.
+Alle prüfen reale SQL-/HTTP-Abläufe, parallele Buchungen, Rollen, 295 Katalogeinträge,
+unveränderliche Arbeitskopien, Kapazitätszählung und Datenerhalt nach Neustart.
+
+Der echte Cron-Scheduler versendet eine fällige Erinnerung genau einmal; Widerruf
+verhindert den Versand. CalDAV-503, Rückstellung, Wiederanlauf und entfernte/wieder
+hergestellte Zugangsdaten wurden mit isoliertem HTTPS geprüft. Ein unklarer SMTP-
+Ausgang wird sichtbar und ohne automatische Doppelzustellung behandelt. Entfallende
+Abholzeit erzeugt genau eine Kundenabsage für deren UID. Keine echten Kundenmails.
+
+Der zuvor offene MariaDB-Upgrade-Lauf ist erfolgreich abgeschlossen. Anfangs
+scheiterten Starts vor dem Upgrade an HTTP-Bereitschaft (400 bzw. transient 404).
+Der Harness wartet jetzt begrenzt auf tatsächliche HTTP-/Appbereitschaft.
+
+Chrome mit realer lokaler Demo: Termin speichern und ändern, Mehrtagesaufteilung,
+korrekt abgelehnte inkonsistente Zeitverteilung, manuell erhaltener Titel, genau ein
+verknüpfter Auftrag, ausdrückliche Freigabe, Arbeitsstart/Fertigmeldung und Abnahme.
+Mechanikeraktionen wurden in Meisteransicht mit Mitarbeiterwahl geprüft; ein eigener
+Tablet-Browserlogin wurde nicht geprüft. Die Rollenbeschränkungen bestehen die API-Matrix.
+
+Preisrechner unabhängig bestätigt: 80 €/h Kosten, 96 €/h Verkauf, 219 € netto,
+41,61 € Umsatzsteuer und 260,61 € brutto. Regionale Preisübernahme erst nach
+Umfangsbestätigung; 40 € brutto werden zu 33,61 € netto je Einheit. Eigene Kosten
+bleiben erhalten; ausdrücklich gespeicherter Zielpreis wurde unabhängig aus der API
+gelesen und der ursprüngliche Demopreis danach wiederhergestellt.
+
+Dark-Mode-Katalog und Leistungsdialog visuell geprüft; 390×844, 768×1024 und
+1024×768 ohne horizontalen Seitenüberlauf. Tab/Shift-Tab erreichen beschriftete
+Dialogfelder; ursprüngliches Systemdesign und Bildschirmgröße werden wiederhergestellt.
+Dies ersetzt keine vollständige Accessibility-Abnahme.
+
+Die Matrix prüfte den Laufzeitkandidaten mit SHA-256
+`6642f82581ea4027a1d0ba1d11c5eafe27e0e43cb34f14ffdbb0bc4bc094b8e0`.
+Der abschließende Frontendfix verhindert, dass ein geleertes optionales Preisfeld
+als 0 € gespeichert wird; eine weitere Regression sichert `null` ab.
+Finales Archiv, bytegleicher Laufzeitabgleich und lokale Demo werden im internen
+Übergabeprotokoll mit Prüfsummen und tatsächlichen Abschlussresultaten erfasst.
+
+### Verbleibende Abnahmen
+
+Physisches iPad/Safari, vollständige WCAG-AA-/Screenreader-Abnahme, externe Kunden-
+Kalenderprogramme und Dauerlast werden ohne tatsächliche Prüfung nicht freigegeben.
+Die App ist intern und unsigniert; kein Store-Release und kein Produktionsdeployment.
+GitHub-CI wurde für den uncommittierten lokalen Stand nicht ausgeführt.
+
+## UX-Verbesserung 0.2.0 (2026-10-05)
+
+Erfolgreich: Typecheck, ESLint ohne Warnungen, **50 Frontendtests** und Produktionsbuild mit drei Browserbundle-Starttests. Neun gezielte Zusatzregressionen pruefen Monats-/Jahreswechsel, Berliner Tagesanteile, Dirty-Revert/Unload-Cleanup, ausdrueckliche Absage mit Originalpayload, Kundenkontext/Schliessschutz, freie Arbeit ohne Katalogmutation, Tagesstatus mit Originalversion und veraltete Preisantwort sowie freie Paketarbeit ohne leere Katalogreferenz.
+
+Nur Frontend und Dokumentation geaendert; PHP, Migrationen und Rechte unveraendert. Die vorangehenden SQL-/Cron-/Versandnachweise gelten fuer diesen identischen Backendstand. Neuer Paket-/Demostand und reale Browserabnahme werden separat im laufenden lokalen Protokoll mit SHA erfasst. Die fruehere UX-Pruefung beschreibt Ausgangsfehler; Umsetzung und Nachpruefung unterscheiden. Physische Geraete-/Nutzer-/Screenreader-Abnahme weiterhin offen.
+
+Reale Chrome-Nachpruefung: Kalkulation bleibt nach Bereichswechsel erhalten; 31.10. navigiert nach 01.11.; Mehrtagestermine zeigen Tagesanteil und Auftragsstatus. Freie 35-Minuten-Arbeit wurde in einem fiktiven Termin gespeichert. Direkte Ankunft und Abholbereit wurden serverseitig bestaetigt. Absage zeigt den Originaltermin, Zurueck bewahrt den Entwurf, Bestaetigung speichert die Absage ohne den ungespeicherten Titel. Keine echten Kundenmails. Native Verwerfen-Rueckfrage erscheint; Browsersteuerung beim Dialoghandling eingeschraenkt. Automatische Regression prueft Aenderung/Revert und Schliessschutz. Isoliertes Upgrade von 0.1.7 unter NC35.0.1/PostgreSQL17 mit realem Cron/SMTP/CalDAV erneut erfolgreich am UX-Kandidaten; Archividentitaet und abschliessender Installationslauf im internen Protokoll.
+
+## Ausbau 0.2.1 – Annahme und Terminübersicht
+
+Prüfung am 05.10.2026 mit Node 24.18.0/npm 11.16.0, nativer PHP 8.3.35-Analyse und realen Nextcloud-35.0.0-/35.0.1-Instanzen (PHP 8.5.11) gegen PostgreSQL 17/MariaDB 11.8. Die vorhandenen unveröffentlichten Vorarbeiten wurden erhalten.
+
+| Prüfung | Ergebnis |
+| --- | --- |
+| Frontend | 59 Tests bestanden, einschließlich der letzten Navigationskorrektur |
+| Backend | 40 native PHP-Szenarien bestanden |
+| Coding Standard / Psalm | 38 Dateien bestanden; keine Psalm-Fehler bei errorLevel 4, weiterhin 111 Informationsmeldungen |
+| Typecheck / ESLint / Build | Bestanden; Bundle-Start für Meister, Tablet und Fahrer bestanden |
+| Metadaten / Paketgrenzen | XSD und sechs Paketgrenzentests bestanden |
+| Installation / Upgrade | Acht SQL/API-Matrixfälle mit dem ersten Ausbauarchiv bestanden: beide Nextcloud-Versionen, beide Datenbanken, Neuinstallation und Upgrade von 0.1.7 |
+| Upgrade von 0.2.0 | PostgreSQL und MariaDB mit erhaltenem altem Termin bestanden |
+| HTTPS / CalDAV / SMTP / Cron | Echter PostgreSQL-Zusatzlauf mit TLS, SMTP-Stub, CalDAV und Nextcloud-Cron bestanden, einschließlich Erinnerungen und Ausfällen |
+| Lokaler Datenerhalt | Reguläres Demo-Upgrade bewahrt alle ursprünglichen Felder und Versionen in 16 Datenbereichen |
+
+Die letzte Navigationskorrektur betrifft nur das Frontend; PHP, Migrationen und APIs entsprechen dem vollständig geprüften Ausbauarchiv. Die Identität und zusätzlichen Installationsprüfungen des abschließenden Archivs werden im lokalen Freigabeprotokoll getrennt dokumentiert.
+
+Die neuen Prüfungen decken Checklistenvalidierung, Rechte, Versionskonflikte, Wiederholbarkeit, Bewahrung bei Statusänderungen, interne Datenabgrenzung, Vorschläge ohne Reservierung, Arbeitskopien und Filter ohne veränderte Kapazität ab. Checklisten erscheinen weder in Tabletaufträgen noch in SMTP oder CalDAV. Im Browser wurden Suche, Folgetermin, Hinweise auf bestehende Aufträge, freie Werktage und das Speichern/Wiederöffnen der Checkliste bestätigt. Ein fiktiver Annahmeentwurf mit 35 Minuten wurde ohne Kunden-E-Mail gespeichert; er bucht keine Kapazität und versendet nichts.
+
+**Nachprüfung am 06.10.2026:** Der native Chrome-Änderungsdialog ist vollständig geprüft: Abbrechen bewahrt Eingaben; bestätigtes Verwerfen schließt ohne Speicherung. Physisches iPad/Safari, vollständige WCAG-/Screenreaderprüfung, externe Kundenkalenderprogramme, Dauerlast und vollständige PHP-Versionenmatrix bleiben offen. Die bekannte lokale Nextcloud-Kernschemawarnung zu `oc_federated_invites` wurde nicht durch Änderungen an fremden Tabellen bearbeitet.
+
+Keine Produktionsfreigabe, GitHub-Veröffentlichung, Store-Einreichung oder echten Kundenmails. [Recherchierte Werkstattfunktionen und Grenzen](workshop-functions.md).
+
+## Browserfortsetzung und Datumskorrektur am 06.10.2026
+
+- Erfolgreich: echte Chrome-Rückfrage mit Bewahrung/Verwerfen, freies 35-Minuten-Katalogpaket speichern, beim direkten Auftrag auswählen und anschließend das Testpaket reversibel archivieren. Keine leere Katalogreferenz und keine zusätzliche Auftragsfreigabe.
+- Erfolgreich: separate reguläre Tablet-Anmeldung, ausschließlich Werkstattaufträge, Fortsetzen erst nach Namenswahl. Desktop-Browseransicht bei 768×1024 und 1024×768 ohne horizontalen Überlauf. Dies ersetzt keinen physischen iPad-/Safari-Test.
+- Gefunden und korrigiert: Kundentermin-Ankunft im Fahrzeugjournal wurde fälschlich durch einen reinen Datumsformatter verarbeitet. Jetzt bestehender Berliner Zeitformatter und verständlicher Fallback für ungültige Altdaten; zwei neue Regressionen einschließlich Zeitumstellung/Jahreswechsel. **61 Frontendtests**, Typecheck und ESLint bestanden. Finaler Build, Paketidentität, Installation und Browsernachprüfung werden im lokalen Übergabeprotokoll gesondert belegt.
+- Reine Frontendkorrektur; keine PHP-, API-, Schema-, Gruppen- oder Integrationsänderung. Vorangegangene Backendmatrix bleibt ein Nachweis des identischen Backendstands und wird nicht als neuer Lauf ausgegeben. Alte Demo-Geschäftsdaten bewahrt, kein Kunden- oder Zeittimerdatensatz durch diese Browserfortsetzung erzeugt.
+
+### Erneute Fahrer-/Gesamtprüfung am 06.10.2026
+
+Erneute reale SQL-/HTTP-Prüfungen mit PostgreSQL17 und MariaDB11.8 einschließlich anonymem Mangel/km/Fotoupload, Fahrzeugbindung, Widerruf, Meisterbestätigung, Reparatur, Teile, Nacharbeit, Fristen, Zeitkorrektur und zehn Exporten bestanden. PostgreSQL zusätzlich mit verifiziertem HTTPS, SMTP, CalDAV und echtem Cron. Im Browser erzeugter QR unabhängig lokal aus dem PNG decodiert; anonym Meldung/km/Foto abgesendet und geprüft. Dabei verbleibenden Dateinamen nach Erfolg korrigiert; Dateiauswahl wird erst nach vollständig bestätigten Uploads geleert. Der physische iPad-/Kamera-/Papierdrucktest bleibt nicht ausgeführt. Keine Produktionsänderung. Nach der Korrektur bestanden 69 Frontendtests, Typecheck, ESLint und Produktionsbuild mit drei Rollenstarts. Die SQL-/HTTPS-Nachweise beziehen sich auf den identischen Backendstand; der zusätzliche finale Paket-/Browsernachweis wird getrennt in der lokalen Deployment-Dokumentation geführt.
+
+## Erweiterung0.2.2 – Prüfung am06.10.2026
+
+Geprüft im bewahrten lokalen Entwicklungsstand auf Grundlage0.2.1, Gitbasis ce0d2d1. Node24.18/npm11.16, nativePHP8.3.35 und echte NC35.0.1-Container mit PHP8.5/PostgreSQL17/MariaDB11.8. Neue Prüfungen: zusätzliche Meister-/Annahmebenutzer, Gruppenzugänge/Entzug, reduzierte Datensicht und gesperrte Werkstattaktionen; bestätigtes Standardspeichern; Rangliste ohne Wiederholungs-/Mengen-/Termin-Auftrag-Doppelzählung; Kalenderkarten/Wochentage/Uhrzeiten/Kapazität/Navigation/staleAntworten.
+
+Erste0.2.2-Paketprüfung (92e22d…): **bestanden** –78Frontendtests,45nativeSzenarien,Typecheck/ESLint/Build/vierBrowser-Bundlerollen,PHP-CS43Dateien,Psalm0Fehler(121Informationshinweise),XSD/sechsPaketgrenztests; echte Neuinstallation PostgreSQL mit vollständigemHTTPS/SMTP/CalDAV/Cron und MariaDB-Upgrade0.2.1 mit Datenerhalt plus vollständigen Werkstatt/Fahrer/Rollen/Ranglistenabläufen. Frühere Lint-/Psalm-/Testfixturefehler wurden behoben und nicht als Erfolge gewertet.
+
+Abschließende Ergänzungen: Löschen direkt freigegebener Nutzer entfernt Rechte; begrenzte201Datensätze-Backfillprüfung, Erhalt unveränderter Meisterüberbuchung bei Assistenz-Kontaktänderung und echte Übernahme historischer verknüpfter Vorgänge. Diese Nachprüfungen/abschließendePaketidentität/Demoupgrade werden im lokalen Fortsetzungsprotokoll mit eindeutigenHashes geführt; Vorgängerergebnisse allein bestätigen keine danach veränderten Backenddateien.
+
+**Nicht ausgeführt für0.2.2:** physisches iPad/Touch/Kamera, echte NAS-/Office-Zielintegration, vollständigerScreenreader/WCAG-/Dauerlast-/Betriebnachweis, neueNC35.0.0-/PHP8.4-Matrix und GitHubCI. GitHub bleibt privat, keine Store-/Produktionsfreigabe. Preisrecherche-Datenlücken unverändert. Interne Testarchive und Nachweise enthalten keine Produktionsfreigabe.
+
+## Firmenprofil und Mail-Absender 0.2.3
+
+85 Frontendtests,53nativePHP-Szenarien, Typecheck/ESLint/Produktionsbuild/vierRollenstarts bestanden; CodingStandard48Dateien, Psalm0Fehler/141Informationshinweise. GezielteRegressionsfälle: Textescaping/FirmenlogoURL undsofortigeServerübernahme, Fehlererhalt, verzögertesAdminflag/Kontoauswahl, getrennteÜbergabeanzeige, Konto-/Benutzer-/Adresswiderruf ohneFallback, privatePayloadentfernung.
+
+EchteHTTP-Prüfung: Bildverarbeitung, ungültigesSVG/MIME-Fälschung/Entfernung/Rechte; offiziellerMail5.12.3-Provider zeigt ausschließlich eigeneKonten undverweigertfremde. Vorarchiv8c4b3e bestandPostgreSQLNeuinstallation undMariaDBUpgrade0.2.2 inklusiveSystemSMTP/HTTPS/CalDAV/Cron/Ausfall/Wiederholung undbestehenderWerkstatt-/Fahrerabläufe. DanachÜbergabeanzeige ergänzt; exakterfinalerArchivlauf undlokaleDemo/Browserergebnisse werdenmitSHAiminternenProtokoll finalisiert. KeineproduktivenMailbox-/Geräte-/Betriebsnachweise ableiten.
+
+ÖffentlicheOCP IManager/IMessageSend; keineprivatenMailklassen/Passwörter. Mail-Ergebnis „übergeben“ istkeinZustellbeleg. OptionaleIntegrationundEmpfängerdaten/Speicherzweck inProdukt-/Betriebsdoku dokumentiert.
+
+
+## Lokale Tablet-Demo 0.2.4 (06.10.2026)
+
+Reine Frontendkorrektur für lokale HTTP-Adressen: kryptografische Request-UUIDs mit getRandomValues, wenn randomUUID nicht verfügbar ist; Wiederholungskennung bleibt bei verloren gegangenen Antworten erhalten. Backend, Rechte, CSRF und Datenmodell unverändert; keine neue Migration und keine Abhängigkeitsänderung. Produktivbetrieb weiterhin über HTTPS.
+
+**Erfolgreich ausgeführt:** 90 Frontendtests (fünf zusätzliche HTTP-/UUID-/Fahrerregressionen), Typecheck, ESLint, Produktionsbuild und vier Bundle-Rollenstarts; offizielles XSD und Archivgrenzen. Chrome und WebKit26.6 mit aktuellem Tabletprofil über tatsächliches HTTP-Origin mit Bonjourname: Anmeldung als tablet, Auftragskarten, Hoch-/Querformat ohne horizontalen Überlauf, kryptografische UUID im ausgelieferten API-Schreibpfad bei tatsächlich fehlendem randomUUID; bewusst ungültiger Mitarbeiter vom realen Server mit404 abgewiesen und verständlich angezeigt, ohne Demotimer zu starten. Screenshots visuell geprüft. Separat reale Meister-/Tablet-Anmeldung über Mac-WLAN-IPv4 erfolgreich. 17 bestehende Fachsammlungen nach Upgrade unverändert.
+
+Der separate Mac-Demostarter verwaltet nur Demo-Port8787, konkrete vertrauenswürdige Bonjour-/IPv4-Adressen und einen während der Demo geladenen Benutzer-LaunchAgent zur Ruhezustandsvermeidung. Alte WLAN-Adresse wird beim nächsten Start entfernt. Vollständiger Stop/Start und finale Paket-/Demoidentität werden mit konkreten Hashes im internen laufenden Protokoll dokumentiert; kein GitHub-Upload.
+
+**Nicht ausgeführt:** physischer iPad-/Touch-/Kamera-/WLAN-Fremdgerätetest, tatsächlicher Router-/Gäste-WLAN-Wechsel, Produktiv-HTTPS-/NAS-/Mail-Abnahme. Keine neue PHP-/SQL-Fachmatrix für diesen unveränderten Backendstand behauptet. Nextcloud35 fordert laut tatsächlicher Browserprüfung Safari auf iPadOS26.1 oder neuer. Die Demoinstallation meldet eine fehlende NC-Kerntabelle oc_federated_invites; bereits im Vorbackup vor0.2.4 nicht vorhanden, keine Appmigration betroffen, Kernreparatur separat offen. Frühe Browserprofil-/Prüfselektor-/Ladezeitfehler korrigiert; diese ersten Versuche waren keine erfolgreichen Prüfungen.
+
+**Zusätzliche Demo-Laufzeitkorrektur:** Die Abschlussprüfung entdeckte nach VM-Neustart sporadische HTTP500 im unveränderten Nextcloud-Themingmodul bei aktivem PHP-JIT (1255). Ausschließlich die separate Demo-Konfiguration wurde geändert: JIT deaktiviert, regulärer OPcache erhalten; Redis-Healthcheck und gesicherte App-Abhängigkeit für Start-/Stopreihenfolge. Danach100 aufeinanderfolgende angemeldete Appaufrufe (50 je Meister/Tablet), Datenvergleich/Rechte sowie Chrome-/WebKit-Nachprüfung erfolgreich. Vollständiger erneuter VM-Neustart wird getrennt im laufenden Protokoll belegt. Kein Nextcloud-Corepatch und keine PHP-Appänderung.

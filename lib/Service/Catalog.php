@@ -49,6 +49,9 @@ final class Catalog {
 		) {
 			throw new Problem('not_found', 'Unbekannter Bereich.', 404);
 		}
+		if ($role === 'reception' && !in_array($kind, ['vehicles', 'customers'], true)) {
+			throw new Problem('forbidden', 'Nur Terminannahme erlaubt.', 403);
+		}
 		if (
 			$role === 'tablet'
 			&& !in_array(
@@ -91,8 +94,17 @@ final class Catalog {
 		$rows = $this->store->find($kind, $filters, 101, $offset, Rules::text($search, 100));
 		$more = count($rows) > 100;
 		$rows = array_slice($rows, 0, 100);
+		if ($kind === 'audit') {
+			$rows = $this->journal->withContext($rows);
+		}
 		if ($kind === 'outbox') {
-			$rows = array_map(fn ($row) => array_intersect_key($row, array_flip(['id', 'version', 'created_at', 'recipient', 'subject', 'attempts'])), $rows);
+			$rows = array_map(
+				fn ($row) => array_intersect_key(
+					$row,
+					array_flip(['id', 'version', 'created_at', 'recipient', 'subject', 'attempts']),
+				),
+				$rows,
+			);
 		}
 		if ($role === 'tablet') {
 			$allow = match ($kind) {
@@ -106,6 +118,7 @@ final class Catalog {
 					'title',
 					'description',
 					'steps',
+					'service_lines',
 					'minutes',
 					'planned_start',
 					'due_at',
@@ -121,6 +134,10 @@ final class Catalog {
 				$rows = array_map(fn ($r) => array_intersect_key($r, array_flip($allow)), $rows);
 			}
 		}
+		if ($role === 'reception') {
+			$fields = $kind === 'vehicles' ? ['id', 'plate', 'number', 'vin', 'make', 'model', 'customer_id', 'vehicle_class', 'archived'] : ['id', 'name', 'contact', 'email', 'phone', 'archived'];
+			$rows = array_map(fn ($row) => array_intersect_key($row, array_flip($fields)), $rows);
+		}
 		return ['items' => $rows, 'more' => $more, 'offset' => $offset];
 	}
 	public function retryNotification(string $id, int $version): array {
@@ -131,19 +148,33 @@ final class Catalog {
 				throw new Problem('conflict', 'Benachrichtigung wurde inzwischen geändert.', 409);
 			}
 			if ($row['status'] !== 'failed') {
-				throw new Problem('state', 'Nur fehlgeschlagene Zustellungen können wiederholt werden.', 409);
+				throw new Problem(
+					'state',
+					'Nur fehlgeschlagene Zustellungen können wiederholt werden.',
+					409,
+				);
 			}
 			$allowed = $this->access->isMaster($row['recipient']);
-			$this->store->update('outbox', $row, $allowed
-				? ['status' => 'pending', 'attempts' => 0, 'next_try' => time()]
-				: ['status' => 'cancelled']);
-			$this->journal->record($this->access->uid(), $allowed ? 'notification.retry' : 'notification.cancelled', details: [
-				'notification_id' => $id, 'previous_attempts' => $row['attempts'],
-			]);
+			$this->store->update(
+				'outbox',
+				$row,
+				$allowed
+					? ['status' => 'pending', 'attempts' => 0, 'next_try' => time()]
+					: ['status' => 'cancelled'],
+			);
+			$this->journal->record(
+				$this->access->uid(),
+				$allowed ? 'notification.retry' : 'notification.cancelled',
+				details: [
+					'notification_id' => $id,
+					'previous_attempts' => $row['attempts'],
+				],
+			);
 			return ['queued' => $allowed, 'cancelled' => !$allowed];
 		});
 	}
 	public function visibleOrder(string $id): array {
+		$this->access->workshop();
 		$role = $this->access->role();
 		$o = $this->store->get('orders', $id);
 		if (
@@ -186,6 +217,10 @@ final class Catalog {
 		}
 		if ($kind === 'vehicles') {
 			$v['kind'] = Rules::choice($input['kind'] ?? 'fleet', ['fleet', 'customer']);
+			$v['vehicle_class'] = Rules::choice(
+				$input['vehicle_class'] ?? ($old['vehicle_class'] ?? 'car'),
+				['car', 'van'],
+			);
 			$v['customer_id'] = $this->reference($input['customer_id'] ?? null, 'customers');
 			if ($v['kind'] === 'customer' && !$v['customer_id']) {
 				throw new Problem('validation', 'Kunde erforderlich.');
@@ -222,10 +257,15 @@ final class Catalog {
 				throw new Problem('validation', 'Ungültige Vorwarnungen.');
 			}
 			$v['warning_days'] = array_values(
-				array_unique(array_map(function ($d): int {
-					return Rules::integer($d, 0, 365)
-						?? throw new Problem('validation', 'Vorwarnungen benötigen eine Tageszahl.');
-				}, $days)),
+				array_unique(
+					array_map(function ($d): int {
+						return Rules::integer($d, 0, 365)
+							?? throw new Problem(
+								'validation',
+								'Vorwarnungen benötigen eine Tageszahl.',
+							);
+					}, $days),
+				),
 			);
 			$v['status'] = $old['status'] ?? 'open';
 		}
@@ -250,6 +290,22 @@ final class Catalog {
 				)
 			) {
 				throw new Problem('active', 'Fahrzeug hat offene Aufträge.', 409);
+			}
+			if (
+				$kind === 'vehicles'
+				&& ($v['archived'] ?? false)
+				&& $old
+				&& $this->store->find(
+					'appointments',
+					['vehicle_id' => $old['id'], 'status' => ['draft', 'confirmed']],
+					1,
+				)
+			) {
+				throw new Problem(
+					'active',
+					'Fahrzeug hat noch Termine. Bitte zuerst absagen.',
+					409,
+				);
 			}
 			$row = $old ? $this->store->update($kind, $old, $v) : $this->store->insert($kind, $v);
 			$this->journal->record(

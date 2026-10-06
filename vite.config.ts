@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig, configDefaults } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import { runtimeNotices } from './scripts/runtime-notices'
 export default defineConfig(({ command }) => ({
@@ -20,5 +20,5 @@ export default defineConfig(({ command }) => ({
     },
     rollupOptions: { output: { assetFileNames: 'werkstattmanager-[name][extname]' } },
   },
-  test: { environment: 'jsdom', include: ['tests/frontend/**/*.test.ts'] },
+  test: { environment: 'jsdom', include: ['tests/frontend/**/*.test.ts'], exclude: [...configDefaults.exclude, '**/._*'] },
 }))

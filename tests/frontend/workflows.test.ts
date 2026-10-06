@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 vi.mock('@nextcloud/l10n', () => ({ translate: (_app: string, s: string) => s }))
-const api = vi.hoisted(() => ({ list: vi.fn(), all: vi.fn(), command: vi.fn(), post: vi.fn(), upload: vi.fn() }))
+const api = vi.hoisted(() => ({ get: vi.fn(), list: vi.fn(), all: vi.fn(), command: vi.fn(), post: vi.fn(), upload: vi.fn() }))
 vi.mock('../../src/api', () => ({ ...api, message: (e: Error) => e.message }))
 vi.mock('@nextcloud/vue/components/NcButton', () => ({
   default: {
@@ -30,6 +30,7 @@ const template = {
 beforeEach(() => {
   vi.resetAllMocks()
   localStorage.clear()
+  api.get.mockResolvedValue({ items: [] })
   api.list.mockResolvedValue({ items: [vehicle], more: false })
   api.all.mockImplementation((kind: string) =>
     Promise.resolve(

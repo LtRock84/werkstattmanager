@@ -5,7 +5,7 @@ import Modal from './Modal.vue'
 import { all, post, url, message } from '../api'
 import { t, vehicleLabel, stamp, orderNumber } from '../format'
 import type { Defect, Vehicle, Order, Attachment } from '../types'
-const props = defineProps<{ defect: Defect; vehicle?: Vehicle }>()
+const props = defineProps<{ closeLabel?: string; defect: Defect; vehicle?: Vehicle }>()
 const emit = defineEmits<{ close: []; saved: []; create: [] }>()
 const d = ref({ ...props.defect }),
   orders = ref<Order[]>([]),
@@ -76,7 +76,7 @@ async function download(a: Attachment) {
 }
 </script>
 <template>
-  <Modal :title="t('Mängelmeldung prüfen')" @close="!busy && emit('close')">
+  <Modal :close-label="closeLabel" :title="t('Mängelmeldung prüfen')" @close="!busy && emit('close')">
     <div class="wm-form">
       <strong>{{ vehicleLabel(vehicle) }}</strong>
       <p>{{ stamp(d.created_at) }} · {{ d.reporter || t('Ohne Namensangabe') }}</p>

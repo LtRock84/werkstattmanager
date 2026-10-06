@@ -2,10 +2,15 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import Modal from './Modal.vue'
+import ServicePicker from './ServicePicker.vue'
+import ExistingWorkNotice from './ExistingWorkNotice.vue'
+import { useDirtySnapshot } from '../dirty'
+import { lineMinutes } from '../services'
 import { list, all, command, post, message } from '../api'
 import { t, vehicleLabel, iso } from '../format'
-import type { Vehicle, Template, Snippet, Order } from '../types'
-const props = defineProps<{ vehicle?: Vehicle; defectId?: string; initialDescription?: string }>()
+import type { Vehicle, Template, Snippet, Order, ServiceLine } from '../types'
+const props = defineProps<{ closeLabel?: string; vehicle?: Vehicle; defectId?: string; initialDescription?: string }>()
+const pendingWork = ref(false)
 const emit = defineEmits<{ close: []; created: [Order] }>()
 const vehicles = ref<Vehicle[]>(props.vehicle ? [props.vehicle] : []),
   templates = ref<Template[]>([]),
@@ -19,6 +24,20 @@ const vehicle = ref(props.vehicle?.id ?? ''),
   end = ref(''),
   priority = ref('normal'),
   query = ref('')
+const serviceLines = ref<ServiceLine[]>([])
+const overrideReason = ref('')
+const selectedTemplate = ref<Template | null>(null)
+const { dirty } = useDirtySnapshot(() => ({ vehicle: vehicle.value, title: title.value, description: description.value, steps: steps.value, minutes: minutes.value, start: start.value, end: end.value, priority: priority.value, lines: serviceLines.value, override: overrideReason.value }))
+let automaticTitle = ''
+watch([serviceLines, selectedTemplate], ([lines, template]) => {
+  const extra = lineMinutes(lines)
+  minutes.value = template
+    ? (template.minutes == null || extra == null ? null : template.minutes + extra)
+    : (lines.length ? extra : null)
+  const next = [template?.title, ...lines.map(l => l.title)].filter(Boolean).join(' / ').slice(0, 255)
+  if (!title.value.trim() || title.value === automaticTitle) title.value = next
+  automaticTitle = next
+}, { deep: true })
 const details = ref(false)
 const chosenTemplate = ref('')
 const busy = ref(false),
@@ -67,11 +86,11 @@ onMounted(async () => {
   }
 })
 function choose(v: Template) {
+  serviceLines.value = []
+  selectedTemplate.value = v
   chosenTemplate.value = v.id
-  title.value = v.title
   description.value = [props.initialDescription, v.description].filter(Boolean).join('\n')
   steps.value = v.steps.join('\n')
-  minutes.value = v.minutes
 }
 function append(v: Snippet) {
   steps.value = [steps.value, v.text].filter(Boolean).join('\n')
@@ -79,12 +98,11 @@ function append(v: Snippet) {
 function data() {
   return {
     vehicle_id: vehicle.value,
+    service_lines: serviceLines.value,
+    override_reason: overrideReason.value,
     title: title.value,
     description: description.value,
-    steps: steps.value
-      .split('\n')
-      .map((x) => x.trim())
-      .filter(Boolean),
+    steps: [...new Set([...serviceLines.value.flatMap(l => [l.quantity + ' × ' + l.title, ...l.steps]), ...steps.value.split('\n').map(x => x.trim()).filter(Boolean)])],
     minutes: minutes.value || null,
     planned_start: iso(start.value),
     due_at: iso(end.value),
@@ -150,7 +168,7 @@ async function saveTemplate() {
 }
 </script>
 <template>
-  <Modal :dirty="!!(title || steps || start || end || minutes || description !== (props.initialDescription ?? '') || vehicle !== (props.vehicle?.id ?? ''))" :title="t('Neuer Auftrag')" @close="!busy && emit('close')">
+  <Modal :locked="busy" :close-label="closeLabel" :dirty="dirty || pendingWork" :title="t('Neuer Auftrag')" @close="!busy && emit('close')">
     <form class="wm-form" @submit.prevent="save('open')">
       <div class="wm-guide">
         <strong>{{ t('In drei Schritten zum Auftrag') }}</strong>
@@ -173,7 +191,7 @@ async function saveTemplate() {
         <p class="wm-muted">
           {{
             t(
-              'Eine Vorlage anklicken oder unten einen eigenen Titel eingeben. Eine andere Vorlage ersetzt Titel, Hinweise, Schritte und Zeitvorgabe.',
+              'Eine Vorlage anklicken oder unten einen eigenen Titel eingeben. Eine andere Vorlage ersetzt Hinweise, Schritte und Zeitvorgabe; ein eigener Titel bleibt erhalten.',
             )
           }}
         </p>
@@ -196,6 +214,11 @@ async function saveTemplate() {
           }}
         </p>
       </fieldset>
+      <ExistingWorkNotice :vehicle-id="vehicle" />
+      <ServicePicker v-model="serviceLines" :vehicle-class="vehicles.find(v => v.id === vehicle)?.vehicle_class ?? 'car'" @draft-change="pendingWork = $event" />
+      <p v-if="selectedTemplate && serviceLines.length" class="wm-guide">
+        {{ t('Die Gesamtzeit besteht aus Vorlagenzeit und zusätzlichen Leistungen. Bereits in der Vorlage enthaltene Arbeiten nicht erneut auswählen. Fehlt eine Zeitangabe, bleibt die Gesamtdauer offen.') }}
+      </p>
       <label>{{ t('Auftragstitel (Pflichtfeld)')
         }}<input
           v-model="title"
@@ -261,6 +284,7 @@ async function saveTemplate() {
           }}
         </p>
       </div>
+      <label v-if="error.includes('kapazität') || overrideReason">{{ t('Begründung für Überbuchung') }}<input v-model="overrideReason" maxlength="2000" /></label>
       <p v-if="error" role="alert" class="wm-error">{{ error }}</p>
       <p v-if="saved" role="status">{{ t('Vorlage gespeichert.') }}</p>
       <footer class="wm-actions wm-sticky-actions">

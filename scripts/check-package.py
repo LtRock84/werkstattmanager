@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 ALLOWED_ROOTS = {'appinfo', 'lib', 'templates', 'js', 'css', 'img', 'l10n', 'licenses', 'docs'}
 ALLOWED_FILES = {'LICENSE', 'README.md', 'CHANGELOG.md', 'composer.json', 'composer.lock'}
 PUBLIC_DOCS = {'architecture.md', 'operations.md', 'pilot-checklist.md', 'pilot-rollout.md',
-               'product-spec.md', 'release.md', 'store-listing.md', 'test-report.md'}
+               'product-spec.md', 'service-prices.md', 'workshop-functions.md', 'release.md', 'store-listing.md', 'test-report.md'}
 REQUIRED = {'appinfo/info.xml', 'js/werkstattmanager-main.js', 'css/main.css',
             'js/third-party-notices.txt', 'LICENSE', 'README.md', 'docs/test-report.md'}
 
