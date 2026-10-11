@@ -20,6 +20,11 @@ for (const mode of ['master', 'tablet', 'driver', 'reception']) {
     assert.equal(root.querySelector('h1')?.textContent, {
       reception: 'Terminannahme', master: 'Übersicht', tablet: 'Werkstattaufträge', driver: 'Mangel melden',
     }[mode], `${mode}: expected role-specific main heading`)
+    const supportButtons = [...root.querySelectorAll('button')].filter(
+      (button) => button.textContent.trim() === 'Projekt unterstützen',
+    )
+    assert.equal(supportButtons.length, mode === 'master' ? 1 : 0,
+      `${mode}: support action belongs only in the master view`)
     console.log(`PASS browser bundle startup: ${mode}`)
   } finally {
     // Close before background polling; this fixture never contacts a real server.

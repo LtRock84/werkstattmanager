@@ -214,3 +214,34 @@ und aktuelle Fälligkeit werden vor Versand erneut geprüft. Fertig- und Fristen
 enthalten keine zusätzliche Kalenderdatei. Versandfehler sind im Terminbuch sichtbar;
 unklare SMTP-Ausgänge werden nicht automatisch erneut gesendet. Ein Versandnachweis
 ist keine Bestätigung, dass die E-Mail beim Empfänger gelesen wurde.
+
+## Projektunterstützung ab 0.4.1
+
+Der Unterstützungslink ist ein fester Bestandteil der App und keine Werkstatt-
+Absenderadresse. Er wird nicht aus Stammdaten übernommen und besitzt keine
+Administratoreinstellung. Änderungen des veröffentlichten Zielkontos erfolgen
+bewusst im Quellcode und durch ein neues geprüftes Paket; auch die donation-
+Metadaten müssen dasselbe Ziel enthalten. Änderungen durch Betreiber sind bei
+quelloffener Software technisch möglich. Es gibt keine automatische Zahlung oder
+Rückmeldung an die App; Zahlungen, Gebühren und Buchführung werden außerhalb geführt.
+
+Der eigene Hinweis bezeichnet die Zahlung als freiwillige Unterstützung der
+Projektkosten ohne individuelle Gegenleistung und ohne Spendenbescheinigung.
+Dies entscheidet nicht über Gewerbe, Einkommen- oder Umsatzsteuer. Der Empfänger
+muss seine tatsächliche Tätigkeit und Zahlungseingänge steuerlich einordnen lassen.
+Der Eigentümer hat das PayPal.Me-Profil am 11.10.2026 aktiviert; Zuordnung im
+angemeldeten Konto und öffentliche Profilseite wurden geprüft. Die Eignung für
+die konkrete Nutzung und der Zahlungsempfang sind damit noch nicht geprüft;
+das bloße Laden einer PayPal-Seite ist kein Zahlungsempfangsnachweis.
+
+Die App lädt weder PayPal-SDK noch Zahlungsbilder oder Drittanbieter-Cookies.
+Nur nach ausdrücklichem Weiterklick wird im neuen Tab das feste öffentliche
+PayPal.Me-Profil `Werkstattmanager` aufgerufen; keine Empfangs-E-Mail,
+Betragsvorgabe oder Kunden-/Fahrzeug-/Auftragsdaten im Link. Die App legt keine
+Zahlungsart fest und richtet keine wiederkehrenden Zahlungen ein.
+Neue Tabs erhalten noopener/noreferrer. Von Nextcloud selbst dargestellte
+Unterstützungslinks in App-Verwaltung/Store führen direkt zum externen Ziel und
+tragen den Hinweis auf die fehlende Spendenbescheinigung im Linktitel.
+
+Quellen geprüft 11.10.2026: [PayPal.Me](https://www.paypal.com/de/cshelp/article/was-ist-paypalme-help432),
+[Nextcloud-Unterstützungslinks](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/monetizing.html).

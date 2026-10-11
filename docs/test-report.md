@@ -7,6 +7,80 @@ Betriebsdaten. Automatische Prüfungen sind über die
 nachvollziehbar; bei privatem Repository benötigen sie entsprechende Zugriffsrechte.
 Ein neues Paket muss die Pipeline erneut bestehen.
 
+## Private GitHub-Aktualisierung 0.4.0 → 0.4.1 (11.10.2026)
+
+Enthalten sind der Meisterbutton mit vorgeschaltetem Unterstützungshinweis,
+das feste PayPal.Me-Ziel, der direkte README-Link, GitHubs Funding-Konfiguration
+und die Veröffentlichungsvorbereitung unter Thomas Keilhaupt. Keine neuen
+Backend-Endpunkte, Migrationen oder Abhängigkeiten.
+
+**Erfolgreich ausgeführt:** Typecheck, ESLint, alle 98 Frontendtests, Produktionsbuild
+mit vier Bundle-Rollenstarts und sechs Paketgrenztests erneut bestanden.
+Ein gleichzeitig zum Build gestarteter Diff-Check traf kurzfristig auf dessen
+neu aufgebauten Ausgabeordner; nach Buildabschluss erneut erfolgreich geprüft.
+Die Funding-Konfiguration wird außerhalb des Nextcloud-Installationspakets gehalten.
+
+Die GitHub-Pipeline prüft den hochgeladenen Commit einschließlich seines eigenen
+Kandidatenarchivs und der vier Nextcloud-/SQL-Installationen. Ihr Ergebnis ist
+beim [konkreten Actions-Lauf](https://github.com/LtRock84/werkstattmanager/actions)
+zu kontrollieren; die vorherige 0.4.0-Pipeline bestätigt den neuen Commit nicht.
+Die lokale Demo bleibt 0.4.0. Öffentliche Sichtbarkeit, Store-Einreichung,
+Zahlung und physische Geräte-/Betriebsabnahme sind damit nicht erledigt.
+
+## Store-Vorbereitung unter Thomas Keilhaupt (11.10.2026)
+
+**Erfolgreich ausgeführt:** Herausgeber ohne öffentliches Mailattribut ergänzt;
+Metadaten gegen das erneut abgerufene offizielle Store-XSD validiert und
+Versionsgleichheit der App-/npm-Metadaten beim Paketbau geprüft;
+sechs Paketgrenztests erneut bestanden. Gezielte Prüfung von 170 aktuellen
+Projektdateien und 250 erreichbaren historischen Git-Blobs ohne Treffer für die
+geprüften privaten Rechnerpfade, Kontaktdaten, Netzadressen, Archivverweise und
+Schlüssel-/Tokenmuster. Die Prüfung ist keine Garantie gegen jedes mögliche
+private Datum und keine rechtliche Wiederverwendungsprüfung.
+Das offizielle aktuelle Store-Schema wurde erneut abgerufen; es entspricht dem
+bisher für die Metadatenprüfung verwendeten Schema.
+
+**Noch offen / nicht ausgeführt:** Zuordnung des vorhandenen App-Store-Kontos zur
+gewünschten Konto-Adresse, öffentliche Repositoryfreigabe, Zertifikatsantrag,
+ausgestelltes Zertifikat, Signierung, aktuelle Store-Bilder und Einreichung.
+Eine erneute SQL-/HTTPS-Matrix, Installation des neuen Kandidaten und Prüfung
+eines signierten Endpakets wurden in dieser Vorbereitung nicht durchgeführt.
+Die nachfolgenden 0.4.1-Nachweise betreffen die dort genannten Funktionstests;
+die ältere 0.4.0-Pipeline ist keine Prüfung des jetzigen Endpakets.
+
+## Neue Prüfung 0.4.1 – freiwillige Projektunterstützung (11.10.2026)
+
+**Erfolgreich ausgeführt:** Typecheck, ESLint, 98 Frontendtests, Produktionsbuild,
+vier Rollenstarts des tatsächlich gebauten Browser-Bundles, offizielles
+Metadaten-XSD und sechs Paketgrenztests. Das Zahlungsziel im Bundle und in den
+App-Metadaten stimmt überein. Der Empfänger lässt sich weder durch die
+Werkstatteinstellungen noch durch eingehende URL-Parameter ersetzen.
+
+Eine isolierte Browser-Prüfseite mit dem Produktionsbundle und fiktiven, leeren
+API-Antworten bestätigt: Unterstützung nur im Meisterbereich, Dialog öffnet und
+schließt, Escape und Zurück stellen den Fokus auf den Ausgangsbutton zurück.
+Bei 768×1024 und 1024×768 ist der Dialog vollständig lesbar; die Seitenleiste
+bleibt erreichbar. Bei schmaler Ansicht ist der Dialog scrollbar. Der externe
+Link besitzt `target="_blank"`, `noopener noreferrer` und `no-referrer`, auch
+bei manipulierten Empfängerparametern der eingehenden URL.
+Diese Prüfseite ersetzt keine Nextcloud- oder physische iPad-Prüfung und nutzt
+nicht das vollständige Nextcloud-Theming.
+
+Nach der Aktivierung durch den Eigentümer zeigt dessen Kontoprofil den Link
+`paypal.me/Werkstattmanager`; die öffentliche Seite zeigt denselben Profilnamen
+und den zugehörigen Kontoinhaber. Das frühere Donate-Ziel mit Empfangs-E-Mail
+wurde durch dieses PayPal.Me-Ziel ersetzt und das Produktionsbundle neu gebaut.
+Die Browserfixture-Prüfungen oben betreffen den vorangehenden Dialogstand;
+der Dialog ist unverändert, der neue Link zusätzlich in Bundle/Metadaten geprüft.
+**Nicht ausgeführt:** Zahlung, Zahlungsannahme-/Kontoeignungsbestätigung, neue Backend-/SQL-/HTTPS-Matrix,
+Installation von 0.4.1 in der lokalen Demo sowie öffentliche GitHub-/Store-Veröffentlichung.
+Backend und Migrationen sind unverändert; ältere Integrationsnachweise gelten
+für ihre dort genannten Pakete. Steuerliche Einordnung und die bisherigen
+Geräte-/Betriebsabnahmen bleiben offen. Die lokale Demo und GitHub stehen noch
+auf 0.4.0 in diesen ursprünglichen Funktionsnachweisen. Die anschließende private
+GitHub-Aktualisierung auf 0.4.1 ist ein eigener Prüflauf; ihr Commit und ihre Pipeline
+müssen für deren konkreten Paketstand ausgewertet werden.
+
 ## GitHub-Übernahme 0.2.4 → 0.4.0 (11.10.2026)
 
 Die Aktualisierung umfasst Auswertung, Kundennachrichten und Fristenerinnerungen

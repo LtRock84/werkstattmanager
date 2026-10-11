@@ -304,3 +304,37 @@ und aktuelle Fälligkeit werden vor Versand erneut geprüft. Fertig- und Fristen
 enthalten keine zusätzliche Kalenderdatei. Versandfehler sind im Terminbuch sichtbar;
 unklare SMTP-Ausgänge werden nicht automatisch erneut gesendet. Ein Versandnachweis
 ist keine Bestätigung, dass die E-Mail beim Empfänger gelesen wurde.
+
+## Freiwillige Projektunterstützung (0.4.1)
+
+Meister können über den unteren Navigationsbereich freiwillig die Projektkosten
+und Weiterentwicklung unterstützen. Vor PayPal erscheint ein zugänglicher Hinweis:
+kostenlose Nutzung bleibt erhalten, keine zusätzlichen Funktionen/individuellen
+Leistungen, keine Spendenbescheinigung oder behauptete steuerliche Begünstigung.
+Öffentliches PayPal.Me-Profil `Werkstattmanager`, ohne Betrag oder Zahlungsart im
+Link. Keine wiederkehrende Zahlung durch die App. Keine Kopplung an Aufträge,
+Kunden, Personal, Nutzungsumfang oder Kalender; keine Zahlungsdaten in der App.
+
+Ziel fest im Releasecode und den Nextcloud-Unterstützungsmetadaten, kein bearbeitbares
+Einstellungsfeld und keine Übernahme aus Firmenprofil/API/Initial State/URL-Parametern.
+Quelloffene Änderungen durch Serverbetreiber bleiben möglich. Profilname bewusst
+öffentlich lesbar, keine Empfangs-E-Mail im Link und keine PayPal-Zugangsdaten. Externer Link erst nach ausdrücklicher
+Aktion, neuer Tab ohne opener/Referrer; keine Fremdskripte oder Vorabverbindungen.
+Tablet, Fahrer und Terminannahme zeigen den Projektaufruf nicht. Steuerliche
+Einordnung und PayPal-Kontoberechtigung verantwortet der Projektinhaber.
+
+## Store-Veröffentlichung unter persönlichem Herausgebernamen (11.10.2026)
+
+Die Veröffentlichung wird unter **Thomas Keilhaupt** vorbereitet. Der öffentliche
+App-Autor ist vom Kontobenutzernamen und der privaten Konto-E-Mail getrennt.
+Die Konto-E-Mail wird nicht in `info.xml`, Quellcode, Screenshots oder öffentliche
+Unterlagen aufgenommen. Ein bereits angemeldetes Store-Konto wird vor einer
+Neuanlage dem gewünschten Eigentümer zugeordnet; keine ungefragte Doppelregistrierung.
+
+Vorbereitete Beschreibung und Zertifikatsanfrage sind keine Einreichung.
+GitHub bleibt bis zur ausdrücklichen Sichtbarkeitsfreigabe privat; private Archive
+bleiben getrennt. Öffentlicher Quellcode/Support, extern ausgestelltes Zertifikat,
+finale Dateisignatur, Archivsignatur und ohne Anmeldung erreichbarer Download
+sind Voraussetzungen der späteren Store-Einreichung. Signiert wird erst nach
+Finalisierung und Prüfung des tatsächlich angebotenen Pakets. Geräte-, Betriebs-
+und Datenrechteabnahmen bleiben sichtbar offen; keine automatische Produktionsfreigabe.

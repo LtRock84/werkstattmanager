@@ -31,6 +31,7 @@ import WorkshopStatistics from './components/WorkshopStatistics.vue'
 import PriceCalculator from './components/PriceCalculator.vue'
 import MailSettings from './components/MailSettings.vue'
 import CustomerMailSettings from './components/CustomerMailSettings.vue'
+import ProjectSupport from './components/ProjectSupport.vue'
 import CalendarSettings from './components/CalendarSettings.vue'
 import OrderComposer from './components/OrderComposer.vue'
 import OrderDetail from './components/OrderDetail.vue'
@@ -537,7 +538,7 @@ async function erase() {
   <DriverForm v-if="role === 'driver'" />
   <main v-else-if="role === 'reception'" class="wm-app wm-reception"><CompanyHeader /><h1>{{ t('Terminannahme') }}</h1><p class="wm-guide">{{ t('Kundentermine vereinbaren, ändern oder absagen. Arbeitsaufträge und Werkstattverwaltung übernimmt der Meister.') }}</p><AppointmentBook :reception="true" /></main>
   <div v-else class="wm-shell" :class="{ 'wm-tablet': !master, 'wm-report-page': page === 'statistics' }">
-    <aside class="wm-sidebar">
+    <aside class="wm-sidebar" :class="{ 'wm-sidebar--support': master }">
       <div class="wm-brand">
         <span class="wm-brand-icon">W</span>
         <div>
@@ -560,11 +561,12 @@ async function erase() {
       <div class="wm-sidebar-note">
         <span :class="online ? 'wm-dot' : 'wm-dot-off'"></span>{{ online ? t('Verbunden') : t('Offline')
         }}<small>{{
-          t(
-            'Nach jeder Aktion auf die Bestätigung warten. Danach kann der nächste Mitarbeiter das Tablet benutzen.',
-          )
+          master
+            ? t('Geöffnete Eingaben bleiben beim Aktualisieren erhalten.')
+            : t('Nach jeder Aktion auf die Bestätigung warten. Danach kann der nächste Mitarbeiter das Tablet benutzen.')
         }}</small>
       </div>
+      <ProjectSupport v-if="master" />
     </aside>
     <main class="wm-main">
       <header class="wm-top">

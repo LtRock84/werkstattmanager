@@ -2,10 +2,11 @@
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
  <id>werkstattmanager</id><name>Werkstattmanager</name><summary>Fahrzeuge, Termine, Werkstattaufträge und Auswertungen</summary>
  <description>Fahrzeugakten für Kunden und eigene Flotte, Terminbuch mit Tageskapazitäten, Leistungskatalog und Preisrechner. Schnelle Werkstattaufträge, Tablet-Zeiterfassung, Teileanforderungen und externe Mängelmeldungen per Fahrzeug-QR-Code. Auswertung eigener Plan- und Istumsätze sowie Arbeitszeiten. Anpassbare Kundennachrichten, optionale Abholbereit-Mails und automatische Fahrzeugfristen-Erinnerungen. Interne Pilotversion; vor Produktiveinsatz auf der Zielinstallation prüfen.</description>
- <version>0.4.0</version><licence>AGPL-3.0-or-later</licence><author>LtRock84</author><namespace>Werkstattmanager</namespace><category>organization</category>
+ <version>0.4.1</version><licence>AGPL-3.0-or-later</licence><author>Thomas Keilhaupt</author><namespace>Werkstattmanager</namespace><category>organization</category>
  <website>https://github.com/LtRock84/werkstattmanager</website>
  <bugs>https://github.com/LtRock84/werkstattmanager/issues</bugs>
  <repository type="git">https://github.com/LtRock84/werkstattmanager.git</repository>
+ <donation title="Projektkosten freiwillig unterstützen – keine Spendenbescheinigung" type="paypal">https://www.paypal.me/Werkstattmanager</donation>
  <dependencies><php min-version="8.3" max-version="8.5"/><database>pgsql</database><database>mysql</database><nextcloud min-version="35" max-version="35"/></dependencies>
  <background-jobs><job>OCA\Werkstattmanager\BackgroundJob\Maintenance</job><job>OCA\Werkstattmanager\BackgroundJob\AppointmentDispatch</job></background-jobs>
  <repair-steps><post-migration><step>OCA\Werkstattmanager\Repair\InstallLibrary</step><step>OCA\Werkstattmanager\Repair\InstallPlanning</step><step>OCA\Werkstattmanager\Repair\InstallUsage</step></post-migration><install><step>OCA\Werkstattmanager\Repair\InstallLibrary</step><step>OCA\Werkstattmanager\Repair\InstallPlanning</step><step>OCA\Werkstattmanager\Repair\InstallUsage</step></install></repair-steps>

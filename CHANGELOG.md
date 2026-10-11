@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.1 – Freiwillige Projektunterstützung (lokaler Prüfkandidat)
+
+- „Projekt unterstützen“ unten in der Meisteransicht, mit Erklärung vor dem Wechsel zu PayPal.
+- Festes, vom Eigentümer aktiviertes PayPal.Me-Profil `Werkstattmanager`, ohne Betragsvorgabe oder Empfänger-E-Mail im Link; keine Änderung über App-Einstellungen oder Werkstattdaten.
+- Keine Zusatzfunktionen, keine Spendenbescheinigung und kein Versprechen steuerlicher Begünstigung.
+- Kein Zahlungs-SDK oder Tracking; keine Werkstattdaten im Zahlungslink. Tablet, Fahrer und Assistenz bleiben frei von Zahlungsaufrufen.
+- Scrollbare Meister-Navigation hält den unteren Bereich auf größeren Bildschirmen erreichbar; auf kleinen Bildschirmen fließt er mit der Seite.
+- Offizielle Nextcloud-Unterstützungsmetadaten ergänzt. Kein neuer Backend-Endpunkt, keine Datenbankmigration oder Abhängigkeit.
+- Herausgeber in App-Metadaten und Veröffentlichungsunterlagen auf Thomas Keilhaupt gesetzt; Store-Beschreibung und Freigabecheckliste vorbereitet. Keine Veröffentlichung oder Konto-E-Mail im Quellcode.
+- Direkter PayPal.Me-Unterstützungslink in der GitHub-README und `.github/FUNDING.yml` für GitHubs Sponsor-Funktion; freiwillig und ohne Zusatzleistungen. Repository bleibt privat.
+
 ## GitHub-Aktualisierung vom 11. Oktober 2026: 0.2.4 → 0.4.0
 
 - **Auswertung:** eigene Netto-Ist-/Planumsätze, Monatswerte, Tagesauslastung,

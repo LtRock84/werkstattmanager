@@ -1,11 +1,18 @@
 # Werkstattmanager für Nextcloud
 
-Interner Prüfkandidat 0.4.0 für eine Werkstattorganisation. Fahrzeugakten für Kunden
+Herausgeber: **Thomas Keilhaupt** · GitHub: [LtRock84](https://github.com/LtRock84).
+Die App-Store-Veröffentlichung wird vorbereitet; es gibt noch keinen Store-Eintrag.
+
+**[♥ Projekt über PayPal unterstützen](https://www.paypal.me/Werkstattmanager)**
+– freiwilliger Beitrag zu Projektkosten und Weiterentwicklung, ohne Zusatzleistungen
+oder Spendenbescheinigung. Die App bleibt kostenlos nutzbar.
+
+Interner Prüfkandidat 0.4.1 für eine Werkstattorganisation. Fahrzeugakten für Kunden
 und eigene Flotte, schnelle Aufträge, Tablet-Zeiterfassung, Teileanforderungen und
 externe Mängelmeldungen, Terminbuch, Leistungskatalog, Preiskalkulation,
 Umsatz-/Arbeitszeitauswertung und anpassbare Kundennachrichten mit Fristenerinnerungen. Der aktuelle Stand ist **nicht für Produktivbetrieb freigegeben**.
 Verbindliche Prüfergebnisse und offene Punkte: [Prüfbericht](docs/test-report.md).
-Änderungen von 0.2.4 auf 0.4.0: [Changelog](CHANGELOG.md).
+Änderungen einschließlich Projektunterstützung in 0.4.1: [Changelog](CHANGELOG.md).
 
 Neu hinzugekommen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
 sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
@@ -116,6 +123,32 @@ und aktuelle Fälligkeit werden vor Versand erneut geprüft. Fertig- und Fristen
 enthalten keine zusätzliche Kalenderdatei. Versandfehler sind im Terminbuch sichtbar;
 unklare SMTP-Ausgänge werden nicht automatisch erneut gesendet. Ein Versandnachweis
 ist keine Bestätigung, dass die E-Mail beim Empfänger gelesen wurde.
+
+## Projekt unterstützen
+
+In der Meisteransicht steht unten links **Projekt unterstützen**. Ein Hinweis erklärt
+vor dem Wechsel zu PayPal: freiwilliger Beitrag zu Projektkosten und Weiterentwicklung,
+keine Zusatzfunktionen oder individuellen Leistungen und keine Spendenbescheinigung.
+Der Button öffnet [paypal.me/Werkstattmanager](https://www.paypal.me/Werkstattmanager).
+Der Betrag wird auf PayPal frei gewählt; die App richtet keine wiederkehrenden Zahlungen ein.
+
+Auch diese Projektseite enthält einen direkten Unterstützungslink.
+`.github/FUNDING.yml` hinterlegt denselben PayPal.Me-Link für GitHubs
+Sponsor-Funktion. Es wird kein GitHub-Sponsors-Konto vorausgesetzt und kein
+Zugriff auf das private Repository durch eine Zahlung freigeschaltet.
+
+Der Empfänger ist fest im ausgelieferten Code hinterlegt und kann nicht über
+App-Einstellungen, Firmenprofil, API oder eingehende URL-Parameter ersetzt werden.
+Serverbetreiber können den quelloffenen Code verändern; absolute Unveränderbarkeit
+wird deshalb nicht behauptet. Der öffentliche PayPal.Me-Profilname ist im Zahlungslink
+und Quellcode lesbar; eine Empfangs-E-Mail-Adresse wird nicht im Link mitgeliefert.
+Es sind keine PayPal-Zugangsdaten enthalten.
+
+PayPal wird erst nach dem ausdrücklichen Weiterklick in einem neuen Tab geöffnet.
+Keine eingebetteten PayPal-Skripte, Cookies, Vorabverbindungen oder Übermittlung von
+Werkstattdaten; die App verarbeitet oder speichert keine Zahlungen. Tablet, Fahrer
+und Terminannahme zeigen keinen Unterstützungsaufruf. Die freiwillige Zahlung ändert
+weder die Lizenz noch die steuerlichen Pflichten des Empfängers.
 
 ## Voraussetzungen und Installation auf einer Testinstanz
 

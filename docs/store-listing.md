@@ -1,6 +1,6 @@
 # Vorbereitete Store-Beschreibung
 
-Entwurf für 0.4.0 vom 2026-10-11. Noch nicht eingereicht; öffentliche Veröffentlichung,
+Entwurf für 0.4.1 vom 2026-10-11. Noch nicht eingereicht; öffentliche Veröffentlichung,
 Signatur und Geräteabnahme stehen aus. Die internen Pilotkennzeichnungen in
 `info.xml` bleiben bis zur tatsächlichen Freigabe erhalten.
 
@@ -10,6 +10,7 @@ Signatur und Geräteabnahme stehen aus. Die internen Pilotkennzeichnungen in
 | --- | --- |
 | App-ID | werkstattmanager |
 | Name | Werkstattmanager |
+| Herausgeber | Thomas Keilhaupt |
 | Kategorie | Organisation |
 | Kurzbeschreibung | Fahrzeuge, Termine, Werkstattaufträge und Auswertungen |
 | Lizenz | AGPL-3.0-or-later |
@@ -20,6 +21,12 @@ Signatur und Geräteabnahme stehen aus. Die internen Pilotkennzeichnungen in
 Die GitHub-Adressen sind derzeit privat. Sie dürfen erst nach der ausdrücklichen
 Freigabe des Eigentümers als öffentlich erreichbar beschrieben werden.
 Eine separate MySQL-Prüfung und neue Nextcloud-Hauptversionen stehen aus.
+Der öffentliche Herausgeber wird über das `author`-Element in `info.xml` angegeben.
+Der Kontobenutzername ist davon unabhängig. Eine private Konto-E-Mail gehört weder
+in dieses Dokument noch in das optionale öffentliche `author`-Mailattribut.
+Ab 0.4.1 ist ein fester PayPal-Link für freiwillige Projektunterstützung vorbereitet.
+Er schaltet keine Zusatzfunktionen frei; es wird keine Spendenbescheinigung ausgestellt.
+Die tatsächliche Kontoeignung muss der Empfänger vor öffentlichem Betrieb bestätigen.
 
 ## Vorgesehener Beschreibungstext
 
@@ -81,3 +88,26 @@ Weitere Informationen: [Betrieb und Datenschutz](operations.md).
 - Tablet-/Integrationsabnahme, Release- und Installationsnachweis des signierten Pakets.
 - Eigentümerkonto im App Store; Beschreibung und unterstützte Versionen kontrollieren.
 - Wiederverwendungsbedingungen der Preisquellen und verbleibende Betriebsabnahmen prüfen.
+
+## Freigabestand vom 11. Oktober 2026
+
+| Voraussetzung | Stand |
+| --- | --- |
+| Herausgeber und deutschsprachige Beschreibung | Vorbereitet: Thomas Keilhaupt; keine öffentliche E-Mail |
+| App-Store-Konto | Bereits angemeldetes Konto gefunden; Zuordnung zur gewünschten Konto-Adresse noch zu klären |
+| Quellcode und Support | Echtes privates GitHub-Projekt; öffentliche Sichtbarkeit noch nicht freigegeben |
+| Zertifikatsanfrage | Bestehender gültiger CSR für `werkstattmanager`, Entwurf aktualisiert; nicht eingereicht |
+| Nextcloud-Zertifikat | Noch nicht ausgestellt; keine gültige App- oder Archivsignatur vorhanden |
+| Installationspaket | Unsignierter Kandidat 0.4.1 für die private GitHub-Aktualisierung; noch keine öffentliche Download-URL |
+| Bilder | Ältere Pilotbilder vorhanden; aktuelle, geprüfte Aufnahmen mit fiktiven Daten noch erforderlich |
+| Qualität und Datenrechte | Vorhandene Tests siehe Prüfbericht; signiertes Endpaket, Geräte-/Betriebsabnahmen und Rechteprüfung noch offen |
+
+Eine Anmeldung allein erzeugt keinen Store-Eintrag. Die App-Registrierung und
+Release-Einreichung erfolgen erst nach den oben genannten Freigaben und der
+Zertifikatsausstellung. Der vorhandene Pilotstand wird nicht als fertige
+Produktionsversion beworben.
+
+Offizielle Quellen, geprüft am 11.10.2026:
+[Autor, Registrierung und Release](https://nextcloudappstore.readthedocs.io/en/latest/developer.html),
+[Zertifikatsverfahren](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/code_signing.html),
+[Store-Regeln](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/publishing.html).

@@ -1,6 +1,7 @@
 # Release und Store-Veröffentlichung
 
-Stand 2026-10-11, Version 0.4.0. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
+Stand 2026-10-11, interner Prüfkandidat 0.4.1 für die private GitHub-Aktualisierung;
+lokale Demo weiterhin 0.4.0. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
 Ein internes Kandidatenpaket ist keine Produktions- oder App-Store-Freigabe.
 
 ## Automatische Prüfungen
@@ -38,6 +39,10 @@ sind nicht das freigegebene Installationspaket. Das interne Archiv bleibt unsign
 
 ## Öffentliche Freigabe und Zertifikat
 
+Öffentlicher Herausgeber ist **Thomas Keilhaupt**. Das Kontoprofil im App Store
+und das `author`-Element der App werden getrennt geprüft. Die für das Konto
+verwendete private E-Mail wird nicht in Quellcode oder Release-Unterlagen veröffentlicht.
+
 Die Supportadresse ist der echte GitHub-Issue-Tracker. Solange das Repository privat
 ist, ist er nur für berechtigte Mitglieder erreichbar und kein öffentlicher Support.
 Vor Veröffentlichung muss der Eigentümer die öffentliche Sichtbarkeit ausdrücklich
@@ -63,11 +68,24 @@ Nach bestandener Abnahme und Zertifikatsausstellung:
 5. Mit dem Eigentümerkonto die App im Store registrieren, öffentlich erreichbare
    Archiv-URL und Archivsignatur einreichen und Installation dieses Artefakts prüfen.
 
+Zur Registrierung wird ausschließlich die App-ID ohne Zeilenumbruch signiert
+(`printf '%s' werkstattmanager`, SHA-512). Für das Release werden die vollständigen
+finalen `tar.gz`-Bytes separat signiert. Beides ersetzt nicht die Datei-Signatur in
+`appinfo/signature.json`. Das Archiv wird nach dem Signieren nicht neu gebaut.
+Download und Bilder müssen auch ohne GitHub- oder Store-Anmeldung erreichbar sein;
+ein privates GitHub-Actions-Artefakt erfüllt diese Voraussetzung nicht.
+
+Der aktuelle Kandidat ist weiterhin 0.4.1. Eine erste öffentliche Testversion kann
+eine höhere SemVer-Version mit Vorabkennung erhalten, beispielsweise `0.4.2-beta.1`;
+der Store führt solche Kennungen als Beta. Das ist eine vorbereitete Möglichkeit,
+keine Versionsänderung oder erteilte Freigabe. Nach jeder Änderung an Version,
+Metadaten oder Dateien sind das konkrete Endpaket und die Signaturen erneut zu prüfen.
+
 Ein später signiertes Archiv unterscheidet sich vom internen Kandidaten und braucht
 eigene Integritäts-, Installations- und Prüfsummenprüfung. Metadatenfreigabe bleibt
 auf tatsächlich getestete Nextcloud-Hauptversionen begrenzt.
 
-Offizielle Quellen, geprüft 2026-10-05:
+Offizielle Quellen, erneut geprüft 2026-10-11:
 [Nextcloud-Signierung](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/code_signing.html),
 [Store-Entwicklerverfahren](https://nextcloudappstore.readthedocs.io/en/latest/developer.html),
 [App-Store-Schema](https://apps.nextcloud.com/schema/apps/info.xsd).
