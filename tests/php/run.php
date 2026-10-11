@@ -100,6 +100,11 @@ namespace {
                 return $first&&$first<=$to&&$last>=$from;
             })), $offset,500);
         }
+        public function reportPage(string $table, string $cursor): array {
+            $rows = array_filter($this->rows[$table] ?? [], fn ($r) => strcmp($r['id'], $cursor) > 0);
+            uasort($rows, fn ($a, $b) => strcmp($a['id'], $b['id']));
+            return array_slice(array_values($rows), 0, 500);
+        }
         public function serviceCounts(): array {
             return array_count_values(array_column($this->find('service_usage', [], 500), 'service_id'));
         }
@@ -657,5 +662,7 @@ namespace {
     });
     require __DIR__.'/planning.php';
     require __DIR__.'/company-mail.php';
+    require __DIR__.'/statistics.php';
+    require __DIR__.'/customer-mail.php';
     echo "$passed unit scenarios passed. Nextcloud/SQL concurrency integration is separate.\n";
 }

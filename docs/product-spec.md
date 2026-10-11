@@ -1,6 +1,6 @@
 # Werkstattmanager – verbindliche Produktspezifikation
 
-Stand 2026-10-05. Eine Werkstattorganisation pro Installation,
+Stand 2026-10-11. Eine Werkstattorganisation pro Installation,
 beliebig viele Meister und Tablets.
 
 Automatische Qualitätsprüfungen umfassen echte PostgreSQL-/MariaDB-Installationen.
@@ -12,7 +12,10 @@ persönlichen Arbeitsplatzpfade oder Zugangsdaten. Private Prüfunterlagen und
 Signierschlüssel gehören nicht in Quellrepository oder Installationspaket.
 
 ## Rollen
-Meister: persönlicher NC-Account, konfigurierbare Gruppe. Tablet: dedizierter NC-Account,
+Meister: persönlicher NC-Account, konfigurierbare Gruppe oder direkte Administratorfreigabe.
+Terminannahme: begrenzte Gruppe oder direkte Benutzerfreigabe, ohne Finanz- und
+Werkstattverwaltungsrechte. Administratoren richten Zugänge und Integrationen ein.
+Tablet: dedizierter NC-Account,
 eigene App-Rolle, Mitarbeiterwahl ohne PIN. Diese Wahl ist keine Identitätsbestätigung.
 Fahrer: Fahrzeuglink ohne NC-Account, nur Meldungen und freigegebene offene Mängel.
 
@@ -67,7 +70,7 @@ Keine fachliche Löschung bei Deaktivierung oder Entfernung der App.
 
 ## Grenzen
 Keine Abrechnung, Lagerbuchhaltung, Lieferanten-API, Telematik, automatische Personalplanung,
-zweiseitige Kalender-Synchronisation oder Offline-Zeitbuchung. Einseitiges CalDAV ist ab 0.2.0 vorgesehen. Zunächst internes Paket/Pilotbetrieb.
+zweiseitige Kalender-Synchronisation oder Offline-Zeitbuchung. Einseitige CalDAV-Übertragung ist seit 0.2.0 implementiert und benötigt Einrichtung. Zunächst internes Paket/Pilotbetrieb.
 Produktionsfreigabe erst nach Installation und vollständiger Testmatrix auf
 der vorgesehenen Betriebsumgebung.
 
@@ -244,3 +247,60 @@ Ein Administrator delegiert ausdrücklich eines seiner eigenen Nextcloud-Mailkon
 ## Lokale Vorführdemo mit iPad (06.10.2026)
 
 Der bestehende Mac-Starter bereitet den Zugang im gleichen lokalen WLAN bei jedem Start vor: Bonjourname mit .local und Port8787, konkret erlaubte Nextcloud-Domänen und aktuelle private IPv4-Adressen, automatischer Ruhezustand während der Demo verhindert. Anmeldung mit getrenntem Tabletkonto und unveränderten serverseitigen Rollen. Mac-Name bleibt bei WLAN-IP-Wechsel gleich; Umbenennung und isoliertes Gäste-WLAN sind Grenzen. Deckel geöffnet lassen. Die lokale HTTP-Vorführung verwendet fiktive Daten; Produktivbetrieb verwendet HTTPS. Request-IDs müssen auch auf einem lokalen HTTP-Origin kryptografisch zufällig und bei Wiederholung gleich bleiben; kein Ersatz durch schwache Zufallswerte. Physische Geräteabnahme gesondert.
+
+## Auswertung (Erweiterung vom 09.10.2026)
+
+Meister-Menü „Auswertung“: Zeitraum bis ein Jahr, Kunden-/Flottenfilter, Monatsumsatz,
+Kapazität nach Tag, Arbeitszeiten je Mitarbeiter und Soll/Ist abgeschlossener Aufträge.
+Alle Finanzwerte in Euro netto, manuell bestätigte Plan- und Istbeträge, keine automatische
+Ableitung tatsächlicher Umsätze aus Vergleichspreisen oder geleisteten Stunden. Fehlend
+ist nicht null Euro. Istbeträge nur für abgeschlossene Kundenaufträge, mit Umsatzdatum
+und Änderungsgrund; keine Rechnungsstellung, Zahlungsüberwachung oder Buchhaltung.
+Termine und verknüpfte Aufträge zählen einmal; bestätigte Termine mit Auftragsentwurf
+bleiben in der Vorschau. Abgeschlossene/stornierte Aufträge, abgesagte Termine und
+Entwürfe ohne bestätigten Termin erzeugen keine Umsatzprognose. Mehrtages-Planumsatz
+wird centgenau proportional auf Arbeitsplanung verteilt; ohne Planungstag gesondert
+sichtbar, nicht einem beliebigen Tag zugerechnet. Eigene Flotte erzeugt keinen Kundenumsatz.
+Zeitintervalle an Berliner Periodengrenzen beschneiden; Pausen ausschließen, laufende
+Zeiten bis Serverzeit, Soll/Ist abgeschlossener Aufträge über deren gesamten Lebenszyklus.
+Finanzdaten bleiben ausschließlich beim Meister, auch gegenüber Terminannahme/Tablet/Fahrer.
+Optimistische Versionierung, transaktionale Speicherung, Grund und Vorher/Nachher im
+Änderungsprotokoll. Neue additive Umsatz-Tabelle, Export und Fahrzeuglöschung ergänzen.
+
+## Kundennachrichten und Fahrzeugfristen (0.4.0)
+
+Unter **Einstellungen → Kundennachrichten und Fristenerinnerungen** bearbeiten Meister
+sieben fertige Textvorlagen: Bestätigung, Änderung, Absage, aufgehobene Abholzeit,
+Terminerinnerung, Abholbereit und Fristenerinnerung. Platzhalter setzen Kundenname,
+Fahrzeugkennung, Termin, Abholung, Leistung, Frist und Werkstatt ein. Nachrichten
+sind reine Texte. Vorlagen gelten für noch nicht versendete Nachrichten;
+Versionsschutz verhindert das Überschreiben fremder Änderungen.
+
+Im Kundentermin die Option **Kunden per E-Mail benachrichtigen …** auswählen und
+eine Kundenadresse hinterlegen. Wenn der Meister den Termin auf **Abholbereit**
+setzt und speichert, wird die Fertigmeldung vorgemerkt. Pro Termin und Adresse
+wird sie einmal versendet. Auftrag fertigmelden oder abnehmen sendet allein keine
+Abholnachricht. Eigene Flottenfahrzeuge bekommen keine Kunden-Fertigmeldung.
+
+In **Stammdaten → Kunden / Firmen → Bearbeiten** lässt sich die automatische
+Fristenerinnerung aktivieren. Neue Kunden sind vorausgewählt; bestehende Kunden
+bleiben beim Upgrade deaktiviert. Erforderlich sind eine gültige Kundenadresse,
+ein zugeordnetes Kundenfahrzeug und eine offene Frist. In der Fahrzeugakte eine
+Frist mit **Zuletzt erledigt am** und Wiederholung anlegen; die nächste Fälligkeit
+wird berechnet, wenn „Fällig am“ leer bleibt. HU/24 Monate und Inspektion/12 Monate
+sind bearbeitbare Schnellvorgaben, keine verbindlichen Intervalle für jedes Fahrzeug.
+
+Standardmäßig wird 30 Tage vor der nächsten Fälligkeit erinnert: ungefähr elf
+Monate nach einer jährlichen Inspektion beziehungsweise 23 Monate nach einer
+zweijährlichen HU. Der Vorlauf ist in den Einstellungen von 1 bis 365 Tagen
+anpassbar. Kilometerfristen werden bei erreichtem bestätigtem Stand erinnert;
+Fahrleistung wird nicht geschätzt. Nach Aktivierung werden auch überfällige offene
+Fristen einmal gemeldet. Nach bestätigter Erledigung entsteht die nächste Frist
+mit neuem Erinnerungszyklus. Es wird kein Kundentermin automatisch gebucht.
+
+Der bestehende Nextcloud-Mailversand beziehungsweise das konfigurierte Werkstatt-
+Mailkonto und Hintergrundjobs sind erforderlich. Wunsch, Empfänger, Fahrzeugbindung
+und aktuelle Fälligkeit werden vor Versand erneut geprüft. Fertig- und Fristenmails
+enthalten keine zusätzliche Kalenderdatei. Versandfehler sind im Terminbuch sichtbar;
+unklare SMTP-Ausgänge werden nicht automatisch erneut gesendet. Ein Versandnachweis
+ist keine Bestätigung, dass die E-Mail beim Empfänger gelesen wurde.

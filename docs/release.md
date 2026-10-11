@@ -1,6 +1,6 @@
 # Release und Store-Veröffentlichung
 
-Stand 2026-10-05. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
+Stand 2026-10-11, Version 0.4.0. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
 Ein internes Kandidatenpaket ist keine Produktions- oder App-Store-Freigabe.
 
 ## Automatische Prüfungen
@@ -13,13 +13,18 @@ Ein internes Kandidatenpaket ist keine Produktions- oder App-Store-Freigabe.
 - Node 24.18.0/npm 11.16.0: Typecheck, ESLint, Frontendtests, Runtime-Audit und Build.
 - Offizielles aktuelles App-Store-XSD, Versionsgleichheit, Paketgrenzen und identische
   Prüfsummen zweier aufeinanderfolgender Paketbauten.
-- Installation exakt dieses Artefakts in zwei wegwerfbaren Nextcloud-35.0.1-Instanzen
-  mit PostgreSQL 17 und MariaDB 11.8: echte konkurrierende Starts, parallele Aufträge,
-  Pause/Übernahme, Abnahme, Rechte, Reaktivierung und Datenerhalt nach Neustart.
+- Installation exakt dieses Artefakts in vier wegwerfbaren Instanzen: Nextcloud
+  35.0.0 und 35.0.1 jeweils mit PostgreSQL 17 und MariaDB 11.8. Echte konkurrierende
+  Starts, parallele Aufträge, Pause/Übernahme, Abnahme, Rechte, Fahrerzugänge,
+  Terminplanung, Auswertung, Kundennachrichten und Datenerhalt nach Neustart.
+- Isoliertes HTTPS/SMTP/CalDAV/Cron einschließlich Kalenderänderung/-absage,
+  Abholbereit, Fahrzeugfristen, Versandfehlern und kontrollierter Wiederholung.
 
 Die CI nutzt synthetische Daten, gepinnte Actions und Container, interne Docker-Netze
-und ausschließlich internes HTTP ohne veröffentlichte Ports. Sie beweist weder HTTPS-Proxyintegration noch
-Touch-Bedienung am iPad. Keine produktiven Zugänge oder Signing-Schlüssel in der CI.
+mit einem isolierten HTTPS-Testproxy und abgeschottetem SMTP-Testserver.
+Sie versendet keine echten Kundenmails und beweist weder die reale NAS-/Office-/
+Mailbox-Integration noch Touch-Bedienung am iPad. Keine produktiven Zugänge oder
+Signing-Schlüssel in der CI.
 Das geprüfte Kandidatenarchiv wird 14 Tage als internes Actions-Artefakt aufbewahrt.
 Es findet keine automatische Store-Veröffentlichung statt.
 
@@ -43,6 +48,10 @@ mit CN `werkstattmanager` darf veröffentlicht werden. Die offizielle Zertifikat
 verlangt einen öffentlich erreichbaren Quellcode-Nachweis. Deshalb bleibt sie bis zur
 Freigabe vorbereitet; das Zertifikat wird anschließend von Nextcloud ausgestellt.
 Es wird weder ein Store-Zertifikat selbst ausgestellt noch eine Signierung vorgetäuscht.
+
+Vor öffentlicher Weitergabe sind außerdem die Wiederverwendungsbedingungen der
+Preisquellen zu prüfen. Quellenangaben und fehlende Vergleichsdaten bleiben
+nachvollziehbar; eine technische Prüfung ersetzt diese Rechteprüfung nicht.
 
 Nach bestandener Abnahme und Zertifikatsausstellung:
 

@@ -1,11 +1,70 @@
 # Prüfbericht – Werkstattmanager
 
-Stand 2026-10-05. **Interner Prüfkandidat, keine vollständige Produktionsfreigabe.**
+Stand 2026-10-11. **Interner Prüfkandidat, keine vollständige Produktionsfreigabe.**
 Dieser Bericht beschreibt die Reichweite der Prüfungen ohne standortspezifische
 Betriebsdaten. Automatische Prüfungen sind über die
 [GitHub-Pipeline](https://github.com/LtRock84/werkstattmanager/actions/workflows/quality.yml)
 nachvollziehbar; bei privatem Repository benötigen sie entsprechende Zugriffsrechte.
 Ein neues Paket muss die Pipeline erneut bestehen.
+
+## GitHub-Übernahme 0.2.4 → 0.4.0 (11.10.2026)
+
+Die Aktualisierung umfasst Auswertung, Kundennachrichten und Fristenerinnerungen
+sowie überarbeitete öffentliche Dokumentation und App-Beschreibung. Die folgenden
+Nachweise gehören zu ihren jeweiligen lokalen Prüfpaketen. Texte und Metadaten
+der GitHub-Fassung wurden anschließend aktualisiert; ihre eigene Pipeline prüft
+das daraus neu gebaute Installationsartefakt in allen vier SQL-/Nextcloud-Fällen.
+Maßgeblich für den GitHub-Stand ist der zugehörige Commit mit Actions-Ergebnis.
+Ein grüner Lauf ersetzt die unten benannten Geräte- und Betriebsabnahmen nicht.
+
+## Neue Prüfung 0.4.0 – Kundenbenachrichtigungen (11.10.2026)
+
+**Erfolgreich ausgeführt:** 70 native Fachszenarien jeweils unter PHP 8.3/8.4/8.5,
+98 Frontendtests, Typecheck, ESLint, Nextcloud Coding Standard, Psalm ohne Fehler
+(189 Informationsmeldungen), Produktionsbuild und vier Bundle-Rollenprüfungen,
+offizielles Metadaten-XSD und sechs Paketgrenztests.
+
+Der interne Kandidat 0.4.0 mit SHA-256
+`fbde00ab0d086cbcc8b26c4021f6f35469fb4dcade1982ddb31fb7776f39dba6`
+besteht PostgreSQL-/MariaDB-Integration jeweils mit Nextcloud 35.0.0 und 35.0.1.
+Upgrade von 0.3.0 geprüft auf 35.0.0/MariaDB und 35.0.1/PostgreSQL:
+vorhandene Kundenfelder erhalten, neue Kunden-Erinnerungsoption deaktiviert.
+Deaktivierung/Aktivierung und Neustart erhalten Daten.
+
+Auf 35.0.1/PostgreSQL wurden echtes isoliertes HTTPS, SMTP, CalDAV und Cron
+geprüft: editierte personalisierte Vorlage, Name/Fahrzeug/Termin im Mailtext,
+Abholbereit einmalig, Widerruf vor Zustellung, Fristenerinnerung einmalig,
+keine zweite Kalenderdatei für Fertig-/Fristennachrichten, 24-Stunden-Erinnerung,
+Änderung/Absage, SMTP-Ausfall und ausdrückliche Wiederholung bei unklarem Ausgang.
+Alle Empfänger fiktiv und der Versandserver abgeschottet; keine echten Kundenmails.
+Auch die bestehenden Werkstatt-, Fahrer-, QR-Zugangs-, Rollen-, Auswertungs- und
+Kapazitätsabläufe wurden in dieser Integrationsschleife ausgeführt.
+
+Chrome und WebKit: bearbeitete Vorlagen bleiben beim Menüwechsel erhalten,
+Verwerfen stellt den gespeicherten Text wieder her, neue Kundenoption vorausgewählt,
+letzte Erledigung berechnet Folgefrist, Termin-Entwürfe speichern beide Mailwünsche,
+Tablet ohne Einstellungsmenü, keine JavaScript-Fehler und kein Seitenüberlauf bei
+768×1024, 1024×768 und 1280×900. Fiktive Fahrzeuge, Fristen und Entwürfe entfernt.
+Lokale Demo nach SQL-/Konfigurations-/Appsicherung aktualisiert; alle ursprünglichen
+Fachfelder gegen die Sicherung geprüft. Neue Optionen sind für Bestandskunden aus.
+
+**Frühe fehlgeschlagene Prüfansätze behoben:** temporäre npm-/Browserwerkzeuge fehlten;
+gleiche Versionen wiederhergestellt. PHP-Testfixture hatte eine falsche Argumentzahl,
+Browserselektor erwartete einen zu engen Labeltext, Sicherungs-Prüfcontainer benötigte
+die originale Tabellenbesitzerrolle. Korrigierte Wiederholungen bestanden.
+Ein API-Baselineversuch überschritt das zulässige Termin-Suchintervall;
+Datenerhalt stattdessen gegen die echte unmittelbar vorherige SQL-Sicherung geprüft.
+Keine Prüfregel abgeschwächt und kein früherer Fehlversuch als Erfolg gewertet.
+
+**Nicht ausgeführt / weiter offen:** physisches iPad mit Touch/Kamerascan,
+reale NAS-/Office-/Werkstattmailbox-Abnahme, vollständige WCAG-/Screenreader- und
+Dauerlastprüfung sowie rechtliche Wiederverwendungsprüfung der Preisquellen.
+Die bekannte Kernschemawarnung zur Tabelle `oc_federated_invites` bleibt bestehen;
+die neue App-Migration erzeugt sie nicht. Dieser lokale Prüflauf veröffentlichte
+nichts auf GitHub; die anschließende Übernahme ist oben getrennt beschrieben.
+Kein öffentlicher Release, Store-Einreichung oder vollständige Produktionsfreigabe.
+
+Nachfolgende Nachweise älterer Versionen gelten jeweils für den dort genannten Stand.
 
 ## Erfolgreich ausgeführt
 
@@ -110,7 +169,7 @@ Fortsetzung nicht mehr gemeldet; die letzte Terminänderung ist nun visuell gepr
 vollständige PHP-/DB-Versionsmatrix, neue vollständige HTTPS-/Office-Abnahme,
 physischer iPad-/Safari-Test und vollständige Accessibility-/Screenreader-/Dark-Mode-Abnahme.
 Frühere HTTPS-/Office-Prüfungen anderer Versionen ersetzen diese Nachweise nicht.
-GitHub-CI für diesen noch nicht hochgeladenen Stand ist nicht ausgeführt.
+GitHub-CI wurde während dieser damaligen lokalen Prüfung nicht ausgeführt.
 
 **Grenzen der Historie:** Referenztexte spiegeln den aktuellen Datensatz wider.
 Neue Notizen/Arbeitsschritte und das Pausenflag werden ab 0.1.7 gespeichert;
@@ -119,7 +178,7 @@ Das interne Paket bleibt unsigniert und ohne vollständige Produktionsfreigabe.
 
 ## Nachprüfung 0.2.0 – Katalog, Terminbuch und Kalkulation (2026-10-05)
 
-Der folgende Stand betrifft den aktuellen lokalen 0.2.0-Code. Frühere 0.1.x-Nachweise
+Der folgende Stand betrifft den damaligen lokalen 0.2.0-Code. Frühere 0.1.x-Nachweise
 werden nicht als vollständige Prüfung der neuen Funktionen gewertet.
 
 ### Erfolgreich ausgeführt
@@ -260,3 +319,53 @@ Der separate Mac-Demostarter verwaltet nur Demo-Port8787, konkrete vertrauenswü
 **Nicht ausgeführt:** physischer iPad-/Touch-/Kamera-/WLAN-Fremdgerätetest, tatsächlicher Router-/Gäste-WLAN-Wechsel, Produktiv-HTTPS-/NAS-/Mail-Abnahme. Keine neue PHP-/SQL-Fachmatrix für diesen unveränderten Backendstand behauptet. Nextcloud35 fordert laut tatsächlicher Browserprüfung Safari auf iPadOS26.1 oder neuer. Die Demoinstallation meldet eine fehlende NC-Kerntabelle oc_federated_invites; bereits im Vorbackup vor0.2.4 nicht vorhanden, keine Appmigration betroffen, Kernreparatur separat offen. Frühe Browserprofil-/Prüfselektor-/Ladezeitfehler korrigiert; diese ersten Versuche waren keine erfolgreichen Prüfungen.
 
 **Zusätzliche Demo-Laufzeitkorrektur:** Die Abschlussprüfung entdeckte nach VM-Neustart sporadische HTTP500 im unveränderten Nextcloud-Themingmodul bei aktivem PHP-JIT (1255). Ausschließlich die separate Demo-Konfiguration wurde geändert: JIT deaktiviert, regulärer OPcache erhalten; Redis-Healthcheck und gesicherte App-Abhängigkeit für Start-/Stopreihenfolge. Danach100 aufeinanderfolgende angemeldete Appaufrufe (50 je Meister/Tablet), Datenvergleich/Rechte sowie Chrome-/WebKit-Nachprüfung erfolgreich. Vollständiger erneuter VM-Neustart wird getrennt im laufenden Protokoll belegt. Kein Nextcloud-Corepatch und keine PHP-Appänderung.
+
+## Erweiterung 0.3.0 – Auswertung (09.10.2026)
+
+**Erfolgreich ausgeführt:** 64 native PHP-Szenarien jeweils unter 8.3, 8.4 und
+8.5, einschließlich elf neuer Umsatz-/Zeitregressionen; PHP-CS auf 52 Dateien,
+Psalm ohne Fehler (171 Informationsbefunde). 95 Frontendtests, Typecheck, ESLint,
+Produktionsbuild und vier Rollen-Bundlestarts; offizielles Metadaten-XSD und sechs
+Paketgrenztests bestanden.
+
+Vier isolierte echte SQL-/HTTP-Läufe mit Nextcloud 35.0.0 und 35.0.1, jeweils
+PostgreSQL 17 oder MariaDB 11.8, bestanden. Beide 35.0.0-Läufe prüfen auch das Upgrade
+von 0.2.4 mit bestehenden Daten. Alle vier prüfen verknüpfte Planwerte, konkurrierende
+Betragsänderungen (genau ein Gewinner), Umsatzdatum, Flottenausschluss, finanzielle
+Rollengrenzen und die bisherigen Werkstatt-/Fahrer-/Termin-/Rankingabläufe.
+Nextcloud 35.0.1/MariaDB zusätzlich mit isoliertem vertrauenswürdigem HTTPS,
+realem SMTP/CalDAV/Cron, Ausfällen, Wiederholung und Kalenderänderungen bestanden.
+Installation, Deaktivierung/Aktivierung und Neustart erhalten die Testdaten.
+
+Chrome und WebKit prüfen echte Anmeldung, Auswertungsmenü, Speichern von 250,01 Euro
+netto, Verknüpfung zum Auftrag/Terminbuch und Tablet-Menüsperre. Desktop sowie
+768×1024 und 1024×768 ohne Seitenüberlauf und ohne JavaScript-Seitenfehler bestanden.
+Helle/dunkle Bildschirmdarstellung stichprobenartig visuell geprüft. Lokale Demo auf
+0.3.0 aktualisiert; Originaldatensätze in 16 geprüften Fachsammlungen erhalten.
+Fiktive Browserdaten werden administrativ gelöscht; dieser Löschvorgang bleibt im
+Änderungsprotokoll. Kein physischer iPad-Nachweis aus Browserprofilen ableiten.
+
+Die SQL- und Browserprüfungen verwenden das Archiv mit SHA-256
+`66800c1221b73f3331d74b1b24e694b6dcc00e64731acd12e29869204e6bbe26`.
+Eine nachfolgende Druckkorrektur ändert ausschließlich Frontend/Styles: alte globale
+Modal-Druckregeln versteckten die Seitenauswertung. Gezielte Report-Druckregeln
+wurden ergänzt; Frontendtests/Typecheck/Lint/Build erneut bestanden. Browser-/PDF-
+Nachprüfung bestanden: vollständiger zweitseitiger Bericht einschließlich des letzten
+Tages, stichprobenartig visuell geprüft. Auch feste Nextcloud-Seitenhöhen wurden für
+die Auswertung im Druck gezielt aufgehoben. Das Archiv mit Druckkorrektur
+`26440c14dcf23c026f2970ac7b609b997786c24175efaa34123e6b58f0cdde91`
+besteht zusätzlich den vollständigen PostgreSQL-/HTTPS-/SMTP-/CalDAV-Prüflauf
+auf Nextcloud 35.0.1 sowie die erneut ausgeführten Chrome-/WebKit-Browserprüfungen.
+Das Abschlussarchiv aktualisiert gegenüber diesem Archiv ausschließlich
+öffentliche Dokumentation; alle Laufzeitdateien bleiben identisch. Backenddateien bleiben identisch zum
+vollständig geprüften Matrixstand. Abschlusshashes und Quell-/Archiv-/Demoidentität
+werden im privaten Übergabeprotokoll geprüft. Frühe fehlende Test-Kundenbezüge, Browserselektoren
+und eine fehlende temporäre WebKit-Laufzeit wurden korrigiert, nicht als Erfolg gewertet.
+
+**Nicht ausgeführt/offen:** physisches iPad, tatsächliche NAS-/Office-/Mailboxabnahme,
+vollständige Barrierefreiheit, Dauerlast, GitHub-CI dieser lokalen Änderungen,
+Signierung, Store- und Produktionsfreigabe. Vorbestehende Demo-Kerntabellenwarnung
+`oc_federated_invites` separat offen, kein Eingriff in Nextcloud-Core.
+Die Auswertung ist auf 20.000 Datensätze je Fachbereich begrenzt und zeigt bei
+Überschreitung einen Fehler statt einer unvollständigen Summe. Sie verwendet eigene
+Nettobeträge und ist keine Buchhaltung oder Zahlungskontrolle.

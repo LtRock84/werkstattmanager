@@ -222,6 +222,20 @@ class Store {
 			$result->closeCursor();
 		}
 	}
+	/** Stable keyset pages for reports: inserts never shift earlier pages. */
+	public function reportPage(string $table, string $cursor): array {
+		if (!in_array($table, ['orders', 'appointments', 'vehicles', 'employees', 'intervals', 'revenues'], true)) {
+			throw new \InvalidArgumentException('Unsupported report table');
+		}
+		$q = $this->db->getQueryBuilder();
+		$q->select('*')->from('wm_' . $table)->where($q->expr()->gt('id', $q->createNamedParameter($cursor)))->orderBy('id', 'ASC')->setMaxResults(500);
+		$result = $q->executeQuery();
+		try {
+			return array_map(fn ($row) => $this->decode($table, $row), $result->fetchAllAssociative());
+		} finally {
+			$result->closeCursor();
+		}
+	}
 	public function usageBackfillPage(string $table, string $cursor): array {
 		if (!in_array($table, ['appointments', 'orders'], true)) {
 			throw new \InvalidArgumentException('Unsupported usage source');

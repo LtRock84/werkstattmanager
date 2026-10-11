@@ -2,6 +2,10 @@
 
 return [
 	'routes' => [
+		['name' => 'planning#mailTemplates', 'url' => '/api/v1/mail-templates', 'verb' => 'GET'],
+		['name' => 'planning#saveMailTemplates', 'url' => '/api/v1/mail-templates', 'verb' => 'PUT'],
+		['name' => 'statistics#view', 'url' => '/api/v1/statistics', 'verb' => 'GET'],
+		['name' => 'statistics#save', 'url' => '/api/v1/statistics/revenue', 'verb' => 'POST'],
 		['name' => 'mailSettings#settings', 'url' => '/api/v1/mail-settings', 'verb' => 'GET'],
 		['name' => 'mailSettings#configure', 'url' => '/api/v1/mail-settings', 'verb' => 'PUT'],
 		['name' => 'company#profile', 'url' => '/public/v1/company', 'verb' => 'GET'],

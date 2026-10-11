@@ -210,6 +210,12 @@ final class Catalog {
 				in_array($key, ['name', 'title'], true),
 			);
 		}
+		if ($kind === 'customers') {
+			$v['deadline_emails'] = ($input['deadline_emails'] ?? ($old ? ($old['deadline_emails'] ?? false) : true)) === true;
+			if ($v['email'] !== '' && !filter_var($v['email'], FILTER_VALIDATE_EMAIL)) {
+				throw new Problem('validation', 'Bitte eine gültige E-Mail-Adresse angeben.');
+			}
+		}
 		if (
 			in_array($kind, ['customers', 'vehicles', 'employees', 'templates', 'snippets'], true)
 		) {
@@ -247,10 +253,14 @@ final class Catalog {
 			$v['vehicle_id'] = $this->reference($input['vehicle_id'] ?? null, 'vehicles', true);
 			$v['due_date'] = Rules::date($input['due_date'] ?? null);
 			$v['due_km'] = Rules::integer($input['due_km'] ?? null);
+			$v['last_completed_date'] = Rules::date($input['last_completed_date'] ?? $old['last_completed_date'] ?? null);
+			$v['repeat_months'] = Rules::integer($input['repeat_months'] ?? null, 1, 120);
+			if (!$v['due_date'] && $v['last_completed_date'] && $v['repeat_months']) {
+				$v['due_date'] = Rules::nextMonth($v['last_completed_date'], $v['repeat_months']);
+			}
 			if ($v['due_date'] === null && $v['due_km'] === null) {
 				throw new Problem('validation', 'Datum oder Kilometergrenze erforderlich.');
 			}
-			$v['repeat_months'] = Rules::integer($input['repeat_months'] ?? null, 1, 120);
 			$v['repeat_km'] = Rules::integer($input['repeat_km'] ?? null, 1);
 			$days = $input['warning_days'] ?? [30, 7];
 			if (!is_array($days) || count($days) > 10) {
@@ -425,6 +435,7 @@ final class Catalog {
 					'repeat_months' => $d['repeat_months'],
 					'repeat_km' => $d['repeat_km'],
 					'warning_days' => $d['warning_days'],
+					'last_completed_date' => $date,
 					'status' => 'open',
 				]);
 			}

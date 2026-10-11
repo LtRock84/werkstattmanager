@@ -1,10 +1,15 @@
 # Werkstattmanager für Nextcloud
 
-Interner Prüfkandidat 0.2.4 für eine Werkstattorganisation. Fahrzeugakten für Kunden
+Interner Prüfkandidat 0.4.0 für eine Werkstattorganisation. Fahrzeugakten für Kunden
 und eigene Flotte, schnelle Aufträge, Tablet-Zeiterfassung, Teileanforderungen und
-externe Mängelmeldungen, Terminbuch, Leistungskatalog und Preiskalkulation. Der aktuelle Stand ist **nicht für Produktivbetrieb freigegeben**.
+externe Mängelmeldungen, Terminbuch, Leistungskatalog, Preiskalkulation,
+Umsatz-/Arbeitszeitauswertung und anpassbare Kundennachrichten mit Fristenerinnerungen. Der aktuelle Stand ist **nicht für Produktivbetrieb freigegeben**.
 Verbindliche Prüfergebnisse und offene Punkte: [Prüfbericht](docs/test-report.md).
-Alle Neuerungen seit dem letzten GitHub-Stand 0.1.6: [Changelog](CHANGELOG.md).
+Änderungen von 0.2.4 auf 0.4.0: [Changelog](CHANGELOG.md).
+
+Neu hinzugekommen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
+sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
+Das Repository bleibt privat; Installationspakete entstehen als interne CI-Artefakte.
 
 ## Bedienung
 
@@ -26,6 +31,8 @@ Alle Neuerungen seit dem letzten GitHub-Stand 0.1.6: [Changelog](CHANGELOG.md).
   intern, bis der Meister eine kurze Fahrerinformation veröffentlicht.
 
 ## Terminbuch, Leistungen und Preise
+
+Weitere Hilfen vereinfachen das Tagesgeschäft: Fahrzeugannahme-/Abholcheckliste, Rückrufnotizen, Terminsuche und Filter, passende freie Tage, vorbereitete Folgetermine und Hinweise auf bereits unerledigte Aufträge. Die [Recherche und Funktionsgrenzen](docs/workshop-functions.md) dokumentieren die Auswahl.
 
 Die Meister-Navigation enthält **Terminbuch**, **Leistungskatalog** und **Preisrechner**.
 295 unterschiedliche Leistungen sind ohne Import vorhanden. Suche, Kategorien und
@@ -63,15 +70,64 @@ als gemeinsame Werkstattadresse verwenden; die Zugangsdaten verbleiben dort.
 Firmenname und Logo werden in den Stammdaten gepflegt und erscheinen auch im
 öffentlichen Fahrerformular.
 
+## Umsatz und Werkstattauswertung
+
+Meister öffnen **Auswertung** in der Seitenleiste. Zeitraum auswählen und unter
+**Beträge erfassen** den geplanten Netto-Gesamtwert beziehungsweise nach Abnahme den
+abgerechneten Istbetrag mit Umsatzdatum eintragen. Fehlende Werte werden angezeigt.
+Monatsumsätze, Tagesauslastung, Mitarbeiterzeiten und Soll-/Ist-Abweichungen helfen bei
+der Planung; eigene Flottenarbeit ist getrennt. Die Auswertung ersetzt keine Buchhaltung
+und verwendet keine fremden Vergleichspreise als eigene Umsätze.
+
+## Kundennachrichten und Fahrzeugfristen
+
+Unter **Einstellungen → Kundennachrichten und Fristenerinnerungen** bearbeiten Meister
+sieben fertige Textvorlagen: Bestätigung, Änderung, Absage, aufgehobene Abholzeit,
+Terminerinnerung, Abholbereit und Fristenerinnerung. Platzhalter setzen Kundenname,
+Fahrzeugkennung, Termin, Abholung, Leistung, Frist und Werkstatt ein. Nachrichten
+sind reine Texte. Vorlagen gelten für noch nicht versendete Nachrichten;
+Versionsschutz verhindert das Überschreiben fremder Änderungen.
+
+Im Kundentermin die Option **Kunden per E-Mail benachrichtigen …** auswählen und
+eine Kundenadresse hinterlegen. Wenn der Meister den Termin auf **Abholbereit**
+setzt und speichert, wird die Fertigmeldung vorgemerkt. Pro Termin und Adresse
+wird sie einmal versendet. Auftrag fertigmelden oder abnehmen sendet allein keine
+Abholnachricht. Eigene Flottenfahrzeuge bekommen keine Kunden-Fertigmeldung.
+
+In **Stammdaten → Kunden / Firmen → Bearbeiten** lässt sich die automatische
+Fristenerinnerung aktivieren. Neue Kunden sind vorausgewählt; bestehende Kunden
+bleiben beim Upgrade deaktiviert. Erforderlich sind eine gültige Kundenadresse,
+ein zugeordnetes Kundenfahrzeug und eine offene Frist. In der Fahrzeugakte eine
+Frist mit **Zuletzt erledigt am** und Wiederholung anlegen; die nächste Fälligkeit
+wird berechnet, wenn „Fällig am“ leer bleibt. HU/24 Monate und Inspektion/12 Monate
+sind bearbeitbare Schnellvorgaben, keine verbindlichen Intervalle für jedes Fahrzeug.
+
+Standardmäßig wird 30 Tage vor der nächsten Fälligkeit erinnert: ungefähr elf
+Monate nach einer jährlichen Inspektion beziehungsweise 23 Monate nach einer
+zweijährlichen HU. Der Vorlauf ist in den Einstellungen von 1 bis 365 Tagen
+anpassbar. Kilometerfristen werden bei erreichtem bestätigtem Stand erinnert;
+Fahrleistung wird nicht geschätzt. Nach Aktivierung werden auch überfällige offene
+Fristen einmal gemeldet. Nach bestätigter Erledigung entsteht die nächste Frist
+mit neuem Erinnerungszyklus. Es wird kein Kundentermin automatisch gebucht.
+
+Der bestehende Nextcloud-Mailversand beziehungsweise das konfigurierte Werkstatt-
+Mailkonto und Hintergrundjobs sind erforderlich. Wunsch, Empfänger, Fahrzeugbindung
+und aktuelle Fälligkeit werden vor Versand erneut geprüft. Fertig- und Fristenmails
+enthalten keine zusätzliche Kalenderdatei. Versandfehler sind im Terminbuch sichtbar;
+unklare SMTP-Ausgänge werden nicht automatisch erneut gesendet. Ein Versandnachweis
+ist keine Bestätigung, dass die E-Mail beim Empfänger gelesen wurde.
+
 ## Voraussetzungen und Installation auf einer Testinstanz
 
 Ziel: Nextcloud 35, PHP 8.3–8.5 mit GD und Fileinfo. Reale Integration geprüft mit
-Nextcloud 35.0.0/35.0.1, PHP 8.5.11, PostgreSQL 17.11/18.6 sowie MariaDB 11.8.
+Version 0.4.0 auf Nextcloud 35.0.0/35.0.1 mit PHP 8.5.11, PostgreSQL 17 und
+MariaDB 11.8 in allen vier Kombinationen. PHP-Fachtests bestehen unter 8.3/8.4/8.5.
 Vor einem Pilotbetrieb müssen die tatsächliche Serverumgebung und ihre Integrationen
 separat geprüft werden.
 MySQL wurde noch nicht separat getestet; MariaDB-Ergebnisse sind kein MySQL-Nachweis.
-Die genannten Ergebnisse stammen aus verschiedenen geprüften Appständen; sie bilden
-keine vollständige Versionsmatrix für 0.2.4. Maßgeblich ist der aktuelle Prüfbericht.
+Upgrade von 0.3.0 und Datenerhalt wurden zusätzlich auf 35.0.0/MariaDB und
+35.0.1/PostgreSQL geprüft. Maßgeblich ist der aktuelle Prüfbericht mit dem
+zugehörigen Paketstand; ältere Nachweise werden dort getrennt aufgeführt.
 Eine Versionsangabe in `info.xml` ist kein Nachweis getesteter Kompatibilität.
 
 1. Vollständiges Backup von Nextcloud-Datenbank, Konfiguration und AppData sicherstellen.
@@ -141,5 +197,3 @@ und MariaDB. Sie veröffentlicht nichts im App Store. Ablauf und Grenzen:
 Lizenz: AGPL-3.0-or-later; vollständiger Text in `LICENSE`. Bibliotheksnachweise werden
 beim Build in `js/third-party-notices.txt` erzeugt. Vor Weitergabe auch den zugehörigen
 Quellstand samt Lockfiles und Buildskripten bereitstellen.
-
-Die Ergänzungen in 0.2.1 vereinfachen das Tagesgeschäft: Fahrzeugannahme-/Abholcheckliste, Rückrufnotizen, Terminsuche und Filter, passende freie Tage, vorbereitete Folgetermine und Hinweise auf bereits unerledigte Aufträge. Die [Recherche und Funktionsgrenzen](docs/workshop-functions.md) dokumentieren die Auswahl.

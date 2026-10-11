@@ -1,6 +1,6 @@
 # Begrenzter Pilot und Rückkehrverfahren
 
-Stand 2026-10-05. Vorbereitung, noch keine Freigabe für den Produktivbetrieb.
+Stand 2026-10-11, Version 0.4.0. Vorbereitung, noch keine Freigabe für den Produktivbetrieb.
 
 ## Freigabepunkte
 
@@ -14,7 +14,7 @@ Stand 2026-10-05. Vorbereitung, noch keine Freigabe für den Produktivbetrieb.
   automatisch gesperrt: keine vertraulichen Dateien oder Freigaben für das Tablet,
   gegebenenfalls Nextcloud-App-Zugriff je Gruppe separat einschränken.
 - Verantwortlichkeit für Backup, Aufbewahrung, Korrekturen und Abnahme festlegen.
-- Ein aktuellen Sicherungsstand von Datenbank, Dateien/AppData, Konfiguration und
+- Einen aktuellen Sicherungsstand von Datenbank, Dateien/AppData, Konfiguration und
   App-Code erstellen und dessen Wiederherstellung in der Testkopie bestätigen.
 
 ## Vorschlag für den ersten Einsatz
@@ -24,6 +24,14 @@ Flottenfahrzeugen. Für eine Woche einfache Aufträge parallel zum bisherigen
 Werkstattverfahren führen. Keine Fahrzeugfreigabe allein aus der App ableiten.
 Täglich Start-/Endzeiten, pausierte Aufträge, Teile und Meisterabnahmen vergleichen.
 Täglich Nextcloud-Fehler und fehlgeschlagene Benachrichtigungen kontrollieren.
+
+Für Kundenmails anschließend wenige ausdrücklich ausgewählte Testkunden verwenden.
+SMTP-Absender, personalisierte Vorlagen, Kalender und reale Testmailbox abnehmen.
+Bestehende Kunden bleiben beim Upgrade von automatischen Fristenmails ausgenommen.
+Vor Aktivierung letzte Erledigung, Fälligkeit und Kundenwunsch kontrollieren:
+auch bereits überfällige offene Fristen können einmal erinnert werden.
+Eigene Plan-/Istbeträge mit dem bisherigen Verfahren abgleichen; Auswertung ist
+keine Rechnung oder Buchhaltung.
 
 ## Installation im freigegebenen Wartungsfenster
 

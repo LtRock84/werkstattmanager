@@ -14,6 +14,8 @@ final class AppointmentDelivery {
 		private Store $store,
 		private CalendarDelivery $calendar,
 		private WorkshopMailer $mailer,
+		private CustomerMailTemplates $templates,
+		private CustomerReminders $reminders,
 		private LoggerInterface $logger,
 	) {
 	}
@@ -35,36 +37,44 @@ final class AppointmentDelivery {
 			$smtpAttempted = false;
 			$status = 'sent';
 			try {
-				$a = $this->store->get('appointments', $row['appointment_id']);
 				$payload = $row['payload'];
-				$calendarFields = [
-					'title',
-					'arrival',
-					'pickup',
-					'work_start',
-					'allocations',
-					'status',
-				];
-				$obsolete
-					= $row['channel'] === 'calendar'
-					&& array_intersect_key($a, array_flip($calendarFields))
-						!== array_intersect_key($payload, array_flip($calendarFields));
-				if ($row['kind'] === 'reminder') {
+				if ($row['kind'] === 'deadline') {
+					$obsolete = !$this->reminders->valid($payload);
+				} else {
+					$a = $this->store->get('appointments', $row['appointment_id']);
+					$calendarFields = [
+						'title',
+						'arrival',
+						'pickup',
+						'work_start',
+						'allocations',
+						'status',
+					];
 					$obsolete
-						= $a['status'] !== 'confirmed'
-						|| !$a['reminder']
-						|| $a['arrival'] !== $payload['arrival']
-						|| $a['customer_email'] !== $payload['customer_email']
-						|| strtotime($a['arrival']) <= time();
-				} elseif ($row['kind'] === 'pickup_cancel') {
-					$obsolete = $a['pickup'] !== null || $a['customer_email'] !== $payload['customer_email'];
-				} elseif ($row['channel'] === 'email' && $row['kind'] !== 'cancel') {
-					$obsolete
-						= $a['status'] !== 'confirmed'
-						|| $a['customer_email'] !== $payload['customer_email']
-						|| $a['arrival'] !== $payload['arrival']
-						|| $a['pickup'] !== $payload['pickup'];
+						= $row['channel'] === 'calendar'
+						&& array_intersect_key($a, array_flip($calendarFields))
+							!== array_intersect_key($payload, array_flip($calendarFields));
+					if ($row['kind'] === 'ready') {
+						$vehicle = $this->store->get('vehicles', $a['vehicle_id']);
+						$obsolete = $a['status'] !== 'confirmed' || $a['stage'] !== 'ready' || !$a['notify_ready'] || $a['customer_email'] !== $payload['customer_email'] || $a['vehicle_id'] !== $payload['vehicle_id'] || $a['arrival'] !== $payload['arrival'] || $a['pickup'] !== $payload['pickup'] || $vehicle['archived'] || $vehicle['kind'] !== 'customer';
+					} elseif ($row['kind'] === 'reminder') {
+						$obsolete
+							= $a['status'] !== 'confirmed'
+							|| !$a['reminder']
+							|| $a['arrival'] !== $payload['arrival']
+							|| $a['customer_email'] !== $payload['customer_email']
+							|| strtotime($a['arrival']) <= time();
+					} elseif ($row['kind'] === 'pickup_cancel') {
+						$obsolete = $a['pickup'] !== null || $a['customer_email'] !== $payload['customer_email'];
+					} elseif ($row['channel'] === 'email' && $row['kind'] !== 'cancel') {
+						$obsolete
+							= $a['status'] !== 'confirmed'
+							|| $a['customer_email'] !== $payload['customer_email']
+							|| $a['arrival'] !== $payload['arrival']
+							|| $a['pickup'] !== $payload['pickup'];
+					}
 				}
+
 				if ($obsolete) {
 					$this->store->update('deliveries', $row, ['status' => 'cancelled']);
 					continue;
@@ -73,37 +83,9 @@ final class AppointmentDelivery {
 				if ($row['channel'] === 'calendar') {
 					$this->calendar->send($payload, $row['kind']);
 				} else {
-					$labels = [
-						'confirm' => 'Terminbestätigung',
-						'update' => 'Terminänderung',
-						'cancel' => 'Terminabsage',
-						'pickup_cancel' => 'Abholzeit aufgehoben',
-						'reminder' => 'Terminerinnerung',
-					];
-					$zone = new \DateTimeZone('Europe/Berlin');
-					$arrival = (new \DateTimeImmutable($payload['arrival']))
-						->setTimezone($zone)
-						->format('d.m.Y H:i');
-					$send = $this->mailer->prepare(
-						$payload['customer_email'],
-						$labels[$row['kind']] . ' · ' . $payload['vehicle_label'],
-						$labels[$row['kind']]
-								. "\n"
-								. $payload['vehicle_label']
-								. ' · '
-								. $payload['title']
-								. "\nAnnahme: "
-								. $arrival
-								. ' (Europe/Berlin)'
-								. ($payload['pickup']
-									? "\nAbholung: "
-										. (new \DateTimeImmutable($payload['pickup']))
-											->setTimezone($zone)
-											->format('d.m.Y H:i')
-									: '')
-								. "\nBei Rückfragen wenden Sie sich bitte an Ihre Werkstatt.",
-						AppointmentCalendar::build($payload, $row['kind'] === 'pickup_cancel' ? 'cancel' : $row['kind'], only: $row['kind'] === 'pickup_cancel' ? 'pickup' : null),
-					);
+					$text = $this->templates->render($row['kind'], $payload);
+					$ics = in_array($row['kind'], ['ready', 'deadline'], true) ? '' : AppointmentCalendar::build($payload, $row['kind'] === 'pickup_cancel' ? 'cancel' : $row['kind'], only: $row['kind'] === 'pickup_cancel' ? 'pickup' : null);
+					$send = $this->mailer->prepare($payload['customer_email'], $text['subject'], $text['body'], $ics);
 					$smtpAttempted = true;
 					$status = $send();
 				}

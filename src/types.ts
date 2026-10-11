@@ -6,6 +6,7 @@ export interface Base {
   updated_at: number
 }
 export interface Customer extends Base {
+  deadline_emails?: boolean
   name: string
   contact: string
   email: string
@@ -104,6 +105,7 @@ export interface Defect extends Base {
   published: boolean
 }
 export interface Deadline extends Base {
+  last_completed_date?: string | null
   vehicle_id: string
   title: string
   due_date: string | null
@@ -299,6 +301,7 @@ export interface Appointment extends Base {
   note: string
   override_reason: string
   reminder: boolean
+  notify_ready?: boolean
   order_id: string | null
 }
 export interface BookView { items: Appointment[]; days: CapacityDay[]; settings: PlanningSettings }
@@ -324,10 +327,49 @@ export interface Calculation {
 }
 export interface Delivery extends Base {
   context?: { title: string; vehicle_label: string; arrival: string }
-  appointment_id: string
+  appointment_id: string | null
   channel: string
   kind: string
   status: string
   attempts: number
   last_error: string
+}
+
+export interface Revenue extends Base {
+  source_kind: 'orders' | 'appointments'
+  source_id: string
+  vehicle_id: string
+  planned_net_cents: number | null
+  actual_net_cents: number | null
+  revenue_date: string | null
+}
+export interface ReportJob {
+  source_kind: 'orders' | 'appointments'
+  source_id: string
+  title: string
+  vehicle_label: string
+  vehicle_kind: 'customer' | 'fleet'
+  status: string
+  completed_at: string | null
+  date: string | null
+  undated: boolean
+  period_planned_cents: number | null
+  valuation: Revenue | null
+}
+export interface WorkshopReport {
+  from: string
+  to: string
+  scope: string
+  generated_at: number
+  summary: {
+    actual_cents: number; planned_cents: number; missing_actual: number; missing_plan: number
+    completed: number; planned_jobs: number; work_seconds: number; fleet_seconds: number
+    capacity_minutes: number; booked_minutes: number; completed_planned_minutes: number
+    completed_work_seconds: number; comparable_completed: number; long_intervals: number; undated_jobs: number
+  }
+  months: { month: string; actual_cents: number; planned_cents: number }[]
+  days: CapacityDay[]
+  employees: { id: string; name: string; seconds: number; fleet_seconds: number; orders: number; running: number }[]
+  completed: { id: string; title: string; minutes: number | null; seconds: number; completed_at: string }[]
+  jobs: ReportJob[]
 }

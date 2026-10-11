@@ -7,6 +7,8 @@ namespace OCA\Werkstattmanager\Db;
 /** The app's explicit storage contract. JSON is limited to ordered step/text snapshots. */
 final class Schema {
 	public const TABLES = [
+		'communications' => ['templates' => 'j', 'reminder_days' => 'i'],
+		'revenues' => ['source_kind' => 's', 'source_id' => 'id', 'vehicle_id' => 'id', 'planned_net_cents' => 'i', 'actual_net_cents' => 'i', 'revenue_date' => 's'],
 		'service_usage' => ['origin' => 's', 'service_id' => 'id'],
 		'services' => [
 			'seed_snapshot' => 'j',
@@ -53,6 +55,7 @@ final class Schema {
 		],
 		'planning' => ['settings' => 'j'],
 		'appointments' => [
+			'notify_ready' => 'b',
 			'checklist' => 'j',
 			'vehicle_id' => 'id',
 			'title' => 's',
@@ -82,6 +85,8 @@ final class Schema {
 			'vat_percent' => 'i',
 		],
 		'deliveries' => [
+			'vehicle_id' => 'id',
+			'deadline_id' => 'id',
 			'event_key' => 's',
 			'appointment_id' => 'id',
 			'appointment_version' => 'i',
@@ -95,6 +100,7 @@ final class Schema {
 		],
 
 		'customers' => [
+			'deadline_emails' => 'b',
 			'name' => 's',
 			'contact' => 's',
 			'email' => 's',
@@ -186,6 +192,7 @@ final class Schema {
 			'published' => 'b',
 		],
 		'deadlines' => [
+			'last_completed_date' => 's',
 			'vehicle_id' => 'id',
 			'title' => 's',
 			'due_date' => 's',
@@ -230,6 +237,7 @@ final class Schema {
 		],
 	];
 	public const UNIQUE = [
+		'revenues' => [['source_kind', 'source_id']],
 		'service_usage' => [['origin', 'service_id']],
 		'services' => [['seed_key']],
 		'prices' => [['seed_key']],

@@ -32,12 +32,12 @@ async function findFreeDays() {
   finally { finding.value = false }
 }
 function chooseDay(day: string) { if (day === arrival.value.slice(0, 10)) return; arrival.value = day + 'T' + (arrival.value.slice(11) || '08:00'); start.value = ''; pickup.value = ''; suggested.value = null }
-const allocations = ref<Allocation[]>(JSON.parse(JSON.stringify(original?.allocations ?? []))), reason = ref(original?.override_reason ?? ''), note = ref(original?.note ?? ''), reminder = ref(original?.reminder ?? false), stage = ref(original?.stage ?? 'planned')
+const allocations = ref<Allocation[]>(JSON.parse(JSON.stringify(original?.allocations ?? []))), reason = ref(original?.override_reason ?? ''), note = ref(original?.note ?? ''), reminder = ref(original?.reminder ?? false), notifyReady = ref(original?.notify_ready ?? false), stage = ref(original?.stage ?? 'planned')
 watch([arrival, minutes, allocations], () => { ++suggestionRevision; suggested.value = null }, { deep: true })
 const vehicles = ref<Vehicle[]>([]), customers = ref<Customer[]>([]), error = ref(''), busy = ref(false), inlineEditor = ref<'customers' | 'vehicles' | null>(null)
 const customerId = ref(''), cancelOpen = ref(false), cancelPrompt = ref<HTMLDivElement | null>(null)
 function askCancel() { cancelOpen.value = true; void nextTick(() => cancelPrompt.value?.focus()) }
-const { dirty } = useDirtySnapshot(() => ({ vehicle: vehicle.value, title: title.value, email: email.value, arrival: arrival.value, start: start.value, pickup: pickup.value, lines: lines.value, minutes: minutes.value, allocations: allocations.value, reason: reason.value, note: note.value, reminder: reminder.value, stage: stage.value, checklist: checklist.value }))
+const { dirty } = useDirtySnapshot(() => ({ vehicle: vehicle.value, title: title.value, email: email.value, arrival: arrival.value, start: start.value, pickup: pickup.value, lines: lines.value, minutes: minutes.value, allocations: allocations.value, reason: reason.value, note: note.value, reminder: reminder.value, notify_ready: notifyReady.value, stage: stage.value, checklist: checklist.value }))
 async function cancel() {
   if (!original || busy.value) return
   busy.value = true; error.value = ''
@@ -57,14 +57,17 @@ async function save(status: Appointment['status']) {
   if (busy.value) return
   error.value = ''; busy.value = true
   try {
-    const saved = await command<Appointment>('/api/v1/appointments', { id: original?.id, version: original?.version, vehicle_id: vehicle.value, title: title.value, customer_email: email.value, arrival: berlinIso(arrival.value), work_start: berlinIso(start.value), pickup: berlinIso(pickup.value), service_lines: lines.value, minutes: minutes.value, allocations: allocations.value, override_reason: reason.value, note: note.value, reminder: reminder.value, stage: stage.value, checklist: checklist.value, status })
+    const saved = await command<Appointment>('/api/v1/appointments', { id: original?.id, version: original?.version, vehicle_id: vehicle.value, title: title.value, customer_email: email.value, arrival: berlinIso(arrival.value), work_start: berlinIso(start.value), pickup: berlinIso(pickup.value), service_lines: lines.value, minutes: minutes.value, allocations: allocations.value, override_reason: reason.value, note: note.value, reminder: reminder.value, notify_ready: notifyReady.value, stage: stage.value, checklist: checklist.value, status })
     emit('saved', saved)
   } catch (e) { error.value = message(e) } finally { busy.value = false }
 }
 </script>
 <template>
   <Modal :title="original ? t('Kundentermin bearbeiten') : t('Kundentermin anlegen')" :dirty="dirty || pendingWork" :locked="busy" @close="!busy && emit('close')">
-    <div v-if="cancelOpen" ref="cancelPrompt" tabindex="-1" class="wm-guide" role="group" :aria-label="t('Terminabsage bestätigen')"><h3>{{ t('Diesen gespeicherten Termin absagen?') }}</h3><p>{{ original?.title }} · {{ original?.customer_email || t('Keine Kunden-E-Mail hinterlegt') }}</p><p>{{ t('Der Kalendertermin wird abgesagt. Bei hinterlegter E-Mail erhält der Kunde eine Absage. Ungespeicherte Änderungen werden verworfen.') }}</p><NcButton :disabled="busy" @click="cancelOpen = false">{{ t('Weiter bearbeiten') }}</NcButton><NcButton :disabled="busy" variant="error" @click="cancel">{{ t('Absage bestätigen') }}</NcButton><p v-if="error" role="alert">{{ error }}</p></div>
+    <div v-if="cancelOpen" ref="cancelPrompt" tabindex="-1" class="wm-guide" role="group" :aria-label="t('Terminabsage bestätigen')">
+<h3>{{ t('Diesen gespeicherten Termin absagen?') }}</h3><p>{{ original?.title }} · {{ original?.customer_email || t('Keine Kunden-E-Mail hinterlegt') }}</p><p>{{ t('Der Kalendertermin wird abgesagt. Bei hinterlegter E-Mail erhält der Kunde eine Absage. Ungespeicherte Änderungen werden verworfen.') }}</p><NcButton :disabled="busy" @click="cancelOpen = false">{{ t('Weiter bearbeiten') }}</NcButton><NcButton :disabled="busy" variant="error" @click="cancel">{{ t('Absage bestätigen') }}</NcButton>
+<p v-if="error" role="alert">{{ error }}</p>
+</div>
     <form v-show="!cancelOpen" class="wm-form" @submit.prevent="save('confirmed')">
       <p class="wm-guide">{{ t('Fahrzeug wählen → Arbeiten auswählen → Ankunft und Abholung eintragen → Termin bestätigen.') }}</p>
       <p v-if="copied" class="wm-guide">{{ t('Folgetermin vorbereitet. Fahrzeug und Arbeiten sind übernommen; bitte neuen Tag, Zeiten und aktuelle Kundenadresse prüfen. Bisher wurde nichts gespeichert oder versendet.') }}</p>
@@ -91,6 +94,7 @@ async function save(status: Appointment['status']) {
       </details>
       <label>{{ t('E-Mail des Kunden (optional)') }}<input v-model="email" type="email" maxlength="255" /></label><p>{{ t('Mit „Termin bestätigen“ wird eine Bestätigung mit Kalenderdatei versendet. Ein Entwurf versendet nichts.') }}</p>
       <label class="wm-check"><input v-model="reminder" type="checkbox" />{{ t('Erinnerung 24 Stunden vorher senden') }}</label>
+      <label class="wm-check"><input v-model="notifyReady" type="checkbox" />{{ t('Kunden per E-Mail benachrichtigen, wenn der Meister „Abholbereit“ markiert') }}</label><p class="wm-muted">{{ t('Benötigt eine Kunden-E-Mail. Pro Termin und E-Mail-Adresse wird die Fertigmeldung einmal versendet. Die Nachricht verwendet die Vorlage aus den Einstellungen.') }}</p>
       <label v-if="!reception">{{ t('Stand des Termins') }}<select v-model="stage"><option value="planned">{{ t('Bestätigt – Fahrzeug noch nicht eingetroffen') }}</option><option value="arrived">{{ t('Fahrzeug eingetroffen') }}</option><option value="parts_missing">{{ t('Teile fehlen') }}</option><option value="customer_question">{{ t('Rückfrage beim Kunden') }}</option><option value="ready">{{ t('Abholbereit') }}</option><option value="collected">{{ t('Abgeholt') }}</option><option value="no_show">{{ t('Nicht erschienen') }}</option></select></label>
       <label v-if="!reception">{{ t('Interne Hinweise') }}<textarea v-model="note" maxlength="10000" rows="3"></textarea></label>
       <ReceptionChecklist v-if="!reception" v-model="checklist" />

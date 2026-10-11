@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
- <id>werkstattmanager</id><name>Werkstattmanager</name><summary>Fahrzeuge, Aufträge und Werkstattzeiten</summary>
- <description>Fahrzeugakten, schnelle Auftragserstellung, Werkstatt-Tablet und externe Mängelmeldungen. Interne Pilotversion; vor Produktiveinsatz auf der Zielinstallation prüfen.</description>
- <version>0.2.4</version><licence>AGPL-3.0-or-later</licence><author>LtRock84</author><namespace>Werkstattmanager</namespace><category>organization</category>
+ <id>werkstattmanager</id><name>Werkstattmanager</name><summary>Fahrzeuge, Termine, Werkstattaufträge und Auswertungen</summary>
+ <description>Fahrzeugakten für Kunden und eigene Flotte, Terminbuch mit Tageskapazitäten, Leistungskatalog und Preisrechner. Schnelle Werkstattaufträge, Tablet-Zeiterfassung, Teileanforderungen und externe Mängelmeldungen per Fahrzeug-QR-Code. Auswertung eigener Plan- und Istumsätze sowie Arbeitszeiten. Anpassbare Kundennachrichten, optionale Abholbereit-Mails und automatische Fahrzeugfristen-Erinnerungen. Interne Pilotversion; vor Produktiveinsatz auf der Zielinstallation prüfen.</description>
+ <version>0.4.0</version><licence>AGPL-3.0-or-later</licence><author>LtRock84</author><namespace>Werkstattmanager</namespace><category>organization</category>
  <website>https://github.com/LtRock84/werkstattmanager</website>
  <bugs>https://github.com/LtRock84/werkstattmanager/issues</bugs>
  <repository type="git">https://github.com/LtRock84/werkstattmanager.git</repository>

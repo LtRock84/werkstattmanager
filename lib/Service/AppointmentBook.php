@@ -131,8 +131,12 @@ final class AppointmentBook {
 				'note' => Rules::text($input['note'] ?? '', 10000),
 				'override_reason' => $reason,
 				'reminder' => ($input['reminder'] ?? false) === true,
+				'notify_ready' => ($input['notify_ready'] ?? $old['notify_ready'] ?? false) === true,
 				'order_id' => $old['order_id'] ?? null,
 			];
+			if ($v['notify_ready'] && $email === '') {
+				throw new Problem('validation', 'Für die Abholbenachrichtigung bitte eine Kunden-E-Mail angeben.');
+			}
 			$zone = new \DateTimeZone('Europe/Berlin');
 			$day = static fn (string $date): string => (new \DateTimeImmutable($date))->setTimezone($zone)->format('Y-m-d');
 			foreach ($v['allocations'] as $allocation) {
@@ -200,6 +204,9 @@ final class AppointmentBook {
 				}
 			}
 			// Reminder validity uses the current schedule, not the last delivery revision.
+			if ($row['stage'] === 'ready' && $row['notify_ready'] && $status === 'confirmed' && $vrow['kind'] === 'customer') {
+				$this->queue($row, 'email', 'ready');
+			}
 			if (
 				$row['reminder']
 				&& $status === 'confirmed'
@@ -293,7 +300,7 @@ final class AppointmentBook {
 			'sha256',
 			$row['id']
 				. ':'
-				. ($kind === 'reminder' ? $row['arrival'] : $row['version'])
+				. ($kind === 'ready' ? 'once' : ($kind === 'reminder' ? $row['arrival'] : $row['version']))
 				. ':'
 				. $channel
 				. ':'
@@ -304,36 +311,40 @@ final class AppointmentBook {
 				. $suffix,
 		);
 		$existing = $this->store->find('deliveries', ['event_key' => $key], 1)[0] ?? null;
-		if ($existing && $kind === 'reminder' && $existing['status'] === 'cancelled') {
-			$this->store->update('deliveries', $existing, [
-				'status' => 'pending',
-				'next_try' => $when ?? time(),
-			]);
+		if ($existing && (!in_array($kind, ['ready', 'reminder'], true) || !in_array($existing['status'], $kind === 'ready' ? ['cancelled', 'pending'] : ['cancelled'], true))) {
+			return;
 		}
-		if (!$existing) {
-			$vehicle = $this->store->get('vehicles', $row['vehicle_id']);
-			$payload = array_intersect_key(
-				$row,
-				array_flip([
-					'id',
-					'version',
-					'title',
-					'arrival',
-					'pickup',
-					'work_start',
-					'allocations',
-					'customer_email',
-					'status',
-					'reminder',
-				]),
-			);
-			$payload['vehicle_label'] = $vehicle['plate'] ?: $vehicle['number'];
-			if ($suffix !== null) {
-				$payload['event_suffix'] = $suffix;
-			}
+		$vehicle = $this->store->get('vehicles', $row['vehicle_id']);
+		$payload = array_intersect_key(
+			$row,
+			array_flip([
+				'id',
+				'vehicle_id',
+				'version',
+				'title',
+				'arrival',
+				'pickup',
+				'work_start',
+				'allocations',
+				'customer_email',
+				'status',
+				'reminder',
+				'notify_ready',
+			]),
+		);
+		$payload['vehicle_label'] = $vehicle['plate'] ?: $vehicle['number'];
+		$customer = $vehicle['customer_id'] ? $this->store->get('customers', $vehicle['customer_id']) : null;
+		$payload['customer_name'] = $customer ? ($customer['contact'] ?: $customer['name']) : 'liebe Kundin, lieber Kunde';
+		if ($suffix !== null) {
+			$payload['event_suffix'] = $suffix;
+		}
+		if ($existing) {
+			$this->store->update('deliveries', $existing, ['status' => 'pending', 'next_try' => $when ?? time(), 'payload' => $payload, 'appointment_version' => $row['version'], 'vehicle_id' => $row['vehicle_id']]);
+		} else {
 			$this->store->insert('deliveries', [
 				'event_key' => $key,
 				'appointment_id' => $row['id'],
+				'vehicle_id' => $row['vehicle_id'],
 				'appointment_version' => $row['version'],
 				'channel' => $channel,
 				'kind' => $kind,

@@ -4,6 +4,8 @@ import { receptionLabels } from './planning'
 
 export function auditEntry(entry: Audit) {
   const titles: Record<string, string> = {
+    'mail.templates_saved': t('Kundennachrichten und Fristenvorlauf geändert'),
+    'revenue.saved': t('Plan- oder Ist-Umsatz erfasst oder korrigiert'),
     'appointment.draft': t('Kundentermin als Entwurf gespeichert'),
     'appointment.confirmed': t('Kundentermin bestätigt oder geändert'),
     'appointment.cancelled': t('Kundentermin abgesagt'),
@@ -92,6 +94,17 @@ export function auditEntry(entry: Audit) {
         t('Erledigte Arbeiten'),
         details.steps.filter((step): step is string => typeof step === 'string').join('\n'),
       )
+  }
+  if (action === 'revenue.saved') {
+    add(t('Grund'), details.reason)
+    for (const [key, label] of [['before', t('Bisherige Beträge')], ['after', t('Neue Beträge')]]) {
+      const value = details[key]
+      if (value && typeof value === 'object' && 'planned_net_cents' in value && 'actual_net_cents' in value) {
+        const money = (v: unknown) => typeof v === 'number' ? new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(v / 100) : t('Nicht erfasst')
+        add(label, `${t('Plan netto')}: ${money(value.planned_net_cents)} · ${t('Ist netto')}: ${money(value.actual_net_cents)}`)
+        if ('revenue_date' in value && typeof value.revenue_date === 'string') add(t('Umsatzdatum'), date(value.revenue_date))
+      }
+    }
   }
   if (action === 'time.corrected') {
     for (const [key, label] of [

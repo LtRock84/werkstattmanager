@@ -27,8 +27,10 @@ import DriverForm from './components/DriverForm.vue'
 import AccessSettings from './components/AccessSettings.vue'
 import AppointmentBook from './components/AppointmentBook.vue'
 import ServiceCatalogue from './components/ServiceCatalogue.vue'
+import WorkshopStatistics from './components/WorkshopStatistics.vue'
 import PriceCalculator from './components/PriceCalculator.vue'
 import MailSettings from './components/MailSettings.vue'
+import CustomerMailSettings from './components/CustomerMailSettings.vue'
 import CalendarSettings from './components/CalendarSettings.vue'
 import OrderComposer from './components/OrderComposer.vue'
 import OrderDetail from './components/OrderDetail.vue'
@@ -37,7 +39,7 @@ import DefectDetail from './components/DefectDetail.vue'
 import EntityEditor from './components/EntityEditor.vue'
 const role = loadState<Role>('werkstattmanager', 'mode', 'tablet'),
   master = role === 'master'
-const pricingVisited = ref(false)
+const pricingVisited = ref(false), statisticsVisited = ref(false), settingsVisited = ref(false)
 const page = ref(master ? 'dashboard' : 'orders'),
   search = ref(''),
   status = ref(master ? '' : 'open'),
@@ -91,6 +93,7 @@ const navigation = computed(() =>
         ['appointments', t('Terminbuch')],
         ['services', t('Leistungskatalog')],
         ['pricing', t('Preise kalkulieren')],
+        ['statistics', t('Auswertung')],
         ['orders', t('Aufträge')],
         ['vehicles', t('Fahrzeuge')],
         ['deadlines', t('Termine & Fristen')],
@@ -107,6 +110,7 @@ const heading = computed(
 const pageHelp = computed(
   () =>
     ({
+      statistics: [t('Umsatz und Werkstatt im Blick'), t('Zeitraum wählen, fehlende Auftragsbeträge erfassen und Arbeitszeiten sowie Auslastung vergleichen.')],
       appointments: [t('Termine einfach annehmen'), t('Leistungen auswählen, Arbeitszeit prüfen und einen freien Tag wählen. Aus einem bestätigten Termin kann ein Arbeitsauftrag entstehen.')],
       services: [t('Alle Werkstattleistungen an einem Ort'), t('Leistungen, eigene Zeiten, Pakete und Vergleichspreise für Terminannahme und Auftragserstellung pflegen.')],
       pricing: [t('Preise nachvollziehbar kalkulieren'), t('Jahreskosten eintragen, abrechenbare Stunden festlegen und Leistungen auswählen. Preise erst nach eigener Prüfung in den Katalog übernehmen.')],
@@ -405,6 +409,8 @@ onBeforeUnmount(() => {
 })
 watch([page, library, status, employeeFilter], () => {
   if (page.value === 'pricing') pricingVisited.value = true
+  if (page.value === 'statistics') statisticsVisited.value = true
+  if (page.value === 'settings') settingsVisited.value = true
   ++revision
   search.value = ''
   more.value = false
@@ -530,7 +536,7 @@ async function erase() {
 <template>
   <DriverForm v-if="role === 'driver'" />
   <main v-else-if="role === 'reception'" class="wm-app wm-reception"><CompanyHeader /><h1>{{ t('Terminannahme') }}</h1><p class="wm-guide">{{ t('Kundentermine vereinbaren, ändern oder absagen. Arbeitsaufträge und Werkstattverwaltung übernimmt der Meister.') }}</p><AppointmentBook :reception="true" /></main>
-  <div v-else class="wm-shell" :class="{ 'wm-tablet': !master }">
+  <div v-else class="wm-shell" :class="{ 'wm-tablet': !master, 'wm-report-page': page === 'statistics' }">
     <aside class="wm-sidebar">
       <div class="wm-brand">
         <span class="wm-brand-icon">W</span>
@@ -586,7 +592,9 @@ async function erase() {
       <p v-if="notice" role="status" class="wm-success">{{ notice }}</p>
       <p v-if="busy" role="status">{{ t('Wird geladen …') }}</p>
       <AppointmentBook v-if="master && page === 'appointments'" @order="openAppointmentOrder" />
+      <WorkshopStatistics v-if="master && (page === 'statistics' || statisticsVisited)" v-show="page === 'statistics'" :active="page === 'statistics'" @order="openOrder" @appointments="page = 'appointments'" />
       <ServiceCatalogue v-if="master && page === 'services'" />
+      <CustomerMailSettings v-if="master && (page === 'settings' || settingsVisited)" v-show="page === 'settings'" />
       <PriceCalculator v-if="master && (page === 'pricing' || pricingVisited)" v-show="page === 'pricing'" />
       <template v-if="page === 'dashboard'">
         <p v-if="failedNotifications.length" role="status" class="wm-error">

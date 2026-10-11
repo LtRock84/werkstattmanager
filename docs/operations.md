@@ -1,11 +1,12 @@
 # Betrieb und Datenschutz
 
-Stand: 2026-10-05. Gilt für den internen Prüfkandidaten, nicht als Betriebsfreigabe.
+Stand: 2026-10-11, Version 0.4.0. Gilt für den internen Prüfkandidaten, nicht als Betriebsfreigabe.
 
 ## Einrichtung und laufender Betrieb
 
-Eine Werkstattorganisation je Installation. Rollen serverseitig über Nextcloud-Gruppen;
-Administratoren dürfen Gruppen konfigurieren. Meister sollten eigene Konten nutzen.
+Eine Werkstattorganisation je Installation. Rollen serverseitig über Nextcloud-Gruppen
+oder direkte Benutzerfreigaben; Administratoren konfigurieren Meister-/Terminannahme-
+und Tabletzugänge. Meister sollten eigene Konten nutzen.
 Tablet-Konten nur der Tabletgruppe zuordnen und nicht mit Kundendateien oder anderen
 vertraulichen Nextcloud-Freigaben ausstatten. Mitarbeiter-Auswahl ist kein Login.
 HTTPS verwenden. Fahrerlinks erlauben jedem Besitzer den eingeschränkten Fahrzeugzugang;
@@ -145,3 +146,71 @@ Unter Stammdaten Firmenname/Logo pflegen; beides ist im öffentlichen Fahrerform
 Administrator richtet Werkstattkonto zuerst in Nextcloud Mail ein und wählt es unter Einstellungen → Werkstatt-E-Mailadresse ausdrücklich aus. Erlaubt damit gemeinsame Nutzung für Kundentermine und Cron-Erinnerungen, unabhängig vom angemeldeten Bearbeiter. Zugangsdaten bleiben inMail; ein aktiver, dauerhaft berechtigter Kontoinhaber erforderlich. DessenLöschung sperrt Versand biserneuter Auswahl. Keine heimlicheSMTP-Alternative. „An Mail übergeben“ ist keinZustellbeleg: Postausgang/Senden/Sentstatus imMailclient prüfen. Mailkonto muss IMAP undSMTP zuverlässig erreichen undgesendeteNachrichten verwalten können. UnklarerVersandausgang nur nachPrüfung wiederholen. Einstellungen/Sicherungen enthaltenKontobezug/Adresse, keineMailpasswörter; Mailclient eigenerDatenspeicher/Sicherung/Löschregeln.
 
 Geprüfte öffentliche APIs: [Mailprovider NC35](https://docs.nextcloud.com/server/stable/developer_manual/digging_deeper/groupware/mail_provider.html), [Mail5.12.3 Provider](https://github.com/nextcloud/mail/tree/v5.12.3/lib/Provider). Prüfung06.10.2026 gegen installierteNC35.0.1-Interfaces undveröffentlichtenMailcode. Mail ist optionaleIntegration, keineApppflicht.
+
+## Umsatz- und Zeitauswertung ab 0.3.0
+
+Unter **Auswertung** wählen Meister den Zeitraum und Kunden-/Flottenfilter.
+Bei **Beträge erfassen** wird der vereinbarte Planwert bzw. nach Meisterabnahme
+der abgerechnete Istwert einschließlich Material und Fremdleistungen in Euro netto
+eingetragen. Das Umsatzdatum bestimmt den Zeitraum des Istwerts; eine Notiz begründet
+jede Erfassung/Korrektur. Leer bedeutet unbekannt, ausdrücklich 0 bedeutet ohne
+Umsatz. Die App leitet keine Erlöse aus Katalogpreisen oder gebuchten Stunden ab.
+
+Ungeplante offene Aufträge werden separat kenntlich gemacht. Erst ein Planungstag
+ordnet ihren Planumsatz einem Zeitraum zu. Entwürfe und Stornierungen zählen nicht;
+verknüpfte Termine/Aufträge zählen einmal. Bereits abgerechnete Nacharbeiten erzeugen
+keinen zusätzlichen Planumsatz. Ein erneut zur Nacharbeit geöffneter Auftrag zählt
+erst nach erneuter Abnahme wieder als abgeschlossener Ist-Umsatz. Diese Übersicht
+ersetzt keine Buchhaltung, unveränderliche Rechnungen oder Zahlungskontrolle.
+
+Die Tagesauslastung verwendet die Stundenbudgets aus dem Terminbuch und umfasst auch
+die eigene Flotte. Mitarbeiterzeiten sind gebuchte Auftragszeiten, keine Anwesenheit
+oder Leistungsbewertung; Pausen sind ausgeschlossen. **Auswertung anzeigen** lädt
+aktuelle Daten nach. Das Druckbild enthält die gewählte Auswertung. Der geschützte
+CSV-Link exportiert alle erfassten Betragsdatensätze, unabhängig vom Zeitraum.
+
+Finanzdaten bleiben auf dem Nextcloud-Server und sind nur für Meister zugänglich.
+Berechtigungen für Meisterzugänge daher entsprechend vergeben. Datenschutz-Export,
+Sicherung und administrative Fahrzeuglöschung schließen die neuen Betragsdaten ein.
+Die Obergrenze von 20.000 Datensätzen je Auswertungsbereich ist vor einem größeren
+Pilotbestand zu vermessen; bei Überschreitung erscheint ein Fehler statt einer
+unvollständigen Summe. Abrechnung, Korrekturgründe und Exporte brauchen die gleichen
+betrieblichen Aufbewahrungs- und Zugriffsvorgaben wie die übrigen Werkstattakten.
+
+## Kundennachrichten und Fahrzeugfristen (0.4.0)
+
+Unter **Einstellungen → Kundennachrichten und Fristenerinnerungen** bearbeiten Meister
+sieben fertige Textvorlagen: Bestätigung, Änderung, Absage, aufgehobene Abholzeit,
+Terminerinnerung, Abholbereit und Fristenerinnerung. Platzhalter setzen Kundenname,
+Fahrzeugkennung, Termin, Abholung, Leistung, Frist und Werkstatt ein. Nachrichten
+sind reine Texte. Vorlagen gelten für noch nicht versendete Nachrichten;
+Versionsschutz verhindert das Überschreiben fremder Änderungen.
+
+Im Kundentermin die Option **Kunden per E-Mail benachrichtigen …** auswählen und
+eine Kundenadresse hinterlegen. Wenn der Meister den Termin auf **Abholbereit**
+setzt und speichert, wird die Fertigmeldung vorgemerkt. Pro Termin und Adresse
+wird sie einmal versendet. Auftrag fertigmelden oder abnehmen sendet allein keine
+Abholnachricht. Eigene Flottenfahrzeuge bekommen keine Kunden-Fertigmeldung.
+
+In **Stammdaten → Kunden / Firmen → Bearbeiten** lässt sich die automatische
+Fristenerinnerung aktivieren. Neue Kunden sind vorausgewählt; bestehende Kunden
+bleiben beim Upgrade deaktiviert. Erforderlich sind eine gültige Kundenadresse,
+ein zugeordnetes Kundenfahrzeug und eine offene Frist. In der Fahrzeugakte eine
+Frist mit **Zuletzt erledigt am** und Wiederholung anlegen; die nächste Fälligkeit
+wird berechnet, wenn „Fällig am“ leer bleibt. HU/24 Monate und Inspektion/12 Monate
+sind bearbeitbare Schnellvorgaben, keine verbindlichen Intervalle für jedes Fahrzeug.
+
+Standardmäßig wird 30 Tage vor der nächsten Fälligkeit erinnert: ungefähr elf
+Monate nach einer jährlichen Inspektion beziehungsweise 23 Monate nach einer
+zweijährlichen HU. Der Vorlauf ist in den Einstellungen von 1 bis 365 Tagen
+anpassbar. Kilometerfristen werden bei erreichtem bestätigtem Stand erinnert;
+Fahrleistung wird nicht geschätzt. Nach Aktivierung werden auch überfällige offene
+Fristen einmal gemeldet. Nach bestätigter Erledigung entsteht die nächste Frist
+mit neuem Erinnerungszyklus. Es wird kein Kundentermin automatisch gebucht.
+
+Der bestehende Nextcloud-Mailversand beziehungsweise das konfigurierte Werkstatt-
+Mailkonto und Hintergrundjobs sind erforderlich. Wunsch, Empfänger, Fahrzeugbindung
+und aktuelle Fälligkeit werden vor Versand erneut geprüft. Fertig- und Fristenmails
+enthalten keine zusätzliche Kalenderdatei. Versandfehler sind im Terminbuch sichtbar;
+unklare SMTP-Ausgänge werden nicht automatisch erneut gesendet. Ein Versandnachweis
+ist keine Bestätigung, dass die E-Mail beim Empfänger gelesen wurde.

@@ -70,13 +70,15 @@ final class WorkshopMailer {
 		}
 	}
 	/** Validate before marking transmission as attempted; preflight failures can safely retry. */
-	public function prepare(string $to, string $subject, string $body, string $ics): \Closure {
+	public function prepare(string $to, string $subject, string $body, string $ics = ''): \Closure {
 		$selection = $this->selection();
 		$name = $this->company->profile()['name'];
 		if (($selection['mode'] ?? '') === 'system') {
 			$message = $this->system->createMessage();
 			$message->setTo([$to])->setSubject($subject)->setPlainBody($body);
-			$message->attach($this->system->createAttachment($ics, 'werkstatttermin.ics', 'text/calendar; charset=utf-8'));
+			if ($ics !== '') {
+				$message->attach($this->system->createAttachment($ics, 'werkstatttermin.ics', 'text/calendar; charset=utf-8'));
+			}
 			return function () use ($message): string {
 				if ($this->system->send($message)) {
 					throw new Problem('mail', 'E-Mail konnte nicht zugestellt werden.');
@@ -92,7 +94,10 @@ final class WorkshopMailer {
 			throw new Problem('mail_config', 'Werkstatt-Mailkonto wurde entfernt oder geändert. Bitte erneut auswählen.');
 		}
 		$message = $service->initiateMessage();
-		$message->setFrom(new Address($selection['address'], $name))->setTo(new Address($to))->setSubject($subject)->setBodyPlain($body)->setAttachments(new Attachment($ics, 'werkstatttermin.ics', 'text/calendar; charset=utf-8'));
+		$message->setFrom(new Address($selection['address'], $name))->setTo(new Address($to))->setSubject($subject)->setBodyPlain($body);
+		if ($ics !== '') {
+			$message->setAttachments(new Attachment($ics, 'werkstatttermin.ics', 'text/calendar; charset=utf-8'));
+		}
 		// Public API gives no remote delivery receipt or provider outbox identifier.
 		return function () use ($service, $message): string {
 			$service->sendMessage($message);

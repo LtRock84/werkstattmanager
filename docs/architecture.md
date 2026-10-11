@@ -1,8 +1,8 @@
 # Architektur und Schnittstellen
 
-## Zielmatrix und Werkzeuge (2026-10-05)
+## Zielmatrix und Werkzeuge (0.4.0, 2026-10-11)
 
-- Ziel: Nextcloud 35, PHP 8.3–8.5. Die CI installiert Nextcloud 35.0.1 mit
+- Ziel: Nextcloud 35, PHP 8.3–8.5. Die CI installiert Nextcloud 35.0.0 und 35.0.1 jeweils mit
   PostgreSQL 17 und MariaDB 11.8. MySQL ist noch nicht separat geprüft.
 - PHP-Syntax und Fachtests: 8.3/8.4/8.5; Coding Standard und Psalm 6 unter 8.3.
   Psalm 6 wird wegen seiner Werkzeuggrenze nicht unter PHP 8.5 ausgeführt.
@@ -16,8 +16,9 @@
 
 Controller übernehmen Request/Response und sichere Fehlerübersetzung; Services autorisieren
 und koordinieren Fachvorgänge. Store verwendet ausschließlich öffentliche OCP QueryBuilder-
-Verträge und eine feste Tabellen-/Spaltenliste. JSON wird nur für geordnete Schritte,
-Protokolldetails, Warnschwellen und idempotente Antwortkopien verwendet.
+Verträge und eine feste Tabellen-/Spaltenliste. JSON speichert begrenzte strukturierte
+Inhalte wie Arbeitsschritte, Termin-Leistungsmomentaufnahmen, Protokolldetails,
+Warnschwellen, Nachrichtenvorlagen und idempotente Antwortkopien.
 
 Fachobjekte liegen in wm_*-Tabellen; IDs sind zufällige 128-Bit-Kennungen.
 Versionszähler erzwingen Compare-and-swap bei Änderungen. Die Belegung wm_active besitzt
@@ -33,7 +34,10 @@ neue Änderungen brauchen eine neue Migration. Die Erstversion hat keinen Upgrad
 ## Rollen
 
 - Nextcloud-Administratoren: initiale Einrichtung und Datenschutzfunktionen, außerdem Meisterrechte.
-- Meistergruppe: alle Werkstattdaten und Abläufe; Benachrichtigungen an diese Gruppe.
+- Meistergruppe oder direkte Meisterfreigabe: Werkstattdaten und Abläufe, einschließlich
+  Auswertung und Nachrichtenvorlagen; Benachrichtigungen berücksichtigen beide Zugänge.
+- Terminannahme über Gruppe oder direkte Freigabe: Termine und erforderliche Kunden-/
+  Fahrzeuginformationen; keine Finanzdaten, Werkstattaktionen oder Verwaltung.
 - Tabletgruppe: freigegebene Aufträge, minimierte Fahrzeugdaten, Mitarbeiterliste,
   Buchungen/Arbeitsprotokoll/Teileanforderungen und Auftragsanhänge.
 - Nicht zugeordnet: kein App-Zugriff.
@@ -54,7 +58,10 @@ Basis `/apps/werkstattmanager` (mit Nextcloud-URL-Generator auch in Unterverzeic
 | POST `/api/v1/orders` | Auftrag erstellen; `{data}` mit Fahrzeug/Titel, optionalen Feldern und `request_id` |
 | POST `/api/v1/orders/{id}/{action}` | start/pause/finish/release/approve/rework/cancel; Version und Vorgangskennung |
 | POST `/api/v1/actions/{action}` | Teile, Mängelprüfung, Kilometer, Fristabschluss, Links, Datenschutz |
-| GET/PUT `/api/v1/settings` | Meister liest; Administrator setzt existierende, unterschiedliche Gruppen |
+| GET/PUT `/api/v1/settings` | Meister liest; Administrator verwaltet Gruppen und direkte Benutzerfreigaben |
+| GET/PUT `/api/v1/mail-templates` | Meister liest/bearbeitet Kundenvorlagen und Fristenvorlauf, mit Versionsprüfung |
+| GET `/api/v1/statistics` | Meister-Auswertung mit Zeitraum und Fahrzeugfilter |
+| POST `/api/v1/statistics/revenue` | Meister erfasst eigene Nettobeträge und Umsatzdatum, mit Version und Änderungsgrund |
 | POST `/api/v1/attachments` | Multipart `file` und Zielreferenz |
 | GET `/api/v1/attachments/{id}` | Autorisierter Download, keine öffentlichen Fotos |
 | GET `/api/v1/export/{kind}` | CSV für Meister, Formel-Injection geschützt |
@@ -74,7 +81,9 @@ URL-Fragment, wird nach Einlesen aus der Browseradresse entfernt und nicht in In
 oder Logs ausgegeben. Fahrersitzung gültig für zwei Stunden, Fotoberechtigung für eine Stunde.
 Jeder Aufruf prüft Fahrzeugart, Archivierung und Widerruf neu. Zustandsänderungen behalten
 CSRF-Schutz. Anonyme und angemeldete Aufrufer unterliegen eigenen Rate Limits.
-Keine Fremdskripte, Telemetrie oder Datenübertragung an externe Dienste.
+Keine Fremdskripte oder Telemetrie; keine Werkstattdaten an Rechercheanbieter.
+Nur ausdrücklich konfigurierte Mail- und CalDAV-Verbindungen übertragen die für
+Kundennachrichten beziehungsweise Kalenderereignisse erforderlichen Daten.
 
 Fotos: JPEG/PNG/WebP, höchstens 8 MB und 12 Megapixel; GD dekodiert und erzeugt neues JPEG
 (ohne ursprüngliche Metadaten). Maximal fünf Bilder je Fahrermeldung, wiederholte identische
@@ -195,3 +204,55 @@ weitere ausdrückliche Aktion speichert den Nettopreis über die versionsgeprüf
 Additive nullable JSON-Spalte `wm_appointments.checklist`; Domainvalidator mit festen Boolean-/Text-/Kilometerschlüsseln. Altclients bewahren vorhandene Checklisten bei fehlendem Feld; vollständige explizite Objekte ersetzen sie. Schreiben bleibt in derselben transaktionalen, versionierten und idempotenten Meisteraktion. Das Journal speichert geänderte Felder mit vorher/nachher. Auslieferungen verwenden weiterhin die bestehende Feld-Whitelist ohne Checkliste; Auftragskopien/Tabletantworten erhalten keine Annahme- oder Kundennotizen. Datenschutzexport und kontrollierte Fahrzeuglöschung behandeln den bestehenden Terminbereich vollständig.
 
 Vorschläge freier Tage sind reine Frontend-Auswertung der bestehenden serverseitig berechneten Tagesbudgets. Die endgültige Bestätigung prüft konkurrierende Kapazitätsänderungen erneut. Terminfilter verändern keine Budgets. Folgetermine kopieren ausschließlich geplante Arbeitsinhalte; aktuelle Fahrzeug-/Kundenreferenzen liefern die E-Mail.
+
+## Werkstattauswertung ab 0.3.0
+
+`StatisticsController` und `Statistics` stellen ausschließlich Meistern
+GET `/api/v1/statistics?from=YYYY-MM-DD&to=YYYY-MM-DD&scope=all|customer|fleet`
+und POST `/api/v1/statistics/revenue` bereit. Die zweite Route erwartet ein
+`data`-Objekt mit `source_kind` (orders/appointments), `source_id`,
+`version`, optionalen ganzzahligen `planned_net_cents`/`actual_net_cents`,
+`revenue_date` und verpflichtendem `reason`. Istbeträge benötigen einen
+abgeschlossenen Kundenauftrag und ein Umsatzdatum. CSRF bleibt aktiv.
+
+Die additive Migration 000300 ergänzt `wm_revenues`, getrennt von Tablet- und
+Terminannahme-Payloads. Ein eindeutiger Quellbezug und Versionsvergleich verhindern
+Doppelwerte und verlorene Betragsänderungen. Die gemeinsame Planungssperre und eine
+Quellzeilensperre koordinieren Betragserfassung mit Statusänderungen. Übernommene
+Terminwerte werden beim ersten Bearbeiten am freigegebenen Auftrag übertragen;
+spätere Nacharbeit bewahrt bereits erfasste Istwerte. Änderungen werden protokolliert.
+
+`WorkshopReport` aggregiert Geld in Cent und Zeit in Sekunden. Berliner Tagesgrenzen
+werden in UTC umgerechnet; Intervalle werden am Auswertungszeitraum und an der
+Serverzeit abgeschnitten. Die gesamte Auftragszeit bleibt für den Soll-/Ist-Vergleich
+erhalten. Bestätigter Termin und verknüpfter Auftrag zählen gemeinsam einmal;
+Mehrtagesplanwerte werden durch kumulative Rundung centgenau verteilt. Flottenarbeit
+bleibt interne Zeit, ohne Kundenumsatz. Kapazität zeigt stets die gesamte Werkstatt.
+
+Die Daten werden über stabile ID-Seiten zu je 500 Datensätzen eingelesen. Mehr als
+20.000 Datensätze je Bereich erzeugen einen sichtbaren Fehler statt Teilsummen.
+Die Auswertung ist eine betriebliche Übersicht aus eigenen Beträgen, kein
+Rechnungs-, Zahlungs-, Steuer- oder unveränderliches Buchführungsjournal.
+
+## Kundennachrichten 0.4.0
+
+Migration 000400 ergänzt Kundenwunsch, Termin-Abholwunsch, letzte Fristenerledigung,
+Fahrzeug-/Fristenbezug der bestehenden deliveries-Tabelle und eine versionierte
+communications-Einstellung. GET/PUT mail-templates sind meistergeschützt; Empfang
+und Tablet erhalten keine Vorlagen-/Fristenadministration. Vorlagen ersetzen bekannte
+Plaintext-Platzhalter ohne Auswertung von Code, HTML oder rekursiven Ersetzungen;
+Header-Steuerzeichen und unbekannte Platzhalter werden abgewiesen.
+
+AppointmentDispatch entdeckt Fristen in begrenzten 100er-Seiten und benutzt die
+vorhandene Zustellungslogik. Ereignis-Unique-Key, Transaktionen und optimistische
+Zustellungsübernahme begrenzen doppelte Nachrichten. Wunsch, Mailadresse, aktuelle
+Fälligkeit und Fahrzeug-/Kundenbindung werden vor Versand geprüft. SMTP-Ausgänge
+nach Übertragungsbeginn bleiben bei Fehlern unklar statt automatisch wiederholt.
+Eine bereits gesendete Nachricht kann bei späterem Widerruf nicht zurückgeholt
+werden. Änderungen der Vorlagen betreffen erst zukünftige Sendeversuche. Direkte
+Katalogänderungen überschreiben keine Termin-/Auftrags-Momentaufnahmen.
+
+Es werden dieselben öffentlichen OCP-Mail-, Config-, BackgroundJob- und
+Schema-APIs wie im bestehenden Versand verwendet, ohne neue Abhängigkeit oder
+neuen externen Dienst. Geschützte Fahrzeuglöschung prüft und entfernt auch neue
+Fristenzustellungen; offene/unklare Sendungen dürfen dabei nicht übergangen werden.

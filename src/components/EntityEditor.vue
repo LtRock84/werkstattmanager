@@ -16,6 +16,7 @@ const form = ref<Record<string, FormValue>>({
   position: 0,
   favorite: false,
   archived: false,
+  deadline_emails: true,
   vehicle_id: props.vehicleId ?? '',
   warning_days: '30, 7',
 })
@@ -72,6 +73,7 @@ const fields = computed<Field[]>(
       deadlines: [
         { key: 'title', label: t('Bezeichnung'), required: true },
         { key: 'due_date', label: t('Fällig am'), type: 'date' },
+        { key: 'last_completed_date', label: t('Zuletzt erledigt am'), type: 'date' },
         { key: 'due_km', label: t('Fällig bei Kilometerstand'), type: 'number' },
         { key: 'repeat_months', label: t('Wiederholung in Monaten'), type: 'number' },
         { key: 'repeat_km', label: t('Wiederholung nach Kilometern'), type: 'number' },
@@ -79,7 +81,7 @@ const fields = computed<Field[]>(
       ],
     })[props.kind],
 )
-const { dirty, reset } = useDirtySnapshot(() => ({ ...Object.fromEntries(fields.value.map(f => [f.key, form.value[f.key] ?? ''])), kind: form.value.kind, vehicleClass: form.value.vehicle_class, customer: form.value.customer_id, vehicle: form.value.vehicle_id, archived: form.value.archived, favorite: form.value.favorite }))
+const { dirty, reset } = useDirtySnapshot(() => ({ ...Object.fromEntries(fields.value.map(f => [f.key, form.value[f.key] ?? ''])), kind: form.value.kind, vehicleClass: form.value.vehicle_class, customer: form.value.customer_id, vehicle: form.value.vehicle_id, archived: form.value.archived, favorite: form.value.favorite, deadlineEmails: form.value.deadline_emails }))
 function close() { if (!busy.value && confirmDiscard(dirty.value)) emit('close') }
 onMounted(async () => {
   if (props.row)
@@ -88,6 +90,7 @@ onMounted(async () => {
       else if (v === null || ['string', 'number', 'boolean'].includes(typeof v))
         form.value[k] = v as FormValue
     }
+  if (props.row && props.kind === 'customers') form.value.deadline_emails = (props.row as Customer).deadline_emails === true
   reset()
   try {
     if (props.kind === 'vehicles') customers.value = await all('customers')
@@ -96,6 +99,11 @@ onMounted(async () => {
     error.value = message(e)
   }
 })
+function presetDeadline(months: number) {
+  form.value.title = months === 24 ? 'HU / TÜV' : 'Inspektion'
+  form.value.repeat_months = months
+  form.value.due_date = ''
+}
 async function save() {
   busy.value = true
   error.value = ''
@@ -152,6 +160,10 @@ async function save() {
             {{ vehicleLabel(v) }}
           </option>
         </select></label>
+      <div v-if="kind === 'deadlines'" class="wm-actions"><NcButton @click="presetDeadline(24)">{{ t('HU / TÜV – alle 24 Monate') }}</NcButton><NcButton @click="presetDeadline(12)">{{ t('Inspektion – alle 12 Monate') }}</NcButton></div>
+      <p v-if="kind === 'deadlines'" class="wm-muted">{{ t('Bei letzter Erledigung und Wiederholung kann „Fällig am“ leer bleiben: Die nächste Fälligkeit wird daraus berechnet. Abweichende Fahrzeugintervalle bitte anpassen. Wiederkehrende Fristen entstehen nach bestätigter Erledigung erneut.') }}</p>
+      <label v-if="kind === 'customers'" class="wm-check"><input v-model="form.deadline_emails" type="checkbox" />{{ t('Kunden automatisch per E-Mail an Fahrzeugfristen erinnern') }}</label>
+      <p v-if="kind === 'customers'" class="wm-muted">{{ t('Erinnert an HU, Inspektion und weitere hinterlegte Fristen, um einen Termin zu vereinbaren. Eine gültige E-Mail und die gewünschte Kundenbenachrichtigung müssen vorliegen. Abwünsche hier sofort ausschalten; bereits versendete Nachrichten können nicht zurückgerufen werden.') }}</p>
       <label v-if="kind === 'vehicles'">{{ t('Fahrzeugklasse') }}<select v-model="form.vehicle_class"><option value="car">{{ t('PKW') }}</option><option value="van">{{ t('Leichter Transporter') }}</option></select></label>
 <label v-for="field in fields" :key="field.key">{{ field.label }}{{ field.required ? ' · ' + t('Pflichtfeld') : ''
         }}<textarea

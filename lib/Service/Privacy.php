@@ -30,6 +30,7 @@ final class Privacy {
 					'mileage',
 					'audit',
 					'appointments',
+					'revenues',
 				],
 				true,
 			)
@@ -123,6 +124,12 @@ final class Privacy {
 			}
 			$this->store->update('vehicles', $v, []);
 			$deleted = [$id => true];
+			foreach ($this->all('deliveries', ['vehicle_id' => $id]) as $message) {
+				if (in_array($message['status'], ['pending', 'sending', 'uncertain', 'failed'], true)) {
+					throw new Problem('active', 'Kundenbenachrichtigungen zuerst abschließen oder durch Widerruf abbrechen.', 409);
+				}
+				$this->store->delete('deliveries', $message['id']);
+			}
 			foreach ($this->all('appointments', ['vehicle_id' => $id]) as $a) {
 				if ($a['status'] !== 'cancelled') {
 					throw new Problem('active', 'Termine zuerst absagen.', 409);
@@ -165,7 +172,7 @@ final class Privacy {
 			foreach ($this->all('attachments', ['vehicle_id' => $id]) as $a) {
 				$this->store->update('attachments', $a, ['ready' => false]);
 			}
-			foreach (['defects', 'deadlines', 'mileage', 'links', 'audit'] as $kind) {
+			foreach (['defects', 'deadlines', 'mileage', 'links', 'audit', 'revenues'] as $kind) {
 				foreach ($this->all($kind, ['vehicle_id' => $id]) as $r) {
 					$deleted[$r['id']] = true;
 					$this->store->delete($kind, $r['id']);

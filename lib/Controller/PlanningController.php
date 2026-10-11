@@ -22,6 +22,7 @@ final class PlanningController extends Controller {
 		private ServiceLibrary $library,
 		private AppointmentBook $book,
 		private CalendarDelivery $calendar,
+		private \OCA\Werkstattmanager\Service\CustomerMailTemplates $templates,
 		private IL10N $l10n,
 		private LoggerInterface $logger,
 	) {
@@ -30,6 +31,14 @@ final class PlanningController extends Controller {
 	#[NoAdminRequired]
 	public function services(): JSONResponse {
 		return $this->respond(fn () => $this->library->list());
+	}
+	#[NoAdminRequired]
+	public function mailTemplates(): JSONResponse {
+		return $this->respond(fn () => $this->templates->settings());
+	}
+	#[NoAdminRequired]
+	public function saveMailTemplates(array $data): JSONResponse {
+		return $this->respond(fn () => $this->templates->save($data));
 	}
 	#[NoAdminRequired]
 	public function prices(string $key): JSONResponse {

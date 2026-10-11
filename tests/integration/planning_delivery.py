@@ -187,6 +187,54 @@ def check(base, passwords, app, occ, run, Client):
             master.call('/api/v1/calendar-settings',{'data':{'calendar_url':public+calendar_path,'calendar_user':'ci-calendar','password':calendar_pass}},method='PUT')
             fixture_run("foreach($s->find('deliveries',['appointment_id'=>'"+revoked_cal['id']+"','status'=>'pending'])as$d)$s->update('deliveries',$d,['next_try'=>time()-1]);")
             dispatch();assert b'BEGIN:VEVENT' in dav('GET',calendar_path+'werkstatt-'+revoked_cal['id']+'-arrival.ics')
+            # Customer messages share the actual SMTP queue but ready/deadline send no second calendar invitation.
+            customer=master.call('/api/v1/records/customers',{'data':{'name':'CI Mailkunde','contact':'Erika Beispiel','email':'personal@example.invalid'}})
+            assert customer['deadline_emails'] is True
+            cv=master.call('/api/v1/records/vehicles',{'data':{'kind':'customer','customer_id':customer['id'],'plate':'CI-MAIL'}})
+            templates=master.call('/api/v1/mail-templates')
+            templates['templates']['ready']['subject']='Abholbereit {fahrzeug}'
+            templates['templates']['ready']['body']='Hallo {kundenname}: {fahrzeug}, {termin}, {leistung}. {werkstatt}'
+            saved_templates=master.call('/api/v1/mail-templates',{'data':templates},method='PUT')
+            master.call('/api/v1/mail-templates',{'data':templates},method='PUT',expected=409)
+            arrival=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(days=4)).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ready_data=dict(vehicle_id=cv['id'],title='CI Fertigmeldung',arrival=arrival,minutes=15,status='confirmed',customer_email=customer['email'],notify_ready=True,override_reason='Isolated fixture',request_id=str(uuid.uuid4()))
+            ready=master.call('/api/v1/appointments',{'data':ready_data});dispatch()
+            def mails(to):return [email.message_from_bytes(raw,policy=policy.default) for raw in messages if to.encode() in raw]
+            assert len(mails(customer['email']))==1
+            ready_data.update(id=ready['id'],version=ready['version'],stage='ready',request_id=str(uuid.uuid4()))
+            ready=master.call('/api/v1/appointments',{'data':ready_data});dispatch();dispatch()
+            personal=mails(customer['email']);assert len(personal)==2
+            ready_message=next(m for m in personal if str(m['Subject'])=='Abholbereit CI-MAIL')
+            body=ready_message.get_body(preferencelist=('plain',)).get_content()
+            assert 'Erika Beispiel' in body and 'CI-MAIL' in body and 'CI Fertigmeldung' in body and '{kundenname}' not in body
+            assert not list(ready_message.iter_attachments())
+            ready_data.update(version=ready['version'],stage='arrived',request_id=str(uuid.uuid4()))
+            ready=master.call('/api/v1/appointments',{'data':ready_data})
+            ready_data.update(version=ready['version'],stage='ready',request_id=str(uuid.uuid4()))
+            ready=master.call('/api/v1/appointments',{'data':ready_data});dispatch();assert len(mails(customer['email']))==2
+            # Revoke the customer's wish while another ready message is pending.
+            revoked_data=dict(ready_data,id=None,version=None,customer_email='ready-revoked@example.invalid',request_id=str(uuid.uuid4()))
+            revoked_ready=master.call('/api/v1/appointments',{'data':revoked_data})
+            revoked_data.update(id=revoked_ready['id'],version=revoked_ready['version'],notify_ready=False,request_id=str(uuid.uuid4()))
+            master.call('/api/v1/appointments',{'data':revoked_data});dispatch()
+            assert not any(str(m['Subject']).startswith('Abholbereit') for m in mails('ready-revoked@example.invalid'))
+            due=(datetime.date.today()+datetime.timedelta(days=10)).isoformat()
+            dl=master.call('/api/v1/records/deadlines',{'data':{'vehicle_id':cv['id'],'title':'HU / TÜV','due_date':due,'repeat_months':24}})
+            fixture_run("\\OCP\\Server::get(\\OCA\\Werkstattmanager\\Service\\CustomerReminders::class)->schedule();")
+            dispatch();dispatch(); personal=mails(customer['email']);assert len(personal)==3
+            dm=next(m for m in personal if str(m['Subject']).startswith('Bitte Werkstatttermin vereinbaren'))
+            body=dm.get_body(preferencelist=('plain',)).get_content()
+            assert 'Erika Beispiel' in body and 'CI-MAIL' in body and 'HU / TÜV' in body
+            assert not list(dm.iter_attachments())
+            # A second due deadline is cancelled at delivery after the customer opts out.
+            master.call('/api/v1/records/deadlines',{'data':{'vehicle_id':cv['id'],'title':'Inspektion','due_date':due,'repeat_months':12}})
+            fixture_run("\\OCP\\Server::get(\\OCA\\Werkstattmanager\\Service\\CustomerReminders::class)->schedule();")
+            master.call('/api/v1/records/customers',{'id':customer['id'],'data':dict(customer,deadline_emails=False)})
+            dispatch();assert len(mails(customer['email']))==3
+            templates['version']=saved_templates['version']
+            from_templates=master.call('/api/v1/mail-templates')
+            assert from_templates['templates']['ready']['subject']=='Abholbereit {fahrzeug}'
+            print('PASS personalized editable SMTP templates; explicit ready once, optout cancellation, customer deadline once and recheck; no ICS attached to ready/deadline')
             print('PASS actual cron scheduler; due reminder once, revoked reminder discarded; real CalDAV outage/backoff/recovery and credential removal/restore; removed pickup single-UID customer cancellation')
             print('PASS real SMTP outage: visible uncertain delivery, no automatic duplicate, explicit retry succeeds')
             print('PASS real TLS/CalDAV/SMTP: trusted isolated HTTPS, three single-UID events, conversion/stage edits, repeatable delivery, update, cancellation and no internal-note leakage')

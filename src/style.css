@@ -817,3 +817,43 @@
 .wm-company-header img { max-width: 160px; max-height: 64px; width: auto; height: auto; object-fit: contain; }
 .wm-company-header strong { overflow-wrap: anywhere; font-size: 1.2rem; }
 @media (max-width: 600px) { .wm-company-header { flex-wrap: wrap; } .wm-company-header img { max-width: 120px; max-height: 48px; } }
+
+/* A page report is printed outside the modal-only printing rules above. */
+@media print {
+  html:has(.wm-report-page),
+  body:has(.wm-report-page),
+  body:has(.wm-report-page) #content,
+  body:has(.wm-report-page) #werkstattmanager {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  body:has(.wm-report-page) #header {
+    display: none !important;
+  }
+  body:has(.wm-report-page) #content {
+    display: block;
+  }
+  .wm-report-page {
+    display: block;
+    background: #fff;
+    color: #000;
+  }
+  .wm-report-page,
+  .wm-report-page * {
+    visibility: visible;
+  }
+  .wm-report-page .wm-statistics {
+    font-size: 10pt;
+  }
+  .wm-report-page .wm-report-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .wm-report-page .wm-report-cards article {
+    background: #eee;
+  }
+}

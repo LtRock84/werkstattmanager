@@ -348,6 +348,7 @@ def main():
                 preserved=old_client.call('/api/v1/records/vehicles',{'data':{'kind':'fleet','plate':'CI-UPGRADE-PRESERVE'}})
                 import xml.etree.ElementTree as ET
                 previous_version=ET.parse(Path(stage)/'werkstattmanager/appinfo/info.xml').getroot().findtext('version')
+                old_customer=old_client.call('/api/v1/records/customers',{'data':{'name':'CI existing customer','email':'upgrade@example.invalid'}})
                 old_appointment=None
                 if previous_version.startswith('0.2.'):
                     old_appointment=old_client.call('/api/v1/appointments', {'data':dict(vehicle_id=preserved['id'],title='CI preserved appointment',arrival='2026-12-07T07:00:00Z',minutes=35,status='draft',note='CI preserved internal note',request_id=str(uuid.uuid4()))})
@@ -362,6 +363,10 @@ def main():
                 occ('upgrade')
                 current=Client('http://'+address,'ci-master',passwords['master'])
                 assert current.call('/api/v1/records/vehicles?id='+preserved['id'])['items'][0]['plate']=='CI-UPGRADE-PRESERVE'
+                upgraded_customer=current.call('/api/v1/records/customers?id='+old_customer['id'])['items'][0]
+                if 'deadline_emails' not in old_customer:
+                    assert upgraded_customer.pop('deadline_emails') is False
+                assert upgraded_customer==old_customer
                 if old_appointment:
                     now=next(a for a in current.call('/api/v1/appointments?from=2026-12-07&to=2026-12-07')['items'] if a['id']==old_appointment['id'])
                     if 'checklist' not in old_appointment: assert now.pop('checklist') is None
@@ -392,6 +397,10 @@ def main():
                 occ('config:system:delete','overwrite.cli.url');occ('config:system:delete','overwritehost');occ('config:system:delete','overwriteprotocol')
             import intake_access
             extra_orders = intake_access.check(base, passwords, Client, occ)
+            import statistics
+            extra_orders += statistics.check(base, passwords, Client)
+            import customer_mail
+            customer_mail.check(base, passwords, Client)
             import company_mail
             company_mail.check(base, passwords, Client, occ, run, app)
             expected_orders = (6 if os.environ.get('WM_TEST_DELIVERY') == '1' else 5) + extra_orders + (1 if old_rank_order else 0)

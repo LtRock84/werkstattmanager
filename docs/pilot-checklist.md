@@ -1,6 +1,6 @@
 # Prüfung auf der tatsächlichen Nextcloud-Installation
 
-Stand 2026-10-05: Die folgenden Punkte bilden die vollständige Abnahmeliste.
+Stand 2026-10-11, Version 0.4.0: Die folgenden Punkte bilden die vollständige Abnahmeliste.
 Aktuelle Nachweise stehen im [Prüfbericht](test-report.md); nicht ausdrücklich
 nachgewiesene Teilprüfungen bleiben offen.
 Nur mit Testkonten und Testfahrzeugen in einer isolierten Instanz durchführen.
@@ -45,6 +45,39 @@ Nur mit Testkonten und Testfahrzeugen in einer isolierten Instanz durchführen.
   Notification-Wiederholung nach Zustellausfall prüfen. Nach zehn Fehlschlägen muss der
   Meister den Eintrag sehen und erneut vormerken können. Mit entzogenem Empfängerrecht
   wird die Zustellung verworfen; doppeltes Wiederholen erzeugt keine zweite Zustellung.
+
+## Terminbuch, Katalog und Auswertung
+
+- Mehrere Leistungen mit Mengen/Zeiten wählen; Summe, enthaltene Arbeiten und
+  gespeicherte Momentaufnahme nach Katalogänderung prüfen. Häufige Leistungen
+  steigen im Ranking, verknüpfte Termine/Aufträge zählen einmal.
+- Wochenkalender, Tagesbudget, Schließtage, Mehrtagesplanung und begründete
+  Überbuchung prüfen; gleichzeitige Änderungen dürfen nichts überschreiben.
+- Speichern bestätigt, Entwurf belegt keine Kapazität. Aus Termin genau einen
+  Auftragsentwurf erstellen und ausdrücklich für das Tablet freigeben.
+- Terminannahme-Konto: erforderliche Kalenderdaten sichtbar, Finanzwerte,
+  Auswertung, Werkstattaktionen und Einstellungen auch über die API gesperrt.
+- Eigene Netto-Plan-/Istbeträge und Umsatzdatum erfassen. Fehlend von null trennen;
+  Monatsgrenzen, centgenaue Mehrtagesverteilung und Flotte ohne Kundenumsatz prüfen.
+  Mitarbeiterzeiten, Pausen, Soll-/Ist-Abweichungen, CSV und Druck kontrollieren.
+
+## Kundennachrichten und Fristen
+
+- SMTP-Absender, Werkstattadresse, HTTPS-CalDAV und Cron zuerst mit abgeschottetem
+  Testempfänger prüfen; anschließend Mailbox-/Kalenderintegration gesondert abnehmen.
+- Alle sieben Vorlagen mit Kundenname, Fahrzeug, Termin und Frist prüfen;
+  ungültige Platzhalter und konkurrierende Änderungen zurückweisen.
+- Bestätigung/Änderung/Absage/Erinnerung mit Kalenderdatei; Abholbereit nur bei
+  ausdrücklicher Kundenwahl, richtigem Status und einmal pro Termin/Adresse.
+  Auftragsabnahme allein darf keine Abholmail erzeugen.
+- Fristenschalter bei neuen Kunden vorausgewählt, beim Upgrade bestehender Kunden
+  aus. Letzte Erledigung, Wiederholungsintervall und Vorlauf prüfen: Standard
+  30 Tage, jährliche Inspektion ungefähr nach elf Monaten, HU/24 Monate nach 23.
+- Vor Versand widerrufene Wünsche, geänderte Empfänger/Fahrzeuge, erledigte Fristen
+  und archivierte Datensätze dürfen keine falschen Nachrichten auslösen. Kilometer
+  erst nach Bestätigung berücksichtigen. Keine Kalenderdatei für Fertig-/Fristenmails.
+- SMTP-Ausfall und unklaren Versandausgang prüfen; sichtbarer Fehler, kontrollierte
+  Wiederholung und keine automatische Wiederholung möglicherweise versendeter Mail.
 
 ## Oberfläche und Betrieb
 

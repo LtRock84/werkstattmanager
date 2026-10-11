@@ -1,5 +1,41 @@
 # Changelog
 
+## GitHub-Aktualisierung vom 11. Oktober 2026: 0.2.4 → 0.4.0
+
+- **Auswertung:** eigene Netto-Ist-/Planumsätze, Monatswerte, Tagesauslastung,
+  Mitarbeiterzeiten und Soll-/Ist-Abweichungen, mit CSV-Export und Druckansicht.
+- **Kundennachrichten:** optionale Abholbereit-Mail und sieben anpassbare,
+  personalisierte Textvorlagen für Termin- und Fahrzeugnachrichten.
+- **Fristenerinnerungen:** Kundenwahl, letzte Erledigung, HU-/Inspektionsvorgaben
+  und einstellbarer Vorlauf; Bestandskunden werden beim Upgrade nicht aktiviert.
+- **Dokumentation:** Bedienung, Einrichtung, Rechte, Prüfnachweise und Pilotabläufe
+  auf 0.4.0 aktualisiert. Die folgenden Versionsabschnitte beschreiben die Details.
+
+70 PHP-Fachszenarien je PHP 8.3/8.4/8.5 und 98 Frontendtests lokal bestanden;
+Nextcloud 35.0.0/35.0.1 jeweils mit PostgreSQL/MariaDB installiert und geprüft,
+zusätzlich Upgrade und isoliertes HTTPS/SMTP/CalDAV/Cron. Die GitHub-Pipeline
+prüft ihren eigenen Quell- und Paketstand erneut. Physischer iPad-Test,
+reale NAS-/Office-/Mailbox-Abnahme und weitere Freigabepunkte bleiben offen.
+Das Repository bleibt privat; keine Store-Einreichung oder Produktionsfreigabe.
+
+## 0.4.0 – Kundennachrichten und Fristenerinnerungen
+
+- Optionale Abholbereit-Mail beim ausdrücklichen Fertigstatus im Terminbuch, einmal pro Termin und Kundenadresse.
+- Sieben fertige personalisierte Textvorlagen, vom Meister unter Einstellungen bearbeitbar; Platzhalter für Name, Fahrzeug, Termin, Abholung, Leistung, Frist und Werkstatt.
+- Kundenschalter für automatische Fahrzeugfristen-Erinnerungen: bei neuen Kunden vorausgewählt, vorhandene Kunden beim Upgrade deaktiviert.
+- Letzte Erledigung und HU-/Inspektionsvorgaben zur Berechnung wiederkehrender Fristen; einstellbarer Vorlauf, standardmäßig 30 Tage. Kilometerhinweise verwenden bestätigte Stände.
+- Bestehende Versandwarteschlange mit Empfänger-/Wunschprüfung, eindeutigen Ereignissen, Fehleranzeige und Fahrzeug-Datenschutzlöschung erweitert. Keine zusätzliche Kalendereinladung für Fertig- und Fristennachrichten.
+- Additive Migration; keine automatische Terminbuchung, keine Änderung der produktiven Nextcloud.
+
+## 0.3.0 – Umsatz und Werkstattauswertung
+
+- Neuer Meister-Menüpunkt „Auswertung“ mit Zeiträumen, Fahrzeugfilter, Monatsumsätzen, Tagesauslastung, Mitarbeiterzeiten und Soll-/Ist-Vergleich abgeschlossener Aufträge.
+- Plan- und abgerechnete Istbeträge ausdrücklich in Euro netto erfassen, mit Umsatzdatum und begründeter Änderungsprotokollierung. Fehlende Beträge bleiben als Datenlücken sichtbar; keine erfundenen Erlöse aus Vergleichspreisen oder Stunden.
+- Verknüpfte Termine und Aufträge zählen einmal; Mehrtages-Planbeträge werden centgenau auf die Arbeitsplanung verteilt. Eigene Flotte bleibt interne Arbeit ohne Kundenumsatz.
+- Berliner Zeitgrenzen einschließlich Zeitumstellung, laufende Buchungen bis Serverzeit, Pausen ausgeschlossen; Soll-/Ist-Auftragsvergleich über die gesamte Auftragslaufzeit.
+- Geschützte Finanzdaten, additive Migration, Versionskonflikte statt Überschreiben, CSV-Export, Druckansicht und Löschung mit der Fahrzeugakte.
+- Keine Rechnungsstellung, Zahlungskontrolle, Gewinnermittlung oder automatische Produktionsfreigabe.
+
 ## GitHub-Aktualisierung vom 6. Oktober 2026: 0.1.6 → 0.2.4
 
 Diese Aktualisierung enthält die nachfolgend beschriebenen Versionen 0.1.7 bis
