@@ -1,6 +1,6 @@
 # Release und Store-Veröffentlichung
 
-Stand 2026-10-16, interner Prüfkandidat 0.5.0 für die private GitHub-Aktualisierung;
+Stand 2026-10-16, früher Prüfkandidat0.5.0, öffentliches Quellprojekt;
 lokale Demo weiterhin 0.4.0. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
 Ein internes Kandidatenpaket ist keine Produktions- oder App-Store-Freigabe.
 
@@ -43,15 +43,9 @@ sind nicht das freigegebene Installationspaket. Das interne Archiv bleibt unsign
 und das `author`-Element der App werden getrennt geprüft. Die für das Konto
 verwendete private E-Mail wird nicht in Quellcode oder Release-Unterlagen veröffentlicht.
 
-Die Supportadresse ist der echte GitHub-Issue-Tracker. Solange das Repository privat
-ist, ist er nur für berechtigte Mitglieder erreichbar und kein öffentlicher Support.
-Vor Veröffentlichung muss der Eigentümer die öffentliche Sichtbarkeit ausdrücklich
-freigeben oder eine andere öffentlich erreichbare Supportseite bereitstellen.
+Der GitHub-Issue-Tracker und das Quellprojekt sind seit der ausdrücklichen Eigentümerfreigabe vom16.10.2026 öffentlich. Alle drei Metadaten-Bildadressen wurden anonym per HTTPS geprüft.
 
-Der private RSA-4096-Schlüssel liegt außerhalb dieses Repositorys. Nur der CSR
-mit CN `werkstattmanager` darf veröffentlicht werden. Die offizielle Zertifikatsanfrage
-verlangt einen öffentlich erreichbaren Quellcode-Nachweis. Deshalb bleibt sie bis zur
-Freigabe vorbereitet; das Zertifikat wird anschließend von Nextcloud ausgestellt.
+Der private RSA-4096-Schlüssel liegt außerhalb dieses Repositorys. Der öffentliche CSR mit CN `werkstattmanager` wurde als einziger Dateiinhalt in [Zertifikatsantrag#1345](https://github.com/nextcloud/app-certificate-requests/pull/1345) eingereicht und bytegleich zum lokalen CSR bestätigt. Maintainer erhalten keine Schreibrechte auf den persönlichen Antragsbranch. Nextcloud muss das Zertifikat noch ausstellen.
 Es wird weder ein Store-Zertifikat selbst ausgestellt noch eine Signierung vorgetäuscht.
 
 Vor öffentlicher Weitergabe sind außerdem die Wiederverwendungsbedingungen der
@@ -97,4 +91,4 @@ Offizielle Quellen, erneut geprüft 2026-10-16:
 
 Die SQL-Matrix enthält zusätzlich zwei echte Upgrades von Commit06df957 (0.4.1): PostgreSQL/NC35.0.1 und MariaDB/NC35.0.0. Die alte Version wird aus dem gepinnten Quellstand separat gebaut. Vorhandene Auftragsfelder und Versionen müssen erhalten bleiben; die neue Vorplanung ist bei Altaufträgen NULL. Öffentliche Bilder zeigen die gekennzeichnete isolierte UI-Fixture, keine behauptete physische Geräteabnahme.
 
-Der Kontozugang wurde am16.10.2026 im vom Nutzer geöffneten Chrome-Tab bestätigt. Die App-Registrierung ist weiterhin durch das fehlende ausgestellte Zertifikat blockiert. Das sichtbare Releaseformular verlangt öffentliche Archiv-URL und Archivsignatur; Beschreibungen und Bilder werden aus dem Paket gelesen. Der ausdrückliche Hinweis auf eine sehr frühe Testversion steht jetzt am Anfang der deutschen und englischen Metadatenbeschreibung. Die öffentliche Repository-Freigabe und der separate öffentliche CSR-Antrag wurden zur ausdrücklichen Entscheidung vorgelegt; bis zur Antwort keine Sichtbarkeitsänderung und kein PR-Versand.
+Der Kontozugang wurde am16.10.2026 im vom Nutzer geöffneten Chrome-Tab bestätigt. Die App-Registrierung ist weiterhin durch das fehlende ausgestellte Zertifikat blockiert. Das sichtbare Releaseformular verlangt öffentliche Archiv-URL und Archivsignatur; Beschreibungen und Bilder werden aus dem Paket gelesen. Der ausdrückliche Hinweis auf eine sehr frühe Testversion steht jetzt am Anfang der deutschen und englischen Metadatenbeschreibung. Öffentliche Sichtbarkeit und CSR-Pull-Request wurden ausdrücklich freigegeben und umgesetzt. Noch ausstehend sind Zertifikatsausstellung, Signaturen und die Einreichung des exakten signierten Releasearchivs.

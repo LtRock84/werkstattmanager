@@ -17,8 +17,7 @@ Signatur und Geräteabnahme stehen aus. `info.xml` enthält den ausdrücklichen 
 | Fehlerhilfe | https://github.com/LtRock84/werkstattmanager/issues |
 | Kompatibilität | Nextcloud 35; PHP 8.3–8.5; PostgreSQL und MariaDB geprüft |
 
-Die GitHub-Adressen sind derzeit privat. Sie dürfen erst nach der ausdrücklichen
-Freigabe des Eigentümers als öffentlich erreichbar beschrieben werden.
+Quellcode und Issue-Tracker sind seit der ausdrücklichen Freigabe vom16.10.2026 öffentlich. Die drei HTTPS-Bildadressen wurden ohne Anmeldung geprüft; alle Bilder sind bytegleich zu den vorbereiteten fiktiven Aufnahmen.
 Eine separate MySQL-Prüfung und neue Nextcloud-Hauptversionen stehen aus.
 Der öffentliche Herausgeber wird über das `author`-Element in `info.xml` angegeben.
 Der Kontobenutzername ist davon unabhängig. Eine private Konto-E-Mail gehört weder
@@ -97,12 +96,12 @@ Weitere Informationen: [Betrieb und Datenschutz](operations.md).
 | Voraussetzung | Stand |
 | --- | --- |
 | Herausgeber und deutschsprachige Beschreibung | Vorbereitet: Thomas Keilhaupt; keine öffentliche E-Mail |
-| App-Store-Konto | Kontowiederherstellung offen; öffentliche Fehlermeldung nextcloud/appstore#1948 weiterhin ohne Antwort |
-| Quellcode und Support | Echtes privates GitHub-Projekt; öffentliche Sichtbarkeit noch nicht freigegeben |
-| Zertifikatsanfrage | Bestehender gültiger CSR für `werkstattmanager`, Entwurf aktualisiert; nicht eingereicht |
+| App-Store-Konto | Anmeldung im Nutzer-Tab am16.10.2026 bestätigt; Kontodaten unverändert |
+| Quellcode und Support | Seit16.10.2026 nach Eigentümerfreigabe öffentlich |
+| Zertifikatsanfrage | Öffentlicher CSR eingereicht: nextcloud/app-certificate-requests#1345; ein geändertes CSR-File, kein privater Schlüssel |
 | Nextcloud-Zertifikat | Noch nicht ausgestellt; keine gültige App- oder Archivsignatur vorhanden |
-| Installationspaket | Unsignierter Kandidat 0.5.0 für die private GitHub-Aktualisierung; noch keine öffentliche Download-URL |
-| Bilder | Aktuelle 0.5.0-Aufnahmen mit fiktiven UI-Beispieldaten vorbereitet; öffentliche HTTPS-Erreichbarkeit noch nicht freigegeben |
+| Installationspaket | Unsignierter Kandidat0.5.0 mit frühem Testhinweis; noch kein signiertes öffentliches Releasearchiv |
+| Bilder | Drei fiktive0.5.0-Aufnahmen öffentlich per HTTPS ohne Anmeldung geprüft |
 | Qualität und Datenrechte | Vorhandene Tests siehe Prüfbericht; signiertes Endpaket, Geräte-/Betriebsabnahmen und Rechteprüfung noch offen |
 
 Eine Anmeldung allein erzeugt keinen Store-Eintrag. Die App-Registrierung und
@@ -134,6 +133,6 @@ This is a pilot candidate for one workshop organisation, not a production-approv
 
 ### Image provenance and remaining publication checks
 
-The three images under `docs/screenshots/0.5.0/` show the shipped 0.5.0 bundle with explicitly labelled synthetic UI-fixture data. They are not photographs of a real workshop or proof of physical iPad/Nextcloud integration. Their future raw-GitHub HTTPS URLs are listed in `info.xml`; while the repository remains private, anonymous store downloads are not available. Do not describe these URLs as publicly verified.
+The three images under `docs/screenshots/0.5.0/` show the shipped 0.5.0 bundle with explicitly labelled synthetic UI-fixture data. They are not photographs of a real workshop or proof of physical iPad/Nextcloud integration. Their raw-GitHub HTTPS URLs are listed in `info.xml`. All three images were checked without authentication on16October2026 and match the local files byte for byte.
 
-The signing certificate has not been issued. Explicit source visibility approval, source-data reuse review, final signatures, immutable download hosting and installation of the exact signed artifact remain outstanding. The offline inventory tool does not complete or waive these checks.
+The signing certificate has not been issued. Source publication was explicitly approved and completed on16October2026. Certificate request https://github.com/nextcloud/app-certificate-requests/pull/1345 is open. Source-data reuse review, final signatures, immutable archive hosting and installation of the exact signed artifact remain outstanding. The offline inventory tool does not complete or waive these checks.

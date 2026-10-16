@@ -1,13 +1,14 @@
 # Werkstattmanager für Nextcloud
 
 Herausgeber: **Thomas Keilhaupt** · GitHub: [LtRock84](https://github.com/LtRock84).
-Die App-Store-Veröffentlichung wird vorbereitet; es gibt noch keinen Store-Eintrag.
+**Sehr frühe Testversion zum Ausprobieren und Testen.** Die App-Store-Veröffentlichung wird vorbereitet; es gibt noch keinen Store-Eintrag.
+Zertifikat beantragt: [Nextcloud-PR #1345](https://github.com/nextcloud/app-certificate-requests/pull/1345).
 
 **[♥ Projekt über PayPal unterstützen](https://www.paypal.me/Werkstattmanager)**
 – freiwilliger Beitrag zu Projektkosten und Weiterentwicklung, ohne Zusatzleistungen
 oder Spendenbescheinigung. Die App bleibt kostenlos nutzbar.
 
-Interner Prüfkandidat 0.5.0 für eine Werkstattorganisation. Fahrzeugakten für Kunden
+Früher Prüfkandidat 0.5.0 für eine Werkstattorganisation. Fahrzeugakten für Kunden
 und eigene Flotte, schnelle Aufträge, Tablet-Zeiterfassung, Teileanforderungen und
 externe Mängelmeldungen, Terminbuch, Leistungskatalog, Preiskalkulation,
 Umsatz-/Arbeitszeitauswertung und anpassbare Kundennachrichten mit Fristenerinnerungen. Der aktuelle Stand ist **nicht für Produktivbetrieb freigegeben**.
@@ -18,7 +19,7 @@ Neu in 0.5.0: **Mitarbeiter vorplanen**, sichtbar am Tablet als unverbindlicher 
 
 Weitere Funktionen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
 sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
-Das Repository bleibt privat; Installationspakete entstehen als interne CI-Artefakte.
+Das Repository ist seit dem16.10.2026 öffentlich. Installationspakete entstehen bisher als interne CI-Artefakte; ein signiertes Store-Release steht noch aus.
 
 ## Bedienung
 
@@ -138,7 +139,7 @@ Der Betrag wird auf PayPal frei gewählt; die App richtet keine wiederkehrenden 
 Auch diese Projektseite enthält einen direkten Unterstützungslink.
 `.github/FUNDING.yml` hinterlegt denselben PayPal.Me-Link für GitHubs
 Sponsor-Funktion. Es wird kein GitHub-Sponsors-Konto vorausgesetzt und kein
-Zugriff auf das private Repository durch eine Zahlung freigeschaltet.
+Zugriff auf Quellcode oder Zusatzfunktionen durch eine Zahlung freigeschaltet.
 
 Der Empfänger ist fest im ausgelieferten Code hinterlegt und kann nicht über
 App-Einstellungen, Firmenprofil, API oder eingehende URL-Parameter ersetzt werden.
@@ -171,7 +172,7 @@ Eine Versionsangabe in `info.xml` ist kein Nachweis getesteter Kompatibilität.
    PHP benötigt im Betrieb keine mitgelieferten Composer-Bibliotheken; öffentliche
    OCP-Schnittstellen werden von Nextcloud bereitgestellt.
 3. Metadaten gegen das offizielle Schema validieren und das Kandidatenpaket prüfen.
-   Die eingetragene GitHub-Supportadresse ist wegen des privaten Repositories noch intern.
+   Der eingetragene GitHub-Issue-Tracker ist öffentlich erreichbar.
 4. Paket in das konfigurierte Nextcloud-Verzeichnis für eigene Apps entpacken, sodass
    `werkstattmanager/appinfo/info.xml` vorhanden ist. Eigentümer und Leserechte an die
    Testinstallation anpassen. Keine produktive App überschreiben.
