@@ -8,13 +8,15 @@ import { useDirtySnapshot } from '../dirty'
 import { lineMinutes } from '../services'
 import { list, all, command, post, message } from '../api'
 import { t, vehicleLabel, iso } from '../format'
-import type { Vehicle, Template, Snippet, Order, ServiceLine } from '../types'
+import type { Vehicle, Template, Snippet, Order, ServiceLine, Employee } from '../types'
 const props = defineProps<{ closeLabel?: string; vehicle?: Vehicle; defectId?: string; initialDescription?: string }>()
 const pendingWork = ref(false)
 const emit = defineEmits<{ close: []; created: [Order] }>()
 const vehicles = ref<Vehicle[]>(props.vehicle ? [props.vehicle] : []),
   templates = ref<Template[]>([]),
   snippets = ref<Snippet[]>([])
+const employees = ref<Employee[]>([])
+const plannedEmployee = ref('')
 const vehicle = ref(props.vehicle?.id ?? ''),
   title = ref(''),
   description = ref(props.initialDescription ?? ''),
@@ -27,7 +29,7 @@ const vehicle = ref(props.vehicle?.id ?? ''),
 const serviceLines = ref<ServiceLine[]>([])
 const overrideReason = ref('')
 const selectedTemplate = ref<Template | null>(null)
-const { dirty } = useDirtySnapshot(() => ({ vehicle: vehicle.value, title: title.value, description: description.value, steps: steps.value, minutes: minutes.value, start: start.value, end: end.value, priority: priority.value, lines: serviceLines.value, override: overrideReason.value }))
+const { dirty } = useDirtySnapshot(() => ({ vehicle: vehicle.value, title: title.value, description: description.value, steps: steps.value, minutes: minutes.value, start: start.value, end: end.value, priority: priority.value, lines: serviceLines.value, override: overrideReason.value, plannedEmployee: plannedEmployee.value }))
 let automaticTitle = ''
 watch([serviceLines, selectedTemplate], ([lines, template]) => {
   const extra = lineMinutes(lines)
@@ -70,7 +72,7 @@ async function search() {
 watch(query, search)
 onMounted(async () => {
   try {
-    ;[templates.value, snippets.value] = await Promise.all([all('templates'), all('snippets')])
+    ;[templates.value, snippets.value, employees.value] = await Promise.all([all('templates'), all('snippets'), all('employees')])
     await search()
     try {
       const recent: unknown = JSON.parse(localStorage.getItem('wm_recent') ?? '[]')
@@ -98,6 +100,7 @@ function append(v: Snippet) {
 function data() {
   return {
     vehicle_id: vehicle.value,
+    planned_employee_id: plannedEmployee.value || null,
     service_lines: serviceLines.value,
     override_reason: overrideReason.value,
     title: title.value,
@@ -245,6 +248,13 @@ async function saveTemplate() {
           {{ n }} min
 </NcButton><NcButton @click="minutes = null">{{ t('Ohne Vorgabe') }}</NcButton>
       </div>
+      <label>{{ t('Mitarbeiter vorplanen (optional)') }}
+        <select v-model="plannedEmployee">
+          <option value="">{{ t('Keine Vorplanung') }}</option>
+          <option v-for="e in employees.filter(e => !e.archived)" :key="e.id" :value="e.id">{{ e.name }}</option>
+        </select>
+      </label>
+      <p class="wm-muted">{{ t('Der Name wird am Tablet angezeigt. Kollegen dürfen übernehmen; die Vorplanung startet keine Arbeitszeit.') }}</p>
       <details
         class="wm-help"
         :open="details"

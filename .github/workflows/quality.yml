@@ -93,6 +93,7 @@ jobs:
         run: |
           python3 scripts/package.py --candidate --schema /tmp/info.xsd
           python3 scripts/check-package.py dist/*-candidate.tar.gz
+          python3 scripts/store-preflight.py dist/*-candidate.tar.gz --output dist/store-preflight.json
           sha256sum dist/*-candidate.tar.gz > /tmp/package.sha256
           python3 scripts/package.py --candidate --schema /tmp/info.xsd
           sha256sum --check /tmp/package.sha256
@@ -115,6 +116,14 @@ jobs:
       matrix:
         database: [postgres, mariadb]
         nextcloud: ['35.0.0', '35.0.1']
+        upgrade: [false]
+        include:
+          - database: postgres
+            nextcloud: '35.0.1'
+            upgrade: true
+          - database: mariadb
+            nextcloud: '35.0.0'
+            upgrade: true
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -124,9 +133,30 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: gh run download "$GITHUB_RUN_ID" --name "internal-candidate-$GITHUB_SHA" --dir dist
       - run: python3 scripts/check-package.py dist/*-candidate.tar.gz
+      - if: matrix.upgrade
+        name: Check out the previously tested 0.4.1 upgrade source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: 06df9571a7bd54d613f4938fad1f34405f55818e
+          path: previous
+          persist-credentials: false
+      - if: matrix.upgrade
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.18.0
+      - if: matrix.upgrade
+        name: Rebuild the exact previous version for the migration test
+        run: |
+          npm install --global npm@11.16.0
+          npm ci --prefix previous
+          npm --prefix previous run build
+          curl --fail --location --proto '=https' --tlsv1.2 https://apps.nextcloud.com/schema/apps/info.xsd -o /tmp/info.xsd
+          python3 previous/scripts/package.py --candidate --schema /tmp/info.xsd
+          python3 previous/scripts/check-package.py previous/dist/*-candidate.tar.gz
       - name: Install package and run real SQL/API checks
         env:
           WM_TEST_DATABASE: ${{ matrix.database }}
           WM_TEST_NEXTCLOUD: ${{ matrix.nextcloud }}
           WM_TEST_DELIVERY: '1'
+          WM_TEST_UPGRADE_FROM: ${{ matrix.upgrade && 'previous/dist/werkstattmanager-0.4.1-candidate.tar.gz' || '' }}
         run: python3 tests/integration/run.py dist/*-candidate.tar.gz

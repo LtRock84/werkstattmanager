@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import Modal from './Modal.vue'
+import EmployeePlan from './EmployeePlan.vue'
 import { useDirtySnapshot, confirmDiscard } from '../dirty'
 import { all, command, post, upload, message } from '../api'
 import {
@@ -50,6 +51,7 @@ const employee = ref(''),
   error = ref(''),
   notice = ref('')
 const overrideReason = ref('')
+const plannedEmployee = ref(props.order.planned_employee_id ?? '')
 const partForm = ref(false),
   partTitle = ref(''),
   quantity = ref(1),
@@ -63,7 +65,8 @@ const correcting = ref<Interval | null>(null),
   correctionReason = ref(''),
   changeReason = ref('')
 const { dirty, reset: resetDraft } = useDirtySnapshot(() => ({ note: note.value, steps: selectedSteps.value, reason: reason.value, resolved: resolved.value, override: overrideReason.value, part: partForm.value ? [partTitle.value, quantity.value, partNumber.value, partNote.value, partPriority.value, partFile.value?.name] : null, correction: correcting.value ? [correctionStart.value, correctionEnd.value, correctionReason.value] : null, changeReason: changeReason.value }))
-function close() { if (!busy.value && confirmDiscard(dirty.value)) emit('close') }
+const planDirty = computed(() => plannedEmployee.value !== (current.value.planned_employee_id ?? ''))
+function close() { if (!busy.value && confirmDiscard(dirty.value || planDirty.value)) emit('close') }
 const running = computed(() => active.value.find((a) => a.order_id === current.value.id))
 const elapsed = computed(() => total(intervals.value))
 const employeeName = (id: string) =>
@@ -129,6 +132,24 @@ async function act(action: string) {
     busy.value = false
   }
 }
+async function savePlan() {
+  if (busy.value) return
+  busy.value = true
+  error.value = ''
+  notice.value = ''
+  try {
+    current.value = await command<Order>(`/api/v1/orders/${current.value.id}/plan`, {
+      version: current.value.version,
+      planned_employee_id: plannedEmployee.value || null,
+    })
+    notice.value = plannedEmployee.value ? t('Vorplanung gespeichert. Kollegen dürfen den Auftrag weiterhin übernehmen.') : t('Vorplanung aufgehoben.')
+    emit('changed')
+  } catch (e) {
+    error.value = message(e)
+  } finally {
+    busy.value = false
+  }
+}
 async function requestPart(pause: boolean) {
   if (busy.value) return
   notice.value = ''
@@ -170,9 +191,13 @@ async function requestPart(pause: boolean) {
   }
 }
 async function refreshOrder() {
+  const preservePlan = planDirty.value
   const rows = await all('orders', { vehicle_id: current.value.vehicle_id })
   const updated = rows.find((x) => x.id === current.value.id)
-  if (updated) current.value = updated
+  if (updated) {
+    current.value = updated
+    if (!preservePlan) plannedEmployee.value = updated.planned_employee_id ?? ''
+  }
   await load()
 }
 async function partStatus(p: Part, status: string) {
@@ -259,7 +284,7 @@ async function reload() {
 }
 </script>
 <template>
-  <Modal :dirty="dirty" :locked="busy" :close-label="closeLabel" :title="orderNumber(current.id) + ' · ' + current.title" @close="!busy && emit('close')">
+  <Modal :dirty="dirty || planDirty" :locked="busy" :close-label="closeLabel" :title="orderNumber(current.id) + ' · ' + current.title" @close="!busy && emit('close')">
     <div class="wm-form wm-printable">
       <label v-if="master && (error.includes('kapazität') || overrideReason)">{{ t('Begründung für Überbuchung') }}<input v-model="overrideReason" maxlength="2000" /></label>
       <p v-if="error" role="alert" class="wm-error">{{ error }}</p>
@@ -284,6 +309,19 @@ async function reload() {
         }}</span>
       </div>
       <p class="wm-preserve">{{ current.description }}</p>
+      <EmployeePlan :order="current" :employees="employees" />
+      <fieldset v-if="master && ['draft', 'open', 'paused'].includes(current.status)" class="wm-no-print">
+        <legend>{{ t('Mitarbeiter vorplanen') }}</legend>
+        <label>{{ t('Vorgesehener Mitarbeiter') }}
+          <select v-model="plannedEmployee" :disabled="busy">
+            <option value="">{{ t('Keine Vorplanung') }}</option>
+            <option v-if="current.planned_employee_id && !employees.some(e => e.id === current.planned_employee_id && !e.archived)" :value="current.planned_employee_id" disabled>{{ t('Bisher vorgesehener Mitarbeiter ist nicht mehr verfügbar') }}</option>
+            <option v-for="e in employees.filter(e => !e.archived)" :key="e.id" :value="e.id">{{ e.name }}</option>
+          </select>
+        </label>
+        <p class="wm-muted">{{ t('Diese Zuordnung ist nur ein Hinweis. Sie reserviert keine Arbeitszeit und verhindert keine Übernahme durch Kollegen.') }}</p>
+        <NcButton :disabled="busy || plannedEmployee === (current.planned_employee_id ?? '')" @click="savePlan">{{ t('Vorplanung speichern') }}</NcButton>
+      </fieldset>
       <div class="wm-three">
         <div>
           <small>{{ t('Sollzeit') }}</small><strong>{{ current.minutes ? current.minutes + ' min' : '–' }}</strong>

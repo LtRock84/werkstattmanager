@@ -895,3 +895,18 @@
     background: #eee;
   }
 }
+
+.wm-employee-plan {
+  display: block;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid var(--color-error, #b42318);
+  border-radius: var(--border-radius-large, 10px);
+  color: var(--color-main-text);
+  background: var(--color-main-background);
+  text-align: start;
+}
+.wm-employee-plan strong,
+.wm-employee-plan > span { display: block; }
+.wm-employee-plan strong { color: var(--color-main-text); }
+.wm-employee-plan > span { margin-top: 4px; font-size: .9em; }

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 – Mitarbeiter für Arbeitsaufträge vorplanen
+
+- Meister können beim Erstellen und bei Entwürfen, offenen oder pausierten Aufträgen einen Mitarbeiter vorsehen, ändern oder die Vorplanung aufheben.
+- Tablet und Meister sehen den Namen als auffälligen Hinweis. Kollegen dürfen weiterhin übernehmen; die Vorplanung startet keinen Timer und reserviert keinen Mitarbeiter.
+- Namensfilter berücksichtigt Vorplanung und letzten Bearbeiter; Versionskonflikte, Wiederholungsschutz, archivierte Mitarbeiter und lesbares Änderungsprotokoll sind berücksichtigt.
+- Neue additive Migration ergänzt ein optionales Feld; vorhandene Aufträge bleiben ohne Vorplanung erhalten.
+- Aktuelle fiktive Store-Bilder, deutsche/englische Beschreibung und Offline-Paketinventar vorbereitet. CI prüft zusätzlich Upgrades von 0.4.1 mit PostgreSQL und MariaDB. Keine automatische Store-Veröffentlichung.
+
 ## 0.4.1 – Freiwillige Projektunterstützung (lokaler Prüfkandidat)
 
 - „Projekt unterstützen“ unten in der Meisteransicht, mit Erklärung vor dem Wechsel zu PayPal.

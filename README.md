@@ -7,14 +7,16 @@ Die App-Store-Veröffentlichung wird vorbereitet; es gibt noch keinen Store-Eint
 – freiwilliger Beitrag zu Projektkosten und Weiterentwicklung, ohne Zusatzleistungen
 oder Spendenbescheinigung. Die App bleibt kostenlos nutzbar.
 
-Interner Prüfkandidat 0.4.1 für eine Werkstattorganisation. Fahrzeugakten für Kunden
+Interner Prüfkandidat 0.5.0 für eine Werkstattorganisation. Fahrzeugakten für Kunden
 und eigene Flotte, schnelle Aufträge, Tablet-Zeiterfassung, Teileanforderungen und
 externe Mängelmeldungen, Terminbuch, Leistungskatalog, Preiskalkulation,
 Umsatz-/Arbeitszeitauswertung und anpassbare Kundennachrichten mit Fristenerinnerungen. Der aktuelle Stand ist **nicht für Produktivbetrieb freigegeben**.
 Verbindliche Prüfergebnisse und offene Punkte: [Prüfbericht](docs/test-report.md).
-Änderungen einschließlich Projektunterstützung in 0.4.1: [Changelog](CHANGELOG.md).
+Änderungen einschließlich Mitarbeiter-Vorplanung in 0.5.0: [Changelog](CHANGELOG.md).
 
-Neu hinzugekommen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
+Neu in 0.5.0: **Mitarbeiter vorplanen**, sichtbar am Tablet als unverbindlicher Hinweis. Kollegen dürfen übernehmen; die Zuordnung startet keine Arbeitszeit.
+
+Weitere Funktionen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
 sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
 Das Repository bleibt privat; Installationspakete entstehen als interne CI-Artefakte.
 
@@ -27,7 +29,8 @@ Das Repository bleibt privat; Installationspakete entstehen als interne CI-Artef
 - **Terminannahme:** Vom Administrator freigegebene Assistenzkräfte können Termine
   vereinbaren, ändern und absagen sowie vorhandene Kunden/Fahrzeuge auswählen.
   Werkstattverwaltung und Kalkulation bleiben den Meistern vorbehalten.
-- **Tablet:** Namen wählen und starten. Nur ein aktiver Auftrag je Mitarbeiter und
+- **Vorplanung:** Bei einem neuen Auftrag oder im Auftragsdetail einen Mitarbeiter vorsehen. Der Meister kann die Zuordnung bei Entwürfen, offenen und pausierten Aufträgen ändern oder aufheben. Der Name erscheint mit rotem Rahmen und Text am Tablet; Vorplanung und tatsächlicher Bearbeiter bleiben getrennt.
+- **Tablet:** Eigenen Namen wählen und starten. Nur ein aktiver Auftrag je Mitarbeiter und
   nur ein Mitarbeiter je Auftrag. Pausieren gibt die Belegung frei. Kollegen können
   übernehmen. Fertigmelden führt zur Meisterabnahme; Pausen zählen nicht als Arbeitszeit.
 - **Teile:** Aus dem Auftrag anfordern, wahlweise mit Pause. Der Meister bearbeitet

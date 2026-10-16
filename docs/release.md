@@ -1,6 +1,6 @@
 # Release und Store-Veröffentlichung
 
-Stand 2026-10-11, interner Prüfkandidat 0.4.1 für die private GitHub-Aktualisierung;
+Stand 2026-10-16, interner Prüfkandidat 0.5.0 für die private GitHub-Aktualisierung;
 lokale Demo weiterhin 0.4.0. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
 Ein internes Kandidatenpaket ist keine Produktions- oder App-Store-Freigabe.
 
@@ -75,8 +75,8 @@ finalen `tar.gz`-Bytes separat signiert. Beides ersetzt nicht die Datei-Signatur
 Download und Bilder müssen auch ohne GitHub- oder Store-Anmeldung erreichbar sein;
 ein privates GitHub-Actions-Artefakt erfüllt diese Voraussetzung nicht.
 
-Der aktuelle Kandidat ist weiterhin 0.4.1. Eine erste öffentliche Testversion kann
-eine höhere SemVer-Version mit Vorabkennung erhalten, beispielsweise `0.4.2-beta.1`;
+Der aktuelle Kandidat ist 0.5.0. Eine erste öffentliche Testversion kann
+eine höhere SemVer-Version mit Vorabkennung erhalten, beispielsweise `0.5.1-beta.1`;
 der Store führt solche Kennungen als Beta. Das ist eine vorbereitete Möglichkeit,
 keine Versionsänderung oder erteilte Freigabe. Nach jeder Änderung an Version,
 Metadaten oder Dateien sind das konkrete Endpaket und die Signaturen erneut zu prüfen.
@@ -85,7 +85,16 @@ Ein später signiertes Archiv unterscheidet sich vom internen Kandidaten und bra
 eigene Integritäts-, Installations- und Prüfsummenprüfung. Metadatenfreigabe bleibt
 auf tatsächlich getestete Nextcloud-Hauptversionen begrenzt.
 
-Offizielle Quellen, erneut geprüft 2026-10-11:
+Offizielle Quellen, erneut geprüft 2026-10-16:
 [Nextcloud-Signierung](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/code_signing.html),
 [Store-Entwicklerverfahren](https://nextcloudappstore.readthedocs.io/en/latest/developer.html),
 [App-Store-Schema](https://apps.nextcloud.com/schema/apps/info.xsd).
+
+
+## Wiederholbare Store-Vorbereitung 0.5.0
+
+`python3 scripts/store-preflight.py dist/werkstattmanager-0.5.0-candidate.tar.gz --output dist/store-preflight.json` prüft offline das konkrete Kandidatenarchiv und schreibt ein SHA-256-Dateiinventar mit Versions-/Herausgeberangaben, Bild-URLs und getrennten Veröffentlichungsvoraussetzungen. Zehn Paket-/Inventartests prüfen auch, dass privates Schlüsselmaterial in erlaubten Textpfaden abgewiesen wird und die bloße Anwesenheit von signature.json keine gültige Signatur behauptet. Der CI-Artefakt enthält das Inventar; weder Werkzeug noch CI veröffentlicht oder signiert automatisch.
+
+Die SQL-Matrix enthält zusätzlich zwei echte Upgrades von Commit06df957 (0.4.1): PostgreSQL/NC35.0.1 und MariaDB/NC35.0.0. Die alte Version wird aus dem gepinnten Quellstand separat gebaut. Vorhandene Auftragsfelder und Versionen müssen erhalten bleiben; die neue Vorplanung ist bei Altaufträgen NULL. Öffentliche Bilder zeigen die gekennzeichnete isolierte UI-Fixture, keine behauptete physische Geräteabnahme.
+
+Der letzte bestätigte Kontozugangsstand ist fehlgeschlagene Wiederherstellung. Issue [nextcloud/appstore#1948](https://github.com/nextcloud/appstore/issues/1948) ist am16.10.2026 offen und ohne Kommentare. Keine erneuten Anmelde-/Rücksetz-/Registrierungsversuche ohne konkreten Anlass. Die im alten Storetext genannte offene E-Mail-Zuordnung ist kein bestätigter funktionierender Zugang. Die private Repositorysichtbarkeit bleibt bis zur ausdrücklichen Freigabe unverändert.

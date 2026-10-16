@@ -60,6 +60,7 @@ def check(base, passwords, Client, occ):
     assert getcount() == 1
     o = m.call('/api/v1/orders/'+o['id']+'/release', {'data':dict(version=o['version'],request_id=str(uuid.uuid4()))})
     assert getcount() == 1
+    assistant.call('/api/v1/orders/'+o['id']+'/plan', {'data':dict(version=o['version'],request_id=str(uuid.uuid4()),planned_employee_id=None)}, expected=403)
     current = next(x for x in m.call('/api/v1/appointments?from=2026-11-02&to=2026-11-02')['items'] if x['id'] == a['id'])
     current = m.call('/api/v1/appointments', {'data':dict(current,note='SECRET APPOINTMENT',checklist=dict(condition_note='SECRET CHECKLIST'),request_id=str(uuid.uuid4()))})
     visible = next(x for x in assistant.call('/api/v1/appointments?from=2026-11-02&to=2026-11-02')['items'] if x['id'] == a['id'])

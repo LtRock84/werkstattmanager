@@ -80,6 +80,10 @@ namespace {
                 array_values(
                     array_filter($this->rows[$table] ?? [], static function ($r) use ($filters) {
                         foreach ($filters as $k => $v) {
+                            if ($k === 'employee_id' && array_key_exists('planned_employee_id', $r)) {
+                                if ($r['last_employee_id'] !== $v && $r['planned_employee_id'] !== $v) { return false; }
+                                continue;
+                            }
                             if (is_array($v) ? !in_array($r[$k], $v, true) : $r[$k] !== $v) {
                                 return false;
                             }
@@ -660,6 +664,7 @@ namespace {
         same(['Öl gewechselt'], $entry['details']['steps']);
         same('', $entry['details']['reason']);
     });
+    require __DIR__.'/employee-planning.php';
     require __DIR__.'/planning.php';
     require __DIR__.'/company-mail.php';
     require __DIR__.'/statistics.php';

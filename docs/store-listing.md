@@ -1,6 +1,6 @@
 # Vorbereitete Store-Beschreibung
 
-Entwurf für 0.4.1 vom 2026-10-11. Noch nicht eingereicht; öffentliche Veröffentlichung,
+Entwurf für 0.5.0 vom 2026-10-16. Noch nicht eingereicht; öffentliche Veröffentlichung,
 Signatur und Geräteabnahme stehen aus. Die internen Pilotkennzeichnungen in
 `info.xml` bleiben bis zur tatsächlichen Freigabe erhalten.
 
@@ -52,7 +52,9 @@ automatisch zur Terminvereinbarung erinnern; Wunsch, Empfänger und aktuelle
 Fälligkeit werden vor Versand geprüft. Bestehende Kunden werden beim Upgrade
 nicht automatisch für Fristenmails aktiviert.
 
-Auf dem Werkstatt-Tablet wählen Mitarbeiter ihren Namen, starten einen Auftrag,
+Meister können einen Mitarbeiter für einen Auftrag vorsehen, ändern oder die Vorplanung aufheben. Am Tablet steht der Name mit einem auffälligen Hinweis. Die Vorplanung startet keine Arbeitszeit; Kollegen dürfen übernehmen.
+
+Auf dem Werkstatt-Tablet wählen Mitarbeiter ihren eigenen Namen, starten einen Auftrag,
 pausieren ihn oder melden die Arbeit fertig. Arbeitszeiten bleiben pro Mitarbeiter
 nachvollziehbar. Jeder Mitarbeiter kann einen aktiven Auftrag bearbeiten;
 verschiedene Mitarbeiter können gleichzeitig an verschiedenen Aufträgen arbeiten.
@@ -89,17 +91,17 @@ Weitere Informationen: [Betrieb und Datenschutz](operations.md).
 - Eigentümerkonto im App Store; Beschreibung und unterstützte Versionen kontrollieren.
 - Wiederverwendungsbedingungen der Preisquellen und verbleibende Betriebsabnahmen prüfen.
 
-## Freigabestand vom 11. Oktober 2026
+## Freigabestand vom 16. Oktober 2026
 
 | Voraussetzung | Stand |
 | --- | --- |
 | Herausgeber und deutschsprachige Beschreibung | Vorbereitet: Thomas Keilhaupt; keine öffentliche E-Mail |
-| App-Store-Konto | Bereits angemeldetes Konto gefunden; Zuordnung zur gewünschten Konto-Adresse noch zu klären |
+| App-Store-Konto | Kontowiederherstellung offen; öffentliche Fehlermeldung nextcloud/appstore#1948 weiterhin ohne Antwort |
 | Quellcode und Support | Echtes privates GitHub-Projekt; öffentliche Sichtbarkeit noch nicht freigegeben |
 | Zertifikatsanfrage | Bestehender gültiger CSR für `werkstattmanager`, Entwurf aktualisiert; nicht eingereicht |
 | Nextcloud-Zertifikat | Noch nicht ausgestellt; keine gültige App- oder Archivsignatur vorhanden |
-| Installationspaket | Unsignierter Kandidat 0.4.1 für die private GitHub-Aktualisierung; noch keine öffentliche Download-URL |
-| Bilder | Ältere Pilotbilder vorhanden; aktuelle, geprüfte Aufnahmen mit fiktiven Daten noch erforderlich |
+| Installationspaket | Unsignierter Kandidat 0.5.0 für die private GitHub-Aktualisierung; noch keine öffentliche Download-URL |
+| Bilder | Aktuelle 0.5.0-Aufnahmen mit fiktiven UI-Beispieldaten vorbereitet; öffentliche HTTPS-Erreichbarkeit noch nicht freigegeben |
 | Qualität und Datenrechte | Vorhandene Tests siehe Prüfbericht; signiertes Endpaket, Geräte-/Betriebsabnahmen und Rechteprüfung noch offen |
 
 Eine Anmeldung allein erzeugt keinen Store-Eintrag. Die App-Registrierung und
@@ -107,7 +109,28 @@ Release-Einreichung erfolgen erst nach den oben genannten Freigaben und der
 Zertifikatsausstellung. Der vorhandene Pilotstand wird nicht als fertige
 Produktionsversion beworben.
 
-Offizielle Quellen, geprüft am 11.10.2026:
+Offizielle Quellen, erneut geprüft am 16.10.2026:
 [Autor, Registrierung und Release](https://nextcloudappstore.readthedocs.io/en/latest/developer.html),
 [Zertifikatsverfahren](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/code_signing.html),
 [Store-Regeln](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/publishing.html).
+
+
+## Prepared English listing (0.5.0)
+
+**Workshop management for Nextcloud: vehicles, appointments, work orders and reporting.**
+
+Werkstattmanager helps a vehicle workshop manage customer vehicles and its own fleet, book appointments with daily capacity, and turn agreed work into workshop orders. Reusable templates and a service catalogue simplify routine work. The pricing calculator uses your own operating costs; published comparison prices are clearly labelled reference data with sources and limitations.
+
+A workshop supervisor can suggest an employee for a draft, open or paused order. The workshop tablet displays the planned name prominently. This is a planning hint: colleagues can take over, and assigning a name starts no timer. Employees select their own name when they actually start, pause or finish work. The supervisor reviews and approves the completed job. Parts requests and vehicle defects remain linked to the order.
+
+Drivers can report defects and mileage through a revocable vehicle link without a Nextcloud account. Internal reports remain private until the supervisor publishes a short driver-facing update. Supervisors can review planned and actual net revenues, working time and daily capacity; the reports are not an accounting system.
+
+Optional email and calendar integration supports appointment notices, collection-ready messages and vehicle-deadline reminders. Administrators can grant full supervisor access or a restricted appointment-reception role. A shared tablet's employee choice records attribution, not individual identity verification. There is no invoicing, inventory accounting, automatic staff scheduling or offline time booking.
+
+This is a pilot candidate for one workshop organisation, not a production-approved release. Configure roles, background jobs, retention and optional integrations, then test on your target installation. Data stays in your Nextcloud; optional mail/calendar providers receive the data required for the configured messages and events. There is no telemetry. A voluntary PayPal link supports project costs without unlocking features or offering a donation receipt.
+
+### Image provenance and remaining publication checks
+
+The three images under `docs/screenshots/0.5.0/` show the shipped 0.5.0 bundle with explicitly labelled synthetic UI-fixture data. They are not photographs of a real workshop or proof of physical iPad/Nextcloud integration. Their future raw-GitHub HTTPS URLs are listed in `info.xml`; while the repository remains private, anonymous store downloads are not available. Do not describe these URLs as publicly verified.
+
+The signing certificate has not been issued. Store account recovery, explicit source visibility approval, source-data reuse review, final signatures, immutable download hosting and installation of the exact signed artifact remain outstanding. The offline inventory tool does not complete or waive these checks.

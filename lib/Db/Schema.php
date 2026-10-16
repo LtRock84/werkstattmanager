@@ -141,6 +141,7 @@ final class Schema {
 			'archived' => 'b',
 		],
 		'orders' => [
+			'planned_employee_id' => 'id',
 			'service_lines' => 'j',
 			'planning_days' => 'j',
 			'first_day' => 's',

@@ -52,6 +52,8 @@ export interface Snippet extends Base {
 export type OrderStatus =
   'draft' | 'open' | 'active' | 'paused' | 'review' | 'completed' | 'cancelled'
 export interface Order extends Base {
+
+  planned_employee_id?: string | null
   service_lines?: ServiceLine[]
   planning_days?: Allocation[]
   vehicle_id: string
@@ -135,6 +137,7 @@ export interface Audit extends Base {
   context?: {
     order: Pick<Order, 'id' | 'title'> | null
     employee: Pick<Employee, 'name'> | null
+    previous_employee?: Pick<Employee, 'name'> | null
     part: Pick<Part, 'title' | 'quantity' | 'part_number' | 'priority' | 'note'> | null
     defect: Pick<Defect, 'description' | 'category'> | null
     deadline: Pick<Deadline, 'title'> | null

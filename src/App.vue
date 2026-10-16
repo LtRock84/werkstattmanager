@@ -35,6 +35,7 @@ import ProjectSupport from './components/ProjectSupport.vue'
 import CalendarSettings from './components/CalendarSettings.vue'
 import OrderComposer from './components/OrderComposer.vue'
 import OrderDetail from './components/OrderDetail.vue'
+import EmployeePlan from './components/EmployeePlan.vue'
 import VehicleDetail from './components/VehicleDetail.vue'
 import DefectDetail from './components/DefectDetail.vue'
 import EntityEditor from './components/EntityEditor.vue'
@@ -173,7 +174,7 @@ const pageHelp = computed(
     })[page.value] ?? [],
 )
 const visibleOrders = computed(() =>
-  orders.value.filter((o) => !employeeFilter.value || o.last_employee_id === employeeFilter.value),
+  orders.value.filter((o) => !employeeFilter.value || o.last_employee_id === employeeFilter.value || o.planned_employee_id === employeeFilter.value),
 )
 const shownVehicles = computed(() =>
   vehicles.value.filter((v) => !fleetFilter.value || v.kind === fleetFilter.value),
@@ -706,6 +707,7 @@ async function erase() {
               <span class="wm-badge" :data-status="o.status">{{ statusText(o.status) }}</span><small>{{ orderNumber(o.id) }}</small>
             </div>
             <h2>{{ o.title }}</h2>
+            <EmployeePlan :order="o" :employees="employees" />
             <strong>{{ vehicleLabel(vehicleById(o.vehicle_id)) }}</strong>
             <p>{{ o.description.slice(0, 150) }}</p>
             <span class="wm-card-link">{{ t('Auftrag öffnen →') }}</span>

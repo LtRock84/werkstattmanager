@@ -85,8 +85,7 @@ final class Catalog {
 			$filters['status'] = $filters['status'] ?? $allowed;
 		}
 		if ($kind === 'orders' && isset($filters['employee_id'])) {
-			$filters['last_employee_id'] = $filters['employee_id'];
-			unset($filters['employee_id']);
+			$filters['employee_id'] = Rules::text($filters['employee_id'], 32, true);
 		}
 		if ($kind === 'outbox') {
 			$filters['status'] = 'failed';
@@ -113,6 +112,7 @@ final class Catalog {
 				'orders' => [
 					'id',
 					'last_employee_id',
+					'planned_employee_id',
 					'version',
 					'vehicle_id',
 					'title',

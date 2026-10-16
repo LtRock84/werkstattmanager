@@ -308,6 +308,8 @@ def main():
                 archive.extractall(stage, filter='data')
             if os.environ.get('WM_TEST_MAIL_PACKAGE'):
                 with tarfile.open(os.environ['WM_TEST_MAIL_PACKAGE']) as mail_archive: mail_archive.extractall(Path(stage), filter='data')
+            # Match the demo workaround for a reproduced upstream Theming/PHP-JIT TypeError.
+            (Path(stage) / 'php-test.ini').write_text('opcache.jit=disable\nopcache.jit_buffer_size=0\n')
             run('docker', 'pull', NC)
             run('docker', 'pull', DB[database])
             run('docker', 'network', 'create', '--internal', network)
@@ -322,6 +324,7 @@ def main():
             opts = [item for k, v in env.items() for item in ['-e', f'{k}={v}']]
             run('docker', 'run', '-d', '--name', app, '--network', network, '-v', volume + ':/var/www/html',
                 '-v', str(Path(stage) / 'werkstattmanager') + ':/var/www/html/custom_apps/werkstattmanager',
+                '-v', str(Path(stage) / 'php-test.ini') + ':/usr/local/etc/php/conf.d/zz-workshop-test.ini:ro',
                 *(['-v', str(Path(stage) / 'mail') + ':/var/www/html/custom_apps/mail'] if os.environ.get('WM_TEST_MAIL_PACKAGE') else []), *opts, NC)
             deadline = time.monotonic() + 240
             while True:
@@ -341,6 +344,7 @@ def main():
             wait_for_http('http://'+address, host='127.0.0.1')
             occ('app:enable', 'werkstattmanager')
             old_rank_appointment = old_rank_order = old_rank_service = None
+            preserved_order = None
             if os.environ.get('WM_TEST_UPGRADE_FROM'):
                 occ('config:system:set','trusted_domains','1','--value='+address)
                 wait_for_http('http://'+address)
@@ -349,6 +353,7 @@ def main():
                 import xml.etree.ElementTree as ET
                 previous_version=ET.parse(Path(stage)/'werkstattmanager/appinfo/info.xml').getroot().findtext('version')
                 old_customer=old_client.call('/api/v1/records/customers',{'data':{'name':'CI existing customer','email':'upgrade@example.invalid'}})
+                preserved_order=old_client.call('/api/v1/orders', {'data':dict(vehicle_id=preserved['id'], title='CI preserved unplanned order', status='draft', request_id=str(uuid.uuid4()))})
                 old_appointment=None
                 if previous_version.startswith('0.2.'):
                     old_appointment=old_client.call('/api/v1/appointments', {'data':dict(vehicle_id=preserved['id'],title='CI preserved appointment',arrival='2026-12-07T07:00:00Z',minutes=35,status='draft',note='CI preserved internal note',request_id=str(uuid.uuid4()))})
@@ -367,13 +372,20 @@ def main():
                 if 'deadline_emails' not in old_customer:
                     assert upgraded_customer.pop('deadline_emails') is False
                 assert upgraded_customer==old_customer
+                upgraded_order=current.call('/api/v1/records/orders?id='+preserved_order['id'])['items'][0]
+                if 'planned_employee_id' not in preserved_order:
+                    assert upgraded_order.pop('planned_employee_id') is None
+                assert upgraded_order==preserved_order
                 if old_appointment:
                     now=next(a for a in current.call('/api/v1/appointments?from=2026-12-07&to=2026-12-07')['items'] if a['id']==old_appointment['id'])
                     if 'checklist' not in old_appointment: assert now.pop('checklist') is None
                     assert now==old_appointment
                 if old_rank_service:
                     assert next(s for s in current.call('/api/v1/services')['items'] if s['id']==old_rank_service['id'])['usage_count']==1
-                    assert current.call('/api/v1/records/orders?id='+old_rank_order['id'])['items'][0]==old_rank_order
+                    upgraded_rank_order=current.call('/api/v1/records/orders?id='+old_rank_order['id'])['items'][0]
+                    if 'planned_employee_id' not in old_rank_order:
+                        assert upgraded_rank_order.pop('planned_employee_id') is None
+                    assert upgraded_rank_order==old_rank_order
                     assert next(a for a in current.call('/api/v1/appointments?from=2026-12-08&to=2026-12-08')['items'] if a['id']==old_rank_appointment['id'])==old_rank_appointment
                     print('PASS SQL upgrade service-usage backfill: linked historical appointment/order counted once; every old field/version unchanged')
                 print(f'PASS upgrade from {previous_version} with existing vehicle'+(' and appointment preserved' if old_appointment else ' preserved'))
@@ -399,11 +411,13 @@ def main():
             extra_orders = intake_access.check(base, passwords, Client, occ)
             import statistics
             extra_orders += statistics.check(base, passwords, Client)
+            import employee_planning
+            extra_orders += employee_planning.check(base, passwords, Client)
             import customer_mail
             customer_mail.check(base, passwords, Client)
             import company_mail
             company_mail.check(base, passwords, Client, occ, run, app)
-            expected_orders = (6 if os.environ.get('WM_TEST_DELIVERY') == '1' else 5) + extra_orders + (1 if old_rank_order else 0)
+            expected_orders = (6 if os.environ.get('WM_TEST_DELIVERY') == '1' else 5) + extra_orders + (1 if old_rank_order else 0) + (1 if preserved_order else 0)
             assert len(Client(base, 'ci-master', passwords['master']).call('/api/v1/records/orders')['items']) == expected_orders
             occ('app:disable', 'werkstattmanager')
             occ('app:enable', 'werkstattmanager')

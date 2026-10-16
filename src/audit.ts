@@ -16,6 +16,7 @@ export function auditEntry(entry: Audit) {
     'deadline.completed': t('Termin oder Frist erledigt'),
     'mileage.confirmed': t('Kilometerstand bestätigt'),
     'order.created': t('Auftrag erstellt'),
+    'order.plan': entry.details.after_employee_id ? t('Mitarbeiter für Auftrag vorgeplant') : t('Mitarbeiter-Vorplanung aufgehoben'),
     'order.release': t('Auftrag für die Werkstatt freigegeben'),
     'order.start': t('Arbeit gestartet – Zeiterfassung begonnen'),
     'order.pause': t('Arbeit pausiert – Zeiterfassung angehalten'),
@@ -44,6 +45,11 @@ export function auditEntry(entry: Audit) {
   else if (entry.order_id) add(t('Auftrag'), orderNumber(entry.order_id))
   if (context?.employee) add(t('Mitarbeiter'), context.employee.name)
   else if (entry.employee_id) add(t('Mitarbeiter'), t('Name nicht mehr verfügbar'))
+  if (action === 'order.plan') {
+    add(t('Bisher vorgesehen'), details.before_employee_id ? context?.previous_employee?.name ?? t('Name nicht mehr verfügbar') : t('Niemand'))
+    add(t('Jetzt vorgesehen'), details.after_employee_id ? context?.employee?.name ?? t('Name nicht mehr verfügbar') : t('Niemand'))
+    add(t('Bedeutung'), t('Nur Vorplanung. Keine Arbeitszeit gestartet; Kollegen dürfen übernehmen.'))
+  }
   if (action.startsWith('part.')) {
     if (context?.part) {
       const part = context.part

@@ -443,3 +443,12 @@ Signierung, Store- und Produktionsfreigabe. Vorbestehende Demo-Kerntabellenwarnu
 Die Auswertung ist auf 20.000 Datensätze je Fachbereich begrenzt und zeigt bei
 Überschreitung einen Fehler statt einer unvollständigen Summe. Sie verwendet eigene
 Nettobeträge und ist keine Buchhaltung oder Zahlungskontrolle.
+
+
+## Mitarbeiter-Vorplanung und Store-Vorbereitung 0.5.0 (16.10.2026)
+
+Lokal erfolgreich: 105 Frontendtests, Typecheck, ESLint, Produktionsbuild/vier Rollenstarts; 74 PHP-WASM-Fachszenarien und PHP-Syntaxprüfungen. Zusätzlich dieselben74Szenarien nativ auf PHP8.3.35/8.4/8.5, Nextcloud-Coding-Standard für57Dateien und Psalm ohneFehler bestanden; der separate CLI-Analysecontainer installiert Werkzeuge mit Ausnahme für ext-gd, die echten Nextcloud-/CI-Installationen behalten die GD-Anforderung. Sieben neue Frontend- und vier Backendfälle prüfen sichtbare/unverbindliche Planung, Erstellung/Ändern/Aufheben, fehlende/archivierte Referenzen, Rollen, Versionskonflikte, Wiederholungen, lesbare Historie und Start durch einen anderen Mitarbeiter. Zehn Paket-/Store-Inventartests einschließlich Ablehnung privaten Schlüsselmaterials und fehlender Vertrauensableitung aus einer bloß vorhandenen Signaturdatei.
+
+Die erweiterte CI prüft den hochgeladenen Stand zusätzlich nativ auf PHP8.3/8.4/8.5 und in vier frischen NC35.0.0/35.0.1×PostgreSQL17/MariaDB11.8-Instanzen sowie Upgrades von exakt 0.4.1 auf PostgreSQL/35.0.1 und MariaDB/35.0.0. Der neue SQL-Fall kontrolliert Planung/Filter, Entwurfsprivatsphäre, Rechte einschließlich Terminannahme, konkurrierende Versionen, Wiederholungen, Übernahme, Archivierung und Journal. Nachweis/Ergebnis des jeweiligen Commit-Laufs ist über GitHub Actions zu prüfen; aus der Definition allein folgt kein bestandener Lauf.
+
+Browsernachweise und aktuelle Screenshots werden mit dem ausgelieferten Bundle in einer klar gekennzeichneten lokalen UI-Fixture mit fiktiven Daten erstellt. Sie ersetzen keine echte Nextcloud-/physische iPad-/Touch-/Kamera-Abnahme. Signiertes Endpaket, Store-Konto, öffentlicher Download, Rechteprüfung der Preisquellen und bestehende Geräte-/Betriebsabnahmen bleiben getrennt offen. Keine erneute native PHP-/SQL-Matrix als lokalen WASM-Erfolg ausgeben.

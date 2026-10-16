@@ -338,3 +338,12 @@ finale Dateisignatur, Archivsignatur und ohne Anmeldung erreichbarer Download
 sind Voraussetzungen der späteren Store-Einreichung. Signiert wird erst nach
 Finalisierung und Prüfung des tatsächlich angebotenen Pakets. Geräte-, Betriebs-
 und Datenrechteabnahmen bleiben sichtbar offen; keine automatische Produktionsfreigabe.
+
+
+## Mitarbeiter-Vorplanung (0.5.0, Entscheidung 16.10.2026)
+
+Der Meister kann einen aktiven Mitarbeiter optional beim Erstellen eines Auftrags vorsehen und die Zuordnung bei Entwürfen, offenen oder pausierten Aufträgen ändern oder aufheben. Die Zuordnung ist ausdrücklich ein Hinweis; Kollegen dürfen übernehmen. Es entstehen keine Arbeitszeit, aktive Belegung oder Statusänderung. Vorplanung bleibt bis zur bewussten Änderung erhalten, tatsächliche Arbeitsintervalle und letzter Bearbeiter sind davon getrennt. Bei laufenden oder zur Abnahme gemeldeten/abgeschlossenen/stornierten Aufträgen lässt sie sich nicht ändern.
+
+Tablet und Meister sehen in offenen/pausierten Karten und Details „Vorgeplant: Name“ mit auffälligem rotem Rahmen sowie erklärendem Text; Entwürfe bleiben ausschließlich beim Meister. Der Name wird nicht automatisch als tatsächlicher Bearbeiter gewählt. Archivierte oder fehlende Mitarbeiter werden verständlich als nicht mehr verfügbar gekennzeichnet; sie können nicht neu zugeordnet werden. Meister können die alte Zuordnung aufheben. Namensfilter berücksichtigen Vorplanung und letzten Bearbeiter bereits serverseitig vor der Pagination.
+
+Nur Meister ändern die Vorplanung; Tablet und Terminannahme sind serverseitig ausgeschlossen. Optimistische Version, Transaktion und Wiederholungskennung schützen vor verlorenen Antworten und parallelen Änderungen. Das Fahrzeugjournal zeigt Änderungen/Aufhebungen verständlich; gespeichert werden Referenzen statt dauerhafter Namenskopien. Vorherige Namen werden beim Lesen aus den aktuellen Mitarbeiterdaten aufgelöst und folgen deren Anonymisierung. Additive nullable-Spalte erhält vorhandene Auftragsfelder, Versionen und Zeitintervalle. Keine neuen externen Datenflüsse.

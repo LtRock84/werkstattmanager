@@ -70,6 +70,7 @@ final class Orders {
 			}
 			// Serialise creation against vehicle archival.
 			$this->store->update('vehicles', $this->store->get('vehicles', $v['vehicle_id']), []);
+			$v['planned_employee_id'] = $this->plannedEmployee($input['planned_employee_id'] ?? null);
 			$order = $this->store->insert('orders', $v);
 			$this->library?->usage()->order($order);
 			if (!empty($input['defect_id'])) {
@@ -90,6 +91,9 @@ final class Orders {
 				$order['id'],
 				details: ['override_reason' => Rules::text($input['override_reason'] ?? '', 2000)],
 			);
+			if ($v['planned_employee_id'] !== null) {
+				$this->recordPlan($order, null, $v['planned_employee_id']);
+			}
 			return $order;
 		});
 	}
@@ -113,6 +117,22 @@ final class Orders {
 					'Auftrag wurde inzwischen geändert. Bitte aktualisieren.',
 					409,
 				);
+			}
+			if ($action === 'plan') {
+				if (!in_array($o['status'], ['draft', 'open', 'paused'], true)) {
+					throw new Problem('state', 'Vorplanung nur für Entwürfe, offene oder pausierte Aufträge ändern.', 409);
+				}
+				if (!array_key_exists('planned_employee_id', $input)) {
+					throw new Problem('validation', 'Bitte einen Mitarbeiter oder keine Vorplanung auswählen.');
+				}
+				$employee = $this->plannedEmployee($input['planned_employee_id']);
+				$before = $o['planned_employee_id'] ?? null;
+				if ($employee === $before) {
+					return $o;
+				}
+				$o = $this->store->update('orders', $o, ['planned_employee_id' => $employee]);
+				$this->recordPlan($o, $before, $employee);
+				return $o;
 			}
 			$next = Rules::transition($o['status'], $action);
 			if (
@@ -253,6 +273,22 @@ final class Orders {
 			}
 			return $o;
 		});
+	}
+	/** Lock the selected employee against concurrent archival without reserving work time. */
+	private function plannedEmployee(mixed $id): ?string {
+		$id = $this->catalog->reference($id, 'employees');
+		if ($id !== null) {
+			$employee = $this->store->get('employees', $id);
+			if ($employee['archived']) {
+				throw new Problem('archived', 'Mitarbeiter ist archiviert.', 409);
+			}
+			$this->store->update('employees', $employee, []);
+		}
+		return $id;
+	}
+	private function recordPlan(array $order, ?string $before, ?string $after): void {
+		$this->journal->record($this->access->uid(), 'order.plan', $order['vehicle_id'], $order['id'], $after,
+			['before_employee_id' => $before, 'after_employee_id' => $after]);
 	}
 	public function requestPart(string $id, array $input): array {
 		$this->access->workshop();

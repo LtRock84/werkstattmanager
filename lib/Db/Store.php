@@ -47,6 +47,13 @@ class Store {
 			->setMaxResults(min(500, max(1, $limit)))
 			->setFirstResult(max(0, $offset));
 		foreach ($filters as $field => $value) {
+			if ($table === 'orders' && $field === 'employee_id') {
+				$qb->andWhere($qb->expr()->orX(
+					$qb->expr()->eq('last_employee_id', $qb->createNamedParameter($value)),
+					$qb->expr()->eq('planned_employee_id', $qb->createNamedParameter($value)),
+				));
+				continue;
+			}
 			if (!isset($fields[$field])) {
 				throw new \InvalidArgumentException('Unknown filter');
 			}

@@ -256,3 +256,10 @@ Es werden dieselben öffentlichen OCP-Mail-, Config-, BackgroundJob- und
 Schema-APIs wie im bestehenden Versand verwendet, ohne neue Abhängigkeit oder
 neuen externen Dienst. Geschützte Fahrzeuglöschung prüft und entfernt auch neue
 Fristenzustellungen; offene/unklare Sendungen dürfen dabei nicht übergangen werden.
+
+
+## Unverbindliche Mitarbeiter-Vorplanung (0.5.0)
+
+Neue Migration `Version000500Date20261016000000` ergänzt `wm_orders.planned_employee_id` nullable STRING(32) mit Index. Veröffentlichte Migrationen bleiben unverändert. Bestehende Aufträge erhalten NULL. `Orders::create` nimmt die Referenz optional an, `POST /api/v1/orders/{id}/plan` nutzt den bestehenden Command-Endpunkt mit `version`, `request_id`, `planned_employee_id` (NULL zum Aufheben). Nur Meister und nur draft/open/paused; fehlendes Feld ist ein Validierungsfehler. Die Auswahl sperrt den Mitarbeiterdatensatz gegen gleichzeitige Archivierung, reserviert aber keine Arbeitszeit. Start-/Übernahmeregeln verwenden ausschließlich den tatsächlich ausgewählten Mitarbeiter.
+
+Die Vorplanung ist im eingeschränkten Tablet-DTO enthalten. Der virtuelle Order-Filter employee_id wird als parametrisierte OR-Bedingung über planned_employee_id/last_employee_id vor Limit/Offset ausgeführt. `order.plan` protokolliert vorherige/nächste IDs; Journal-Kontext löst aktuelle Namen einschließlich des vorher vorgesehenen Mitarbeiters gebündelt auf. Keine Namenssnapshots. UI-Hinweis und Bearbeiterauswahl bleiben getrennt, DOM-Textbindung statt HTML; Farben verwenden Nextcloud-Tokens und stehen zusätzlich zu Klartext. Store-Inventar prüft offline das konkrete Archiv, erteilt keine Veröffentlichungs- oder Signaturfreigabe.

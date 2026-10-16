@@ -52,6 +52,9 @@ final class Journal {
 		foreach ($rows as $row) {
 			$ids['orders'][] = $row['order_id'] ?? null;
 			$ids['employees'][] = $row['employee_id'] ?? null;
+			if ($row['action'] === 'order.plan') {
+				$ids['employees'][] = $row['details']['before_employee_id'] ?? null;
+			}
 			$ids['parts'][] = $row['details']['part_id'] ?? null;
 			$ids['defects'][] = $row['details']['defect_id'] ?? null;
 			if (str_starts_with($row['action'], 'deadline')) {
@@ -79,6 +82,7 @@ final class Journal {
 			$row['context'] = [
 				'order' => $references['orders'][$row['order_id'] ?? ''] ?? null,
 				'employee' => $references['employees'][$row['employee_id'] ?? ''] ?? null,
+				'previous_employee' => $row['action'] === 'order.plan' ? ($references['employees'][$row['details']['before_employee_id'] ?? ''] ?? null) : null,
 				'part' => $references['parts'][$row['details']['part_id'] ?? ''] ?? null,
 				'defect' => $references['defects'][$row['details']['defect_id'] ?? ''] ?? null,
 				'deadline' => $references['deadlines'][$row['details']['id'] ?? ''] ?? null,
