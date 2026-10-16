@@ -1,7 +1,7 @@
 # Release und Store-Veröffentlichung
 
-Stand 2026-10-16, früher Prüfkandidat0.5.0, öffentliches Quellprojekt;
-lokale Demo weiterhin 0.4.0. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
+Stand 2026-10-16, früher Prüfkandidat0.5.1-beta.1, öffentliches Quellprojekt;
+lokale Demo bleibt auf dem separat geprüften Stand0.5.0. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
 Ein internes Kandidatenpaket ist keine Produktions- oder App-Store-Freigabe.
 
 ## Automatische Prüfungen
@@ -11,7 +11,7 @@ Ein internes Kandidatenpaket ist keine Produktions- oder App-Store-Freigabe.
 - PHP 8.3/8.4/8.5: Lockfile-Installation, Plattform, Syntax und Fachtests;
   Coding Standard und Psalm unter PHP 8.3. Psalm 6 wird wegen des bekannten
   Werkzeugfehlers unter PHP 8.5 nicht dort ausgeführt.
-- Node 24.18.0/npm 11.16.0: Typecheck, ESLint, Frontendtests, Runtime-Audit und Build.
+- Node 24.18.0/npm 11.16.0: Typecheck, ESLint, Frontendtests, vollständiger npm-Audit und Build.
 - Offizielles aktuelles App-Store-XSD, Versionsgleichheit, Paketgrenzen und identische
   Prüfsummen zweier aufeinanderfolgender Paketbauten.
 - Installation exakt dieses Artefakts in vier wegwerfbaren Instanzen: Nextcloud
@@ -45,12 +45,10 @@ verwendete private E-Mail wird nicht in Quellcode oder Release-Unterlagen veröf
 
 Der GitHub-Issue-Tracker und das Quellprojekt sind seit der ausdrücklichen Eigentümerfreigabe vom16.10.2026 öffentlich. Alle drei Metadaten-Bildadressen wurden anonym per HTTPS geprüft.
 
-Der private RSA-4096-Schlüssel liegt außerhalb dieses Repositorys. Der öffentliche CSR mit CN `werkstattmanager` wurde als einziger Dateiinhalt in [Zertifikatsantrag#1345](https://github.com/nextcloud/app-certificate-requests/pull/1345) eingereicht und bytegleich zum lokalen CSR bestätigt. Maintainer erhalten keine Schreibrechte auf den persönlichen Antragsbranch. Nextcloud muss das Zertifikat noch ausstellen.
+Der private RSA-4096-Schlüssel liegt außerhalb dieses Repositorys. Der öffentliche CSR mit CN `werkstattmanager` wurde als einziger Dateiinhalt in [Zertifikatsantrag#1345](https://github.com/nextcloud/app-certificate-requests/pull/1345) eingereicht und bytegleich zum lokalen CSR bestätigt. Maintainer erhalten keine Schreibrechte auf den persönlichen Antragsbranch. Nextcloud hat das Zertifikat am16.10.2026 ausgestellt. Zertifikat/öffentlicher CSR/privater Schlüssel passen zueinander; Prüfung gegen die mitNC35.0.1 ausgelieferte Vertrauensdatei bestanden.
 Es wird weder ein Store-Zertifikat selbst ausgestellt noch eine Signierung vorgetäuscht.
 
-Vor öffentlicher Weitergabe sind außerdem die Wiederverwendungsbedingungen der
-Preisquellen zu prüfen. Quellenangaben und fehlende Vergleichsdaten bleiben
-nachvollziehbar; eine technische Prüfung ersetzt diese Rechteprüfung nicht.
+Der Nutzer hat die Veröffentlichung mit beibehaltenen Vergleichspreisen und ohne Nennung der Unternehmen beauftragt. Stabile neutrale Kennungen erhalten die Anbieterunabhängigkeit; Originalquellen sind getrennt intern archiviert. Die zuvor offene Rechteprüfung bleibt dokumentiert und wird durch diese Kennzeichnung nicht als abgeschlossen ausgegeben.
 
 Nach bestandener Abnahme und Zertifikatsausstellung:
 
@@ -69,11 +67,7 @@ finalen `tar.gz`-Bytes separat signiert. Beides ersetzt nicht die Datei-Signatur
 Download und Bilder müssen auch ohne GitHub- oder Store-Anmeldung erreichbar sein;
 ein privates GitHub-Actions-Artefakt erfüllt diese Voraussetzung nicht.
 
-Der aktuelle Kandidat ist 0.5.0. Eine erste öffentliche Testversion kann
-eine höhere SemVer-Version mit Vorabkennung erhalten, beispielsweise `0.5.1-beta.1`;
-der Store führt solche Kennungen als Beta. Das ist eine vorbereitete Möglichkeit,
-keine Versionsänderung oder erteilte Freigabe. Nach jeder Änderung an Version,
-Metadaten oder Dateien sind das konkrete Endpaket und die Signaturen erneut zu prüfen.
+Die erste Store-Testversion ist0.5.1-beta.1 und liegt damit über der installierten Demo0.5.0. Der Store ordnet Vorabkennungen als Beta ein. Nach Änderungen an Version, Metadaten oder Dateien sind das konkrete Endpaket und die Signaturen erneut zu prüfen.
 
 Ein später signiertes Archiv unterscheidet sich vom internen Kandidaten und braucht
 eigene Integritäts-, Installations- und Prüfsummenprüfung. Metadatenfreigabe bleibt
@@ -87,8 +81,8 @@ Offizielle Quellen, erneut geprüft 2026-10-16:
 
 ## Wiederholbare Store-Vorbereitung 0.5.0
 
-`python3 scripts/store-preflight.py dist/werkstattmanager-0.5.0-candidate.tar.gz --output dist/store-preflight.json` prüft offline das konkrete Kandidatenarchiv und schreibt ein SHA-256-Dateiinventar mit Versions-/Herausgeberangaben, Bild-URLs und getrennten Veröffentlichungsvoraussetzungen. Zehn Paket-/Inventartests prüfen auch, dass privates Schlüsselmaterial in erlaubten Textpfaden abgewiesen wird und die bloße Anwesenheit von signature.json keine gültige Signatur behauptet. Der CI-Artefakt enthält das Inventar; weder Werkzeug noch CI veröffentlicht oder signiert automatisch.
+`python3 scripts/store-preflight.py dist/werkstattmanager-0.5.1-beta.1-candidate.tar.gz --output dist/store-preflight.json` prüft offline das konkrete Kandidatenarchiv und schreibt ein SHA-256-Dateiinventar mit Versions-/Herausgeberangaben, Bild-URLs und getrennten Veröffentlichungsvoraussetzungen. Zehn Paket-/Inventartests prüfen auch, dass privates Schlüsselmaterial in erlaubten Textpfaden abgewiesen wird und die bloße Anwesenheit von signature.json keine gültige Signatur behauptet. Der CI-Artefakt enthält das Inventar; weder Werkzeug noch CI veröffentlicht oder signiert automatisch.
 
 Die SQL-Matrix enthält zusätzlich zwei echte Upgrades von Commit06df957 (0.4.1): PostgreSQL/NC35.0.1 und MariaDB/NC35.0.0. Die alte Version wird aus dem gepinnten Quellstand separat gebaut. Vorhandene Auftragsfelder und Versionen müssen erhalten bleiben; die neue Vorplanung ist bei Altaufträgen NULL. Öffentliche Bilder zeigen die gekennzeichnete isolierte UI-Fixture, keine behauptete physische Geräteabnahme.
 
-Der Kontozugang wurde am16.10.2026 im vom Nutzer geöffneten Chrome-Tab bestätigt. Die App-Registrierung ist weiterhin durch das fehlende ausgestellte Zertifikat blockiert. Das sichtbare Releaseformular verlangt öffentliche Archiv-URL und Archivsignatur; Beschreibungen und Bilder werden aus dem Paket gelesen. Der ausdrückliche Hinweis auf eine sehr frühe Testversion steht jetzt am Anfang der deutschen und englischen Metadatenbeschreibung. Öffentliche Sichtbarkeit und CSR-Pull-Request wurden ausdrücklich freigegeben und umgesetzt. Noch ausstehend sind Zertifikatsausstellung, Signaturen und die Einreichung des exakten signierten Releasearchivs.
+Der Kontozugang wurde am16.10.2026 im vom Nutzer geöffneten Chrome-Tab bestätigt. Das ausgestellte Zertifikat liegt vor; die Registrierung verwendet dessen App-ID-Signatur. Das sichtbare Releaseformular verlangt öffentliche Archiv-URL und Archivsignatur; Beschreibungen und Bilder werden aus dem Paket gelesen. Der ausdrückliche Hinweis auf eine sehr frühe Testversion steht jetzt am Anfang der deutschen und englischen Metadatenbeschreibung. Öffentliche Sichtbarkeit und CSR-Pull-Request wurden ausdrücklich freigegeben und umgesetzt. Signaturen und die Einreichung des exakten geprüften Releasearchivs werden im aktuellen Veröffentlichungsablauf ausgeführt.

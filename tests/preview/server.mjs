@@ -2,6 +2,7 @@
 import { createServer } from 'node:http'
 import { readFileSync } from 'node:fs'
 import { randomUUID } from 'node:crypto'
+const fixtureVersion=JSON.parse(readFileSync(new URL('../../package.json',import.meta.url),'utf8')).version
 const now=Math.floor(Date.now()/1000)
 const base=(id)=>({id,version:1,created_at:now-3600,updated_at:now})
 const db={
@@ -40,7 +41,7 @@ const server=createServer(async(req,res)=>{
  if(p==='/apps/werkstattmanager/public/v1/defects')return json({id:randomUUID(),received:true})
  if(p.endsWith('/api/v1/settings'))return json({master_group:'werkstatt-meister',tablet_group:'werkstatt-tablet',admin:true})
  if(p==='/css/main.css'||p==='/js/werkstattmanager-main.js'){res.writeHead(200,{'content-type':p.endsWith('.css')?'text/css':'text/javascript'});return res.end(readFileSync('.'+p))}
- if(p==='/'||p==='/tablet'||p==='/fahrer'){const role=p==='/tablet'?'tablet':p==='/fahrer'?'driver':'master';res.writeHead(200,{'content-type':'text/html'});return res.end(header+`<body><div id="fixture-banner">UI-BEISPIEL · Version 0.5.0 · ausschließlich fiktive Daten · kein Nextcloud-Server</div><input type="hidden" id="initial-state-werkstattmanager-mode" value="${Buffer.from(JSON.stringify(role)).toString('base64')}"><div id="werkstattmanager"></div><script src="/js/werkstattmanager-main.js"></script></body></html>`)}
+ if(p==='/'||p==='/tablet'||p==='/fahrer'){const role=p==='/tablet'?'tablet':p==='/fahrer'?'driver':'master';res.writeHead(200,{'content-type':'text/html'});return res.end(header+`<body><div id="fixture-banner">UI-BEISPIEL · Version ${fixtureVersion} · ausschließlich fiktive Daten · kein Nextcloud-Server</div><input type="hidden" id="initial-state-werkstattmanager-mode" value="${Buffer.from(JSON.stringify(role)).toString('base64')}"><div id="werkstattmanager"></div><script src="/js/werkstattmanager-main.js"></script></body></html>`)}
  json({message:'Testserver unterstützt diese Aktion nicht.'},404)
  }catch(e){res.writeHead(500);res.end('Fixture request failed')}
 })

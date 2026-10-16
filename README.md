@@ -2,13 +2,13 @@
 
 Herausgeber: **Thomas Keilhaupt** · GitHub: [LtRock84](https://github.com/LtRock84).
 **Sehr frühe Testversion zum Ausprobieren und Testen.** Die App-Store-Veröffentlichung wird vorbereitet; es gibt noch keinen Store-Eintrag.
-Zertifikat beantragt: [Nextcloud-PR #1345](https://github.com/nextcloud/app-certificate-requests/pull/1345).
+Zertifikat ausgestellt: [Nextcloud-PR #1345](https://github.com/nextcloud/app-certificate-requests/pull/1345).
 
 **[♥ Projekt über PayPal unterstützen](https://www.paypal.me/Werkstattmanager)**
 – freiwilliger Beitrag zu Projektkosten und Weiterentwicklung, ohne Zusatzleistungen
 oder Spendenbescheinigung. Die App bleibt kostenlos nutzbar.
 
-Früher Prüfkandidat 0.5.0 für eine Werkstattorganisation. Fahrzeugakten für Kunden
+Frühe Test-Beta 0.5.1-beta.1 für eine Werkstattorganisation. Fahrzeugakten für Kunden
 und eigene Flotte, schnelle Aufträge, Tablet-Zeiterfassung, Teileanforderungen und
 externe Mängelmeldungen, Terminbuch, Leistungskatalog, Preiskalkulation,
 Umsatz-/Arbeitszeitauswertung und anpassbare Kundennachrichten mit Fristenerinnerungen. Der aktuelle Stand ist **nicht für Produktivbetrieb freigegeben**.
@@ -19,7 +19,7 @@ Neu in 0.5.0: **Mitarbeiter vorplanen**, sichtbar am Tablet als unverbindlicher 
 
 Weitere Funktionen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
 sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
-Das Repository ist seit dem16.10.2026 öffentlich. Installationspakete entstehen bisher als interne CI-Artefakte; ein signiertes Store-Release steht noch aus.
+Das Repository ist öffentlich. Die erste signierte Test-Beta wird vorbereitet; der Store-Status steht in den Release-Unterlagen. Vergleichspreise bleiben enthalten, Unternehmensnamen und Anbieterlinks werden nicht veröffentlicht.
 
 ## Bedienung
 
@@ -69,7 +69,7 @@ Katalogupdates erhalten bearbeitete Felder, eigene Preise, Favoriten und eigene 
 334 Preisangaben von 32 Preisgebern liegen bei, davon 248 mit vergleichbarem Umfang
 und bestätigter Steuerangabe. 57 Leistungen haben mindestens eine veröffentlichte Angabe;
 238 haben noch keine geeignete Quelle. Eine Angabe bedeutet noch keinen Durchschnitt.
-[Quellen und Datenlücken](docs/service-prices.md) erklären die Aussagekraft.
+[Datengrundlage und Datenlücken](docs/service-prices.md) erklären die Aussagekraft.
 
 Kalenderübertragung und Kundennachrichten benötigen eine einmalige Einrichtung durch
 Administratoren: eigenes Integrationskonto, Werkstattkalender mit Lesefreigaben,

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.1-beta.1 – Erste öffentliche Test-Beta
+
+- Ausdrücklicher früher Teststatus in Deutsch/Englisch und Beta-Version für den Store.
+- Alle 334 Vergleichspreise bleiben erhalten; 32 unabhängige Preisgeber erscheinen neutral, ohne Unternehmensnamen oder Anbieterlinks. Die API berücksichtigt auch Altbestände, ohne diese umzuschreiben.
+- Berechnung, Anbieterzählung, bestehende Preis-IDs und eigene Werkstattpreise bleiben erhalten. Originalquellen sind getrennt intern dokumentiert; historische Git-Angaben bleiben bestehen.
+- Drei aktuelle fiktive UI-Bilder, ausgestelltes Nextcloud-Zertifikat und Signierungsvorbereitung. Geräte-/Betriebsabnahme und Preisquellenrechte bleiben getrennt offen.
+
 ## 0.5.0 – Mitarbeiter für Arbeitsaufträge vorplanen
 
 - Deutsche und englische Store-Metadaten kennzeichnen die App ausdrücklich als sehr frühe Testversion zum Ausprobieren.

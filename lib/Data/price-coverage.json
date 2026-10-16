@@ -1777,5 +1777,6 @@
       "observations": 0,
       "status": "no_qualified_public_offer_yet"
     }
-  ]
+  ],
+  "providers_anonymised": true
 }

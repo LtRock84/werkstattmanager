@@ -27,8 +27,8 @@ TIMES={
 'Öl- und Filterwechsel':(45,30,60,'https://www.boschcarservice.com/de/de/werkstattleistungen/oel-und-filterwechsel/'),
 'Kleine Inspektion':(105,90,120,'https://www.boschcarservice.com/de/de/werkstattleistungen/inspektion/auto-inspektion/'),
 'Große Inspektion':(210,180,240,'https://www.boschcarservice.com/de/de/werkstattleistungen/inspektion/auto-inspektion/'),
-'Saisonaler Räderwechsel':(25,25,25,'https://www.autoservicekoehler.de/aktionen/'),
-'Achsvermessung mit Einstellung':(75,75,75,'https://www.autoservicekoehler.de/aktionen/')}
+'Saisonaler Räderwechsel':(25,25,25,'https://github.com/LtRock84/werkstattmanager/blob/main/docs/service-prices.md#zeitvorschläge'),
+'Achsvermessung mit Einstellung':(75,75,75,'https://github.com/LtRock84/werkstattmanager/blob/main/docs/service-prices.md#zeitvorschläge')}
 rows=[]
 for category,titles in GROUPS.items():
     for title in titles.split('|'):

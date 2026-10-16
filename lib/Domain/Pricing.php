@@ -5,6 +5,18 @@ declare(strict_types=1);
 namespace OCA\Werkstattmanager\Domain;
 
 final class Pricing {
+	/** Preserve provider independence while withholding names and links, including legacy rows. */
+	public static function publicObservations(array $observations): array {
+		foreach ($observations as &$row) {
+			if (!preg_match('/^Preisgeber [a-f0-9]{12}$/D', $row['provider'])) {
+				$row['provider'] = 'Preisgeber ' . substr(hash('sha256', $row['provider']), 0, 12);
+			}
+			$row['source'] = '';
+			$row['scope'] = str_replace(['FSP-HU', 'MGS5+'], ['HU bei derselben Prüfstelle', 'Aktionsinspektion'], $row['scope']);
+		}
+		unset($row);
+		return $observations;
+	}
 	public static function benchmark(array $observations, string $today): array {
 		$groups = [];
 		foreach ($observations as $o) {

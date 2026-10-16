@@ -40,7 +40,7 @@ final class ServiceLibrary {
 			}
 		}
 		unset($row);
-		return ['items' => $rows, 'version' => '2026-10-05.1','coverage' => json_decode((string)file_get_contents(__DIR__ . '/../Data/price-coverage.json'), true, 512, JSON_THROW_ON_ERROR)];
+		return ['items' => $rows, 'version' => '2026-10-16.1','coverage' => json_decode((string)file_get_contents(__DIR__ . '/../Data/price-coverage.json'), true, 512, JSON_THROW_ON_ERROR)];
 	}
 	public function prices(string $key): array {
 		$this->access->master();
@@ -52,6 +52,7 @@ final class ServiceLibrary {
 				break;
 			}
 		}
+		$rows = Pricing::publicObservations($rows);
 		return ['items' => $rows, 'groups' => Pricing::benchmark($rows, gmdate('Y-m-d'))];
 	}
 	public function save(array $input): array {

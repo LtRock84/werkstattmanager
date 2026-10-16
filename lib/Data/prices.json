@@ -1,10 +1,10 @@
 {
-  "version": "2026-10-05.1",
-  "method": "Public offers, qualified scope groups; not representative paid-invoice statistics",
+  "version": "2026-10-16.1",
+  "method": "Anonymised public offers; provider identities and links are not published; qualified scope groups, not representative paid-invoice statistics",
   "observations": [
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -25,8 +25,8 @@
       "seed_key": "e760f25bc0ef0986a3b09e6582fd4e9f"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -47,8 +47,8 @@
       "seed_key": "456705d331c78dfe8d449b4bbfc78d48"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -69,8 +69,8 @@
       "seed_key": "b1bc6e85f52df4aa317e30bb459bd16b"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -91,8 +91,8 @@
       "seed_key": "01b3ffab977af4f57b6591f475fdba10"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -113,8 +113,8 @@
       "seed_key": "08b08a163c0ec32d630aaac4d9479e0c"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -135,8 +135,8 @@
       "seed_key": "9100473e275a809de78e310faca0319e"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -157,8 +157,8 @@
       "seed_key": "ebbba4aa573b43e22060ae842179cb63"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -179,8 +179,8 @@
       "seed_key": "e72e2e95eedb81dabbf424e49d5bf29c"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -201,8 +201,8 @@
       "seed_key": "12b2cb60e1244ba34d73ae52d571447e"
     },
     {
-      "provider": "Reifen Tobi",
-      "source": "https://www.reifen-tobi.de/preise.htm",
+      "provider": "Preisgeber 03f089cf9727",
+      "source": "",
       "city": "Königs Wusterhausen",
       "region": "Brandenburg",
       "vat": 19,
@@ -223,8 +223,8 @@
       "seed_key": "79a0bcc999f446354fdcf879bff52d8e"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -245,8 +245,8 @@
       "seed_key": "ca74742171757eae1dfde68fbde8c169"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -267,8 +267,8 @@
       "seed_key": "41f8816c09ed6eb6efbc0f2517505e69"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -289,8 +289,8 @@
       "seed_key": "fa19d12b6d65f82d6909ff41d189761a"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -311,8 +311,8 @@
       "seed_key": "068369abfd073f09a2322f17e3fd8ec1"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -333,8 +333,8 @@
       "seed_key": "7fd87eca275a6266952f0f9fa4f7413a"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -355,8 +355,8 @@
       "seed_key": "98a83ac76dd5bbe8caa3017bf82dd32e"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -377,8 +377,8 @@
       "seed_key": "5dd479803709eb70c6f21b464adc1ce5"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -399,8 +399,8 @@
       "seed_key": "9737408263044ec654c9a7d4a903b46e"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -421,8 +421,8 @@
       "seed_key": "0accc13e0ee7bc5476cb1c9063071225"
     },
     {
-      "provider": "BHS Hartmann",
-      "source": "https://reifen-kfz-hartmann.de/preise/",
+      "provider": "Preisgeber 90e72604b038",
+      "source": "",
       "city": "Berlin-Spandau",
       "region": "Berlin",
       "vat": 19,
@@ -443,8 +443,8 @@
       "seed_key": "92ffe02686a7a908767a6e34602802e8"
     },
     {
-      "provider": "Autoservice Köhler",
-      "source": "https://www.autoservicekoehler.de/aktionen/",
+      "provider": "Preisgeber 88999b6ad528",
+      "source": "",
       "city": "Chemnitz",
       "region": "Sachsen",
       "vat": 19,
@@ -465,8 +465,8 @@
       "seed_key": "c7e74a32270152e21f0d1ad854f83021"
     },
     {
-      "provider": "Autoservice Köhler",
-      "source": "https://www.autoservicekoehler.de/aktionen/",
+      "provider": "Preisgeber 88999b6ad528",
+      "source": "",
       "city": "Chemnitz",
       "region": "Sachsen",
       "vat": 19,
@@ -487,8 +487,8 @@
       "seed_key": "fd5212f9a87b5b8a497228c5cdaa51d9"
     },
     {
-      "provider": "Autoservice Köhler",
-      "source": "https://www.autoservicekoehler.de/aktionen/",
+      "provider": "Preisgeber 88999b6ad528",
+      "source": "",
       "city": "Chemnitz",
       "region": "Sachsen",
       "vat": 19,
@@ -509,8 +509,8 @@
       "seed_key": "0f81dd32078f4fbd7feb564bcd632e3e"
     },
     {
-      "provider": "Autoservice Köhler",
-      "source": "https://www.autoservicekoehler.de/aktionen/",
+      "provider": "Preisgeber 88999b6ad528",
+      "source": "",
       "city": "Chemnitz",
       "region": "Sachsen",
       "vat": 19,
@@ -531,8 +531,8 @@
       "seed_key": "41ad12c3807274ed0df735b6cf616ac9"
     },
     {
-      "provider": "Autoservice Köhler",
-      "source": "https://www.autoservicekoehler.de/aktionen/",
+      "provider": "Preisgeber 88999b6ad528",
+      "source": "",
       "city": "Chemnitz",
       "region": "Sachsen",
       "vat": 19,
@@ -553,8 +553,8 @@
       "seed_key": "5497bf38e6d20e11225b01702a4dfe53"
     },
     {
-      "provider": "Autoservice Köhler",
-      "source": "https://www.autoservicekoehler.de/aktionen/",
+      "provider": "Preisgeber 88999b6ad528",
+      "source": "",
       "city": "Chemnitz",
       "region": "Sachsen",
       "vat": 19,
@@ -575,8 +575,8 @@
       "seed_key": "d7372c35280a7a2f0da4131ec5e00a7c"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -597,8 +597,8 @@
       "seed_key": "6bc9d4b3fee5342d796eb8f978584f8f"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -619,8 +619,8 @@
       "seed_key": "5834b36a10c001b378bd73f2e0f6724e"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -641,8 +641,8 @@
       "seed_key": "47dd67afaf7cc63136a3c516d3f2f3f3"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -663,8 +663,8 @@
       "seed_key": "ed54dfaa3d75c574161b0af3656a92d6"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -685,8 +685,8 @@
       "seed_key": "c3a557d25cc867547cb70c96712d63b2"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -707,8 +707,8 @@
       "seed_key": "6333340e9dff65e026d4b2b6958001dc"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -729,8 +729,8 @@
       "seed_key": "e903f69d90b07a9daaee2e49ac6217f2"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -751,8 +751,8 @@
       "seed_key": "cef2a83d41ed62c413880687afed3e9a"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -773,8 +773,8 @@
       "seed_key": "d004db56094b94d1823f871438e871f3"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -795,8 +795,8 @@
       "seed_key": "33cc100d357f176d9adc69fe8ff79214"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -817,8 +817,8 @@
       "seed_key": "c859a32565f65795fdfe3282100016e6"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -839,8 +839,8 @@
       "seed_key": "de82dcfecfd52a59f9aeae408212c45b"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -861,8 +861,8 @@
       "seed_key": "bf4a367ffa1b2deaa9dcf3d727644bab"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -883,8 +883,8 @@
       "seed_key": "d99ae48c10bc68e54a3f05e6c1008958"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -905,8 +905,8 @@
       "seed_key": "e78240ae39d4ab17d8a70b382fd409d2"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -927,8 +927,8 @@
       "seed_key": "ee6e6168d29533ea95b29e8f0fe72b5b"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -949,8 +949,8 @@
       "seed_key": "e9232e889a558ce30671dd193fc8cb0c"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -971,8 +971,8 @@
       "seed_key": "9376be362bdbe5ae2a171dd0a366ad34"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -993,8 +993,8 @@
       "seed_key": "1673993d1e19caa600f032805ae613df"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -1015,8 +1015,8 @@
       "seed_key": "0b8ecef8d15d3808a7d52a4ba25338ab"
     },
     {
-      "provider": "Lipsia Automobile",
-      "source": "https://www.lipsia-automobile.de/preise/",
+      "provider": "Preisgeber 6f1be0e070d3",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -1037,8 +1037,8 @@
       "seed_key": "f3d0f69b7554ee53ad1d4d06a0b33811"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1059,8 +1059,8 @@
       "seed_key": "66ea9c9d1a091a1d31cd0aa216bf4141"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1081,8 +1081,8 @@
       "seed_key": "a6e9c4ec7d3e64b2d2a54bda1d175e6d"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1103,8 +1103,8 @@
       "seed_key": "c6b409833427985e42967263fecedfca"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1125,8 +1125,8 @@
       "seed_key": "ca4f0f425764dd8c5ec352c8ec8440c3"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1147,8 +1147,8 @@
       "seed_key": "6f29f8d67ff1a47e088a28fe1ec904b2"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1169,8 +1169,8 @@
       "seed_key": "62cbb6bb52b4a2e02ee3ffb3eba444be"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1191,8 +1191,8 @@
       "seed_key": "9a2245a9b60e77459ef56cb7b48565d5"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1213,8 +1213,8 @@
       "seed_key": "3b6a3688fc66d1537764fee380c7f47c"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1235,8 +1235,8 @@
       "seed_key": "87bf51901d821da5ad6895431aef13b7"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1257,8 +1257,8 @@
       "seed_key": "3f705dbd32178c3c3b7a47ce660de837"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1279,8 +1279,8 @@
       "seed_key": "f6479cc8a1053042154ee7dc42192ea7"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1301,8 +1301,8 @@
       "seed_key": "530956e1112a9211aef487ea6e2212ec"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1323,8 +1323,8 @@
       "seed_key": "6e263413c7c6ec188d582f979188cd99"
     },
     {
-      "provider": "KFZ Meisterbetrieb Südwest",
-      "source": "https://www.kfzmeisterbetrieb-suedwest.de/",
+      "provider": "Preisgeber ffc0a3acf0fe",
+      "source": "",
       "city": "Berlin-Tempelhof",
       "region": "Berlin",
       "vat": 19,
@@ -1345,8 +1345,8 @@
       "seed_key": "3e4141133b1c72cb940fd81f7e9c8671"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1367,8 +1367,8 @@
       "seed_key": "d1679bb2889fd1641dfcafb0a319f8d4"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1389,8 +1389,8 @@
       "seed_key": "343e6a627c0b51b8cecbb6ccb08e2966"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1411,8 +1411,8 @@
       "seed_key": "6c5b2f5e1686318748b5dbca1179e15c"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1433,8 +1433,8 @@
       "seed_key": "4ec919f2e8ad5c01b33b00dd6c100f4d"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1455,8 +1455,8 @@
       "seed_key": "0035c191460078fc6f6050dadc5f7b9f"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1477,8 +1477,8 @@
       "seed_key": "0bad3af60595b1dfba7b532d8642d47e"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1499,8 +1499,8 @@
       "seed_key": "f0be6d1322e6d73c418e899c7b30944a"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1521,8 +1521,8 @@
       "seed_key": "804b55b5772e35e658474c746088eef1"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1543,8 +1543,8 @@
       "seed_key": "11dab4931aab3f0df96f0b8d6c8a76ca"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1565,8 +1565,8 @@
       "seed_key": "4ccdd6220e4c4a3aa9ae922050a42431"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1587,8 +1587,8 @@
       "seed_key": "6f485043721de9de30fac250d9b5562c"
     },
     {
-      "provider": "Autoservice A.P.E.",
-      "source": "https://www.autoserviceape.de/",
+      "provider": "Preisgeber 0239d32942c6",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -1609,8 +1609,8 @@
       "seed_key": "3f921a9ffb5a79c3ca8a3d1baf01ac88"
     },
     {
-      "provider": "B-S-F Fahrzeugservice",
-      "source": "https://www.philipgrabow.de/preisliste.php",
+      "provider": "Preisgeber f62d13465049",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1631,8 +1631,8 @@
       "seed_key": "a081a8cc0e73d2b95c247fc2cd831940"
     },
     {
-      "provider": "B-S-F Fahrzeugservice",
-      "source": "https://www.philipgrabow.de/preisliste.php",
+      "provider": "Preisgeber f62d13465049",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1653,8 +1653,8 @@
       "seed_key": "7f8ffb1eb6f2bb9f61fc1179559c4e5d"
     },
     {
-      "provider": "B-S-F Fahrzeugservice",
-      "source": "https://www.philipgrabow.de/preisliste.php",
+      "provider": "Preisgeber f62d13465049",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1675,8 +1675,8 @@
       "seed_key": "03bfefebb9d54238e17195d5ffdb4c8f"
     },
     {
-      "provider": "B-S-F Fahrzeugservice",
-      "source": "https://www.philipgrabow.de/preisliste.php",
+      "provider": "Preisgeber f62d13465049",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1697,8 +1697,8 @@
       "seed_key": "762dc1dc0771de1fe2d47af15dc12aa6"
     },
     {
-      "provider": "B-S-F Fahrzeugservice",
-      "source": "https://www.philipgrabow.de/preisliste.php",
+      "provider": "Preisgeber f62d13465049",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1719,8 +1719,8 @@
       "seed_key": "db050e31634036dbf9191e658f72c281"
     },
     {
-      "provider": "B-S-F Fahrzeugservice",
-      "source": "https://www.philipgrabow.de/preisliste.php",
+      "provider": "Preisgeber f62d13465049",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1741,8 +1741,8 @@
       "seed_key": "8c6ec68fc607df4a1e791a5e135417c9"
     },
     {
-      "provider": "B-S-F Fahrzeugservice",
-      "source": "https://www.philipgrabow.de/preisliste.php",
+      "provider": "Preisgeber f62d13465049",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1763,8 +1763,8 @@
       "seed_key": "8e9eecce4fa5d69340aa1e2aece6b41c"
     },
     {
-      "provider": "Autohaus zur Schwellenburg",
-      "source": "https://autohaus-schwellenburg.de/",
+      "provider": "Preisgeber 5c792cd89d5c",
+      "source": "",
       "city": "Gamstädt",
       "region": "Thüringen",
       "vat": 19,
@@ -1785,8 +1785,8 @@
       "seed_key": "0606f9f955c078b97ada69bd4cea19f7"
     },
     {
-      "provider": "Autohaus zur Schwellenburg",
-      "source": "https://autohaus-schwellenburg.de/",
+      "provider": "Preisgeber 5c792cd89d5c",
+      "source": "",
       "city": "Gamstädt",
       "region": "Thüringen",
       "vat": 19,
@@ -1807,8 +1807,8 @@
       "seed_key": "afd57065ed47544ed40a9b96be20c7ed"
     },
     {
-      "provider": "Autohaus zur Schwellenburg",
-      "source": "https://autohaus-schwellenburg.de/",
+      "provider": "Preisgeber 5c792cd89d5c",
+      "source": "",
       "city": "Gamstädt",
       "region": "Thüringen",
       "vat": 19,
@@ -1829,8 +1829,8 @@
       "seed_key": "10fd55cc8700409a50386dda62794c9f"
     },
     {
-      "provider": "Autohaus zur Schwellenburg",
-      "source": "https://autohaus-schwellenburg.de/",
+      "provider": "Preisgeber 5c792cd89d5c",
+      "source": "",
       "city": "Gamstädt",
       "region": "Thüringen",
       "vat": 19,
@@ -1851,8 +1851,8 @@
       "seed_key": "5bddfbb0572c1f4429bf0de86c782e62"
     },
     {
-      "provider": "Autohaus zur Schwellenburg",
-      "source": "https://autohaus-schwellenburg.de/",
+      "provider": "Preisgeber 5c792cd89d5c",
+      "source": "",
       "city": "Gamstädt",
       "region": "Thüringen",
       "vat": 19,
@@ -1873,8 +1873,8 @@
       "seed_key": "713dd1fa8694f1e0b72fb71cf0244078"
     },
     {
-      "provider": "Autohaus zur Schwellenburg",
-      "source": "https://autohaus-schwellenburg.de/",
+      "provider": "Preisgeber 5c792cd89d5c",
+      "source": "",
       "city": "Gamstädt",
       "region": "Thüringen",
       "vat": 19,
@@ -1895,8 +1895,8 @@
       "seed_key": "6584e8fba9d804c35ed0e6dc7848b631"
     },
     {
-      "provider": "Autohaus zur Schwellenburg",
-      "source": "https://autohaus-schwellenburg.de/",
+      "provider": "Preisgeber 5c792cd89d5c",
+      "source": "",
       "city": "Gamstädt",
       "region": "Thüringen",
       "vat": 19,
@@ -1917,8 +1917,8 @@
       "seed_key": "257db749894ac6afe776ddfcf7ac3ba3"
     },
     {
-      "provider": "Autohaus zur Schwellenburg",
-      "source": "https://autohaus-schwellenburg.de/",
+      "provider": "Preisgeber 5c792cd89d5c",
+      "source": "",
       "city": "Gamstädt",
       "region": "Thüringen",
       "vat": 19,
@@ -1939,8 +1939,8 @@
       "seed_key": "ecc396fa5bb974b8d5c8a2658fb21d4d"
     },
     {
-      "provider": "Autohaus Goldbach",
-      "source": "https://www.goldbach24.de/rostock/werkstattangebote.php",
+      "provider": "Preisgeber ee4067901487",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1961,8 +1961,8 @@
       "seed_key": "765edb711f61d04f0c7d161dac2b9ab6"
     },
     {
-      "provider": "Autohaus Goldbach",
-      "source": "https://www.goldbach24.de/rostock/werkstattangebote.php",
+      "provider": "Preisgeber ee4067901487",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -1983,8 +1983,8 @@
       "seed_key": "cf30aac3d3827e223272a7d61cc8a2f1"
     },
     {
-      "provider": "Autohaus Goldbach",
-      "source": "https://www.goldbach24.de/rostock/werkstattangebote.php",
+      "provider": "Preisgeber ee4067901487",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -2005,8 +2005,8 @@
       "seed_key": "558d628c4df9b8dec3844a8e20bb2040"
     },
     {
-      "provider": "Autohaus Goldbach",
-      "source": "https://www.goldbach24.de/rostock/werkstattangebote.php",
+      "provider": "Preisgeber ee4067901487",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -2027,8 +2027,8 @@
       "seed_key": "021c7720bd8ddac15983018da5efe079"
     },
     {
-      "provider": "Autohaus Goldbach",
-      "source": "https://www.goldbach24.de/rostock/werkstattangebote.php",
+      "provider": "Preisgeber ee4067901487",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -2049,8 +2049,8 @@
       "seed_key": "c8819dec00781814a22f10b0727d38d8"
     },
     {
-      "provider": "Autohaus Goldbach",
-      "source": "https://www.goldbach24.de/rostock/werkstattangebote.php",
+      "provider": "Preisgeber ee4067901487",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -2071,8 +2071,8 @@
       "seed_key": "46eb423fc6bfb2b3ece0e4a8ba35ab83"
     },
     {
-      "provider": "Autohaus Goldbach",
-      "source": "https://www.goldbach24.de/rostock/werkstattangebote.php",
+      "provider": "Preisgeber ee4067901487",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -2093,8 +2093,8 @@
       "seed_key": "b3ccefe3f47c4f7b34e9d676f0d044ec"
     },
     {
-      "provider": "KFZ Fahrzeugtechnik Matthias Maj",
-      "source": "https://www.kfz-ftm.de/service",
+      "provider": "Preisgeber 013403d9ae90",
+      "source": "",
       "city": "Blankenfelde-Mahlow",
       "region": "Brandenburg",
       "vat": 19,
@@ -2115,8 +2115,8 @@
       "seed_key": "f8d568cb8bef13a9bebcafbc99818159"
     },
     {
-      "provider": "KFZ Fahrzeugtechnik Matthias Maj",
-      "source": "https://www.kfz-ftm.de/service",
+      "provider": "Preisgeber 013403d9ae90",
+      "source": "",
       "city": "Blankenfelde-Mahlow",
       "region": "Brandenburg",
       "vat": 19,
@@ -2137,8 +2137,8 @@
       "seed_key": "e14f403e8423065e729e7f711d51c079"
     },
     {
-      "provider": "KFZ Fahrzeugtechnik Matthias Maj",
-      "source": "https://www.kfz-ftm.de/service",
+      "provider": "Preisgeber 013403d9ae90",
+      "source": "",
       "city": "Blankenfelde-Mahlow",
       "region": "Brandenburg",
       "vat": 19,
@@ -2159,8 +2159,8 @@
       "seed_key": "861a827f45e95a209cd79e6c2227b5cf"
     },
     {
-      "provider": "KFZ Fahrzeugtechnik Matthias Maj",
-      "source": "https://www.kfz-ftm.de/service",
+      "provider": "Preisgeber 013403d9ae90",
+      "source": "",
       "city": "Blankenfelde-Mahlow",
       "region": "Brandenburg",
       "vat": 19,
@@ -2181,8 +2181,8 @@
       "seed_key": "201ef74f23df9be5c294825cb38099f5"
     },
     {
-      "provider": "KFZ Fahrzeugtechnik Matthias Maj",
-      "source": "https://www.kfz-ftm.de/service",
+      "provider": "Preisgeber 013403d9ae90",
+      "source": "",
       "city": "Blankenfelde-Mahlow",
       "region": "Brandenburg",
       "vat": 19,
@@ -2203,8 +2203,8 @@
       "seed_key": "e163c82afe7af08c27be5c3790bd4990"
     },
     {
-      "provider": "KFZ Fahrzeugtechnik Matthias Maj",
-      "source": "https://www.kfz-ftm.de/service",
+      "provider": "Preisgeber 013403d9ae90",
+      "source": "",
       "city": "Blankenfelde-Mahlow",
       "region": "Brandenburg",
       "vat": 19,
@@ -2225,8 +2225,8 @@
       "seed_key": "c81dac24439ff67aa4a59cece1c15890"
     },
     {
-      "provider": "KFZ Fahrzeugtechnik Matthias Maj",
-      "source": "https://www.kfz-ftm.de/service",
+      "provider": "Preisgeber 013403d9ae90",
+      "source": "",
       "city": "Blankenfelde-Mahlow",
       "region": "Brandenburg",
       "vat": 19,
@@ -2247,8 +2247,8 @@
       "seed_key": "23a424c1bf68716dc02c12739b91a1a2"
     },
     {
-      "provider": "Auto Service Fiebig",
-      "source": "https://www.auto-service-fiebig.de/leistungen",
+      "provider": "Preisgeber dde171d435e6",
+      "source": "",
       "city": "Berlin-Marzahn",
       "region": "Berlin",
       "vat": 19,
@@ -2269,8 +2269,8 @@
       "seed_key": "e9f7a21456a116d8aae839fc0b762275"
     },
     {
-      "provider": "Auto Service Fiebig",
-      "source": "https://www.auto-service-fiebig.de/leistungen",
+      "provider": "Preisgeber dde171d435e6",
+      "source": "",
       "city": "Berlin-Marzahn",
       "region": "Berlin",
       "vat": 19,
@@ -2291,8 +2291,8 @@
       "seed_key": "b5373e7857995d977c504542a4a81cd4"
     },
     {
-      "provider": "Auto Service Fiebig",
-      "source": "https://www.auto-service-fiebig.de/leistungen",
+      "provider": "Preisgeber dde171d435e6",
+      "source": "",
       "city": "Berlin-Marzahn",
       "region": "Berlin",
       "vat": 19,
@@ -2313,8 +2313,8 @@
       "seed_key": "6e75bad9beb97e6434776d6d652873d0"
     },
     {
-      "provider": "Auto Service Fiebig",
-      "source": "https://www.auto-service-fiebig.de/leistungen",
+      "provider": "Preisgeber dde171d435e6",
+      "source": "",
       "city": "Berlin-Marzahn",
       "region": "Berlin",
       "vat": 19,
@@ -2335,8 +2335,8 @@
       "seed_key": "72e23dd787ff517ebd94d9dbf7075e2d"
     },
     {
-      "provider": "Auto Service Fiebig",
-      "source": "https://www.auto-service-fiebig.de/leistungen",
+      "provider": "Preisgeber dde171d435e6",
+      "source": "",
       "city": "Berlin-Marzahn",
       "region": "Berlin",
       "vat": 19,
@@ -2357,8 +2357,8 @@
       "seed_key": "1496e318f397f540b67c10258a1d35ff"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2379,8 +2379,8 @@
       "seed_key": "9e4e23748845ff631c68f3dcbc4355fb"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2401,8 +2401,8 @@
       "seed_key": "3047333dfb7abfb7fedbef9357564bf8"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2423,8 +2423,8 @@
       "seed_key": "1c54d6d03e9101262464ba53c5a52da9"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2445,8 +2445,8 @@
       "seed_key": "c6645c2eaa3c497f53aaef6f39e7145f"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2467,8 +2467,8 @@
       "seed_key": "caf67c10e1e0a4af8186886554bcb3a3"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2489,8 +2489,8 @@
       "seed_key": "2eb0b03b6d0f1f74670ae29ad25c932a"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2511,8 +2511,8 @@
       "seed_key": "c42564e6008114c9e50e9361fa4a7657"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2533,8 +2533,8 @@
       "seed_key": "0b304a39b972b5ba0c570ca1069a251f"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2555,8 +2555,8 @@
       "seed_key": "b127ca5621caf59f2b55166de96e0102"
     },
     {
-      "provider": "Autoservice Pilgrim",
-      "source": "https://www.autoservice-pilgrim.de/preise-berlin.html",
+      "provider": "Preisgeber a1d69bb29df2",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": null,
@@ -2577,8 +2577,8 @@
       "seed_key": "5121e08896e5be01accd15e183b8d78a"
     },
     {
-      "provider": "Kfz-Service Hahnl",
-      "source": "https://www.kfz-service-hahnl.de/startseite",
+      "provider": "Preisgeber 347118d81967",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -2599,8 +2599,8 @@
       "seed_key": "4a5501a8261ae2438c006b0dc56860f4"
     },
     {
-      "provider": "Kfz-Service Hahnl",
-      "source": "https://www.kfz-service-hahnl.de/startseite",
+      "provider": "Preisgeber 347118d81967",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -2621,8 +2621,8 @@
       "seed_key": "bb84976c5b6e4170befd9b089ffb74fa"
     },
     {
-      "provider": "Kfz-Service Hahnl",
-      "source": "https://www.kfz-service-hahnl.de/startseite",
+      "provider": "Preisgeber 347118d81967",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -2643,8 +2643,8 @@
       "seed_key": "967f725ee3b42cf0d23d7f91b101a7ec"
     },
     {
-      "provider": "Schmidt Motors",
-      "source": "https://schmidt-motors.com/",
+      "provider": "Preisgeber 467934e238c5",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -2665,8 +2665,8 @@
       "seed_key": "1eba9cce1cbedeebe172a66c98c58120"
     },
     {
-      "provider": "Schmidt Motors",
-      "source": "https://schmidt-motors.com/",
+      "provider": "Preisgeber 467934e238c5",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -2687,8 +2687,8 @@
       "seed_key": "8c63b3532222b7bf4333588ae32f1e84"
     },
     {
-      "provider": "Schmidt Motors",
-      "source": "https://schmidt-motors.com/",
+      "provider": "Preisgeber 467934e238c5",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -2709,8 +2709,8 @@
       "seed_key": "5390f5aeb92ae9d7573fd76d38327b8f"
     },
     {
-      "provider": "Schmidt Motors",
-      "source": "https://schmidt-motors.com/",
+      "provider": "Preisgeber 467934e238c5",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -2731,8 +2731,8 @@
       "seed_key": "47cfb24b92c66c5760728d70c29b672a"
     },
     {
-      "provider": "Schmidt Motors",
-      "source": "https://schmidt-motors.com/",
+      "provider": "Preisgeber 467934e238c5",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -2753,8 +2753,8 @@
       "seed_key": "40fe4ee76ae10200a77ff8d08e330294"
     },
     {
-      "provider": "Schmidt Motors",
-      "source": "https://schmidt-motors.com/",
+      "provider": "Preisgeber 467934e238c5",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -2775,8 +2775,8 @@
       "seed_key": "db81aa773db531e919f7f10164caf3ce"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2797,8 +2797,8 @@
       "seed_key": "bda5d74bb77249b3a2a186b09ee744ea"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2819,8 +2819,8 @@
       "seed_key": "90475f6801813f396d2077b8dc7802d2"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2841,8 +2841,8 @@
       "seed_key": "4e880f51cf8a6f8931598d5127fc7907"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2863,8 +2863,8 @@
       "seed_key": "dd1f5bdf3e499d7504411a68d42fcba1"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2885,8 +2885,8 @@
       "seed_key": "0825aec86a541e830c7aac448b256aae"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2907,8 +2907,8 @@
       "seed_key": "66e829e9098e31981284c5fce536d07d"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2929,8 +2929,8 @@
       "seed_key": "706ae326bb4def4082606d9156ddd471"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2951,8 +2951,8 @@
       "seed_key": "3fb3d759a7e7af3e1911cf19ea5d31d9"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2973,8 +2973,8 @@
       "seed_key": "9944604c11af6a1fcba5ee78ed7cb36f"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -2995,8 +2995,8 @@
       "seed_key": "07f097c7bc366cf0a7c80849360d0dab"
     },
     {
-      "provider": "Hoffmann Automobile",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12434_hoffmann-automobile-autopro-mehrmarkenwerkstatt",
+      "provider": "Preisgeber db8e43435085",
+      "source": "",
       "city": "Dresden",
       "region": "Sachsen",
       "vat": 19,
@@ -3017,8 +3017,8 @@
       "seed_key": "3e54cd8f8e536d1d22442e11e6636160"
     },
     {
-      "provider": "Kfz Meisterbetrieb 360° & GA",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12277_kfz-meisterbetrieb-360-ga",
+      "provider": "Preisgeber c362613c030a",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3039,8 +3039,8 @@
       "seed_key": "df4b17a71bbe7f5e9f734c1e86733900"
     },
     {
-      "provider": "Kfz Meisterbetrieb 360° & GA",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12277_kfz-meisterbetrieb-360-ga",
+      "provider": "Preisgeber c362613c030a",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3061,8 +3061,8 @@
       "seed_key": "e8065ea5abfe54b14a2d0d534b8e47eb"
     },
     {
-      "provider": "Kfz Meisterbetrieb 360° & GA",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12277_kfz-meisterbetrieb-360-ga",
+      "provider": "Preisgeber c362613c030a",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3083,8 +3083,8 @@
       "seed_key": "d72ee0f7cff00e44c7880051833fd5a5"
     },
     {
-      "provider": "Kfz Meisterbetrieb 360° & GA",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12277_kfz-meisterbetrieb-360-ga",
+      "provider": "Preisgeber c362613c030a",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3105,8 +3105,8 @@
       "seed_key": "c2c144bac34f0cd8185f67ee5eafae25"
     },
     {
-      "provider": "Kfz Meisterbetrieb 360° & GA",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12277_kfz-meisterbetrieb-360-ga",
+      "provider": "Preisgeber c362613c030a",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3127,8 +3127,8 @@
       "seed_key": "da7d1577a431500c1a4731436a66b7ce"
     },
     {
-      "provider": "Kfz Meisterbetrieb 360° & GA",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12277_kfz-meisterbetrieb-360-ga",
+      "provider": "Preisgeber c362613c030a",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3149,8 +3149,8 @@
       "seed_key": "5b4f06cd98ebd834d10cf1b0f2ff28d2"
     },
     {
-      "provider": "Kfz Meisterbetrieb 360° & GA",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12277_kfz-meisterbetrieb-360-ga",
+      "provider": "Preisgeber c362613c030a",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3171,8 +3171,8 @@
       "seed_key": "d5e7e6b2bb7a5d8a99a75d7751854c60"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3193,8 +3193,8 @@
       "seed_key": "30d973cb74268113b349470e77a16e56"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3215,8 +3215,8 @@
       "seed_key": "5157f9ea203de136cd797c30623a4569"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3237,8 +3237,8 @@
       "seed_key": "e7a9d47f9fbea6cc32861f603c782ed4"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3259,8 +3259,8 @@
       "seed_key": "77770a8dcf38ba988c0da821b93a1c23"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3281,8 +3281,8 @@
       "seed_key": "0952c3274594b20ee96c45ed2901ac59"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3303,8 +3303,8 @@
       "seed_key": "7b380d4cd7493f42960e8009ff21198a"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3325,8 +3325,8 @@
       "seed_key": "a7a4d3d00122764218e4a80043c5663a"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3347,8 +3347,8 @@
       "seed_key": "50c83bd88f55b207691d5c79e2792b59"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3369,8 +3369,8 @@
       "seed_key": "a818c347765ae7e736cc7b16001becaf"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3391,8 +3391,8 @@
       "seed_key": "d1dc8b88c0bba91c390b4d697ef597c9"
     },
     {
-      "provider": "Autopoint Connewitz",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12338_autopoint-connewitz",
+      "provider": "Preisgeber c01dee1f8d8f",
+      "source": "",
       "city": "Leipzig",
       "region": "Sachsen",
       "vat": 19,
@@ -3413,8 +3413,8 @@
       "seed_key": "856e240fd0f4e09ba1cd2b6521e7abd7"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3435,8 +3435,8 @@
       "seed_key": "887c1da1814a9acad9fc5068cda218e5"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3457,8 +3457,8 @@
       "seed_key": "892ee5915c62db3895a86a5cbea20095"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3479,8 +3479,8 @@
       "seed_key": "4778dba42a8a4c6a1c32d746f3dd2a40"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3501,8 +3501,8 @@
       "seed_key": "d011b56a716d8c079e86eee20f2614d3"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3523,8 +3523,8 @@
       "seed_key": "a87f4200902035e7a9592a73a93a6c25"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3545,8 +3545,8 @@
       "seed_key": "04bba6ae4685c4926f42bf296a5ce2ba"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3567,8 +3567,8 @@
       "seed_key": "8613953d6853811e6a5d723e39ab9408"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3589,8 +3589,8 @@
       "seed_key": "0daaa78b64e5781c427b66b38f2a9923"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3611,8 +3611,8 @@
       "seed_key": "45da9659e6fffe2edd1bacedb57518ba"
     },
     {
-      "provider": "Reifen Drümecker",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12679_reifen-druemecker",
+      "provider": "Preisgeber ea6251772579",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": 19,
@@ -3633,8 +3633,8 @@
       "seed_key": "905c2aabdf2b4c78f568a76ac13b2ea0"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3655,8 +3655,8 @@
       "seed_key": "f54cc26ca1f5c4f31a59b44a1c26c9e8"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3677,8 +3677,8 @@
       "seed_key": "641a517c0925f17e0ee0969a6e31aebc"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3699,8 +3699,8 @@
       "seed_key": "4e6e2711acb9decdf32d0257c6474631"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3721,8 +3721,8 @@
       "seed_key": "312124eb47275e4b609610b046be890b"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3743,8 +3743,8 @@
       "seed_key": "6a2c04fe4188f7bbfa050e44b5f5070b"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3765,8 +3765,8 @@
       "seed_key": "19ceb66e7ec1fde1606a8affda72e002"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3787,8 +3787,8 @@
       "seed_key": "bd30a0854c83574ee6a106e2e55c32c2"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3809,8 +3809,8 @@
       "seed_key": "7c2a05c73d7d7d4ee873d7f53cd51e3f"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3831,8 +3831,8 @@
       "seed_key": "93c84671b9e28fcc3702437700c88de8"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3853,8 +3853,8 @@
       "seed_key": "0303bb1509117a0cb3e2e13b39d875ee"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3875,8 +3875,8 @@
       "seed_key": "2ce17e8d45a5f0960a4076a79d043d20"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3897,8 +3897,8 @@
       "seed_key": "08e4243815c5fbf334de73a0e7aa987d"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3919,8 +3919,8 @@
       "seed_key": "b27df0382e2343fd63ea25bd2723f381"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3941,8 +3941,8 @@
       "seed_key": "c61a0f3c9938060c0a5b9cd3899f3383"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3963,8 +3963,8 @@
       "seed_key": "8a27fd65816c09ac7deca14164767fa1"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -3985,8 +3985,8 @@
       "seed_key": "16dc6085c3092d1fb4b0fde30608a4da"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4007,8 +4007,8 @@
       "seed_key": "45e6b587303287894cce38c48f94502d"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4029,8 +4029,8 @@
       "seed_key": "809cc8b340ab3a7aad7a2d607b1d6c92"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4051,8 +4051,8 @@
       "seed_key": "c2981d60f8fcaee9fb6a29ead10e12aa"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4073,8 +4073,8 @@
       "seed_key": "7500f167609909bcc82c7d42dbf466c9"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4095,8 +4095,8 @@
       "seed_key": "a16cfffd81e8b130c8839422c7154d6d"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4117,8 +4117,8 @@
       "seed_key": "c544b833db4726ece0c736a6545d2a99"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4139,8 +4139,8 @@
       "seed_key": "f511f34085978ad4d692528c8ff4ef9d"
     },
     {
-      "provider": "RC Kfz-Service GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12257_rc-kfz-service-gmbh",
+      "provider": "Preisgeber 72bcfc651e81",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4161,8 +4161,8 @@
       "seed_key": "98e604402697c6ba253e3d995c5eba0e"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4183,8 +4183,8 @@
       "seed_key": "0f3eb4a94af5ce2beed521275ddffbce"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4205,8 +4205,8 @@
       "seed_key": "32740e6efe310abdfcc3b352bb255e98"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4227,8 +4227,8 @@
       "seed_key": "967572d0c514ec13a2284a9de7579576"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4249,8 +4249,8 @@
       "seed_key": "bdea66a12d475b702fb7b303ad873866"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4271,8 +4271,8 @@
       "seed_key": "6fdd68ab3921d514e0b178e73a37d866"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4293,8 +4293,8 @@
       "seed_key": "63481f37d999179dcea10db973b0f748"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4315,8 +4315,8 @@
       "seed_key": "1374bcc4963c4f6f682b166e34ad97ab"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4337,8 +4337,8 @@
       "seed_key": "dafc798fc9c9c0d7642d002c9edba889"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4359,8 +4359,8 @@
       "seed_key": "6562e28cab6ed2bfa0cbf6e5eca77645"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4381,8 +4381,8 @@
       "seed_key": "344e2415e659bba2a3fe63d62261f966"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4403,8 +4403,8 @@
       "seed_key": "a748fa6b015e0c40d21362e57c4e0c20"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4425,8 +4425,8 @@
       "seed_key": "f9c5fc54c2e6f9ef2c395708a0d18aa8"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4447,8 +4447,8 @@
       "seed_key": "2a8b0384a577cd61bd3d3b76b818ad46"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4469,8 +4469,8 @@
       "seed_key": "3831dbe53867daeee859ae679b702a4e"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4491,8 +4491,8 @@
       "seed_key": "bb278aa2025d72ef150e902f33eae72c"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4513,8 +4513,8 @@
       "seed_key": "df44a988a9d8f2318e3f061e8b680b04"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4535,8 +4535,8 @@
       "seed_key": "28bdaaae08344ea8391942758832cf0b"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4557,8 +4557,8 @@
       "seed_key": "627a3f8acca321632a027aa3a11e279f"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4579,8 +4579,8 @@
       "seed_key": "b4884ed6951aaa8dd21540bed3474ace"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4601,8 +4601,8 @@
       "seed_key": "6ff776e6169b44f75d40959c77854e33"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4623,8 +4623,8 @@
       "seed_key": "aeba24dfdd470ee857dccf55727a287f"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4645,8 +4645,8 @@
       "seed_key": "01fff4b7a4f89abe0a2d7d31117abe23"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4667,8 +4667,8 @@
       "seed_key": "5b7c8fdc9b7e4dcf78ff9cb5cc8f615b"
     },
     {
-      "provider": "Reifen Onimax",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15580_reifen-onimax",
+      "provider": "Preisgeber 0b806af8a7de",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -4689,8 +4689,8 @@
       "seed_key": "06e6597197921d61f787c44c2ffd1a7b"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4711,8 +4711,8 @@
       "seed_key": "10573057cbdce56479f0615cc7f5c5fd"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4733,8 +4733,8 @@
       "seed_key": "8e7493178969748c08f123beeab2ff69"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4755,8 +4755,8 @@
       "seed_key": "3cfade1ddb71fdc14766bdd0599abd96"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4777,8 +4777,8 @@
       "seed_key": "d742d958bb20a94f47d3dd7a0dca75ad"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4799,8 +4799,8 @@
       "seed_key": "6f1a32c7d13c0e0393de26ea7b37325e"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4821,8 +4821,8 @@
       "seed_key": "f5bbcf589b0e0a2d13c3c61e335e2c1f"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4843,8 +4843,8 @@
       "seed_key": "184b66b18ced6a9a9827a3ec94b97311"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4865,8 +4865,8 @@
       "seed_key": "c4d699c6c0d7a846bf0a722766f6bacb"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4887,8 +4887,8 @@
       "seed_key": "d1166780b77725c8087a0ce13803749c"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4909,8 +4909,8 @@
       "seed_key": "59309ea4ee094e0fa41a3fa9ff56b109"
     },
     {
-      "provider": "Autoteile Leukersdorf",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12596_autoteile-leukersdorf",
+      "provider": "Preisgeber 79e688f59673",
+      "source": "",
       "city": "Jahnsdorf",
       "region": "Sachsen",
       "vat": 19,
@@ -4931,8 +4931,8 @@
       "seed_key": "c194c81bd83feab77b574e6dac6eda21"
     },
     {
-      "provider": "Auto Glas Zentrum Brandenburg",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12321_auto-glas-zentrum-brandenburg",
+      "provider": "Preisgeber a6cd2c3f16b4",
+      "source": "",
       "city": "Brandenburg an der Havel",
       "region": "Brandenburg",
       "vat": 19,
@@ -4953,8 +4953,8 @@
       "seed_key": "53e86cb054aa0b7e59ebd8c0fe779250"
     },
     {
-      "provider": "Auto Glas Zentrum Brandenburg",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12321_auto-glas-zentrum-brandenburg",
+      "provider": "Preisgeber a6cd2c3f16b4",
+      "source": "",
       "city": "Brandenburg an der Havel",
       "region": "Brandenburg",
       "vat": 19,
@@ -4975,8 +4975,8 @@
       "seed_key": "8921748eff249495b49c7d47737fdc00"
     },
     {
-      "provider": "Auto Glas Zentrum Brandenburg",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12321_auto-glas-zentrum-brandenburg",
+      "provider": "Preisgeber a6cd2c3f16b4",
+      "source": "",
       "city": "Brandenburg an der Havel",
       "region": "Brandenburg",
       "vat": 19,
@@ -4997,8 +4997,8 @@
       "seed_key": "2d98a2bcc68834656e4a18d35436d96a"
     },
     {
-      "provider": "Auto Glas Zentrum Brandenburg",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12321_auto-glas-zentrum-brandenburg",
+      "provider": "Preisgeber a6cd2c3f16b4",
+      "source": "",
       "city": "Brandenburg an der Havel",
       "region": "Brandenburg",
       "vat": 19,
@@ -5019,8 +5019,8 @@
       "seed_key": "3121cd7343ca681f57266ecda88dd02e"
     },
     {
-      "provider": "Auto Glas Zentrum Brandenburg",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12321_auto-glas-zentrum-brandenburg",
+      "provider": "Preisgeber a6cd2c3f16b4",
+      "source": "",
       "city": "Brandenburg an der Havel",
       "region": "Brandenburg",
       "vat": 19,
@@ -5041,8 +5041,8 @@
       "seed_key": "53778611af06443d7016a61076b05bbd"
     },
     {
-      "provider": "Auto Glas Zentrum Brandenburg",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12321_auto-glas-zentrum-brandenburg",
+      "provider": "Preisgeber a6cd2c3f16b4",
+      "source": "",
       "city": "Brandenburg an der Havel",
       "region": "Brandenburg",
       "vat": 19,
@@ -5063,8 +5063,8 @@
       "seed_key": "5ad9fb208727aceb851824e32e2906e1"
     },
     {
-      "provider": "Auto Glas Zentrum Brandenburg",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12321_auto-glas-zentrum-brandenburg",
+      "provider": "Preisgeber a6cd2c3f16b4",
+      "source": "",
       "city": "Brandenburg an der Havel",
       "region": "Brandenburg",
       "vat": 19,
@@ -5085,8 +5085,8 @@
       "seed_key": "ecda0bdf5f3086ee54295aaf7c759f13"
     },
     {
-      "provider": "KFZ Meisterbetrieb Sven Amelang",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12298_kfz-meisterbetrieb-s-amelang",
+      "provider": "Preisgeber 89199969bb4a",
+      "source": "",
       "city": "Potsdam",
       "region": "Brandenburg",
       "vat": 19,
@@ -5107,8 +5107,8 @@
       "seed_key": "673d0fe43893436257fa1894b82ebaea"
     },
     {
-      "provider": "KFZ Meisterbetrieb Sven Amelang",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12298_kfz-meisterbetrieb-s-amelang",
+      "provider": "Preisgeber 89199969bb4a",
+      "source": "",
       "city": "Potsdam",
       "region": "Brandenburg",
       "vat": 19,
@@ -5129,8 +5129,8 @@
       "seed_key": "12cecdc6fb65d92a3cd0081e26c34ed7"
     },
     {
-      "provider": "KFZ Meisterbetrieb Sven Amelang",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12298_kfz-meisterbetrieb-s-amelang",
+      "provider": "Preisgeber 89199969bb4a",
+      "source": "",
       "city": "Potsdam",
       "region": "Brandenburg",
       "vat": 19,
@@ -5151,8 +5151,8 @@
       "seed_key": "0d3c730124c171d3b12e8d8c28ac3a89"
     },
     {
-      "provider": "KFZ Meisterbetrieb Sven Amelang",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12298_kfz-meisterbetrieb-s-amelang",
+      "provider": "Preisgeber 89199969bb4a",
+      "source": "",
       "city": "Potsdam",
       "region": "Brandenburg",
       "vat": 19,
@@ -5173,8 +5173,8 @@
       "seed_key": "bcc63a80e329c9c6df387eb5b102c800"
     },
     {
-      "provider": "KFZ Meisterbetrieb Sven Amelang",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12298_kfz-meisterbetrieb-s-amelang",
+      "provider": "Preisgeber 89199969bb4a",
+      "source": "",
       "city": "Potsdam",
       "region": "Brandenburg",
       "vat": 19,
@@ -5195,8 +5195,8 @@
       "seed_key": "5de3212e5a8cab037d190e7cff8fe182"
     },
     {
-      "provider": "KFZ Meisterbetrieb Sven Amelang",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12298_kfz-meisterbetrieb-s-amelang",
+      "provider": "Preisgeber 89199969bb4a",
+      "source": "",
       "city": "Potsdam",
       "region": "Brandenburg",
       "vat": 19,
@@ -5217,8 +5217,8 @@
       "seed_key": "1b6fae65f6db3bde9a86034599b04526"
     },
     {
-      "provider": "KFZ Meisterbetrieb Sven Amelang",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12298_kfz-meisterbetrieb-s-amelang",
+      "provider": "Preisgeber 89199969bb4a",
+      "source": "",
       "city": "Potsdam",
       "region": "Brandenburg",
       "vat": 19,
@@ -5239,8 +5239,8 @@
       "seed_key": "20643e78525c282210784417a0b35852"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5261,8 +5261,8 @@
       "seed_key": "9d36296a35b4b55c04aa6330f0c42c37"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5283,8 +5283,8 @@
       "seed_key": "b7b10ca95d8dba706c121788c50e9015"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5305,8 +5305,8 @@
       "seed_key": "4398234243e352ae5a04617074c52e82"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5327,8 +5327,8 @@
       "seed_key": "a8305cbc713c6d6eb7b031f97330b142"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5349,8 +5349,8 @@
       "seed_key": "41afd68881c6c5b02e7b39fc224f8b77"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5371,8 +5371,8 @@
       "seed_key": "9b40f21048b34656a9019e928ba2ea9a"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5393,8 +5393,8 @@
       "seed_key": "9afbc4db4ee75c4f3d20536b6ea89555"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5415,8 +5415,8 @@
       "seed_key": "749e26ba15c4d182348d6254bb0db13c"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5437,8 +5437,8 @@
       "seed_key": "73ea7fc35e2d41afd1b4c17217b4287c"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5459,8 +5459,8 @@
       "seed_key": "1f8004e0a4310e9c2fde1e1cab80cf54"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5481,8 +5481,8 @@
       "seed_key": "8c1107986eba643f2782dd91abf760df"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5503,8 +5503,8 @@
       "seed_key": "b409120572b5afed06d4b7c88ad4f28f"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5525,8 +5525,8 @@
       "seed_key": "aa6b7289f6d435e7aaa72222da018d6f"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5547,8 +5547,8 @@
       "seed_key": "535242b0f08bb3ed5148417befc198af"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5569,8 +5569,8 @@
       "seed_key": "d9a3d00842ffaa39234bb7b12517561d"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5591,8 +5591,8 @@
       "seed_key": "be9840cd23835209b5d359963cc72b54"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5613,8 +5613,8 @@
       "seed_key": "8777d89135293e898c645797c12bd341"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5635,8 +5635,8 @@
       "seed_key": "647696321f302867f75256b52b2304a8"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5657,8 +5657,8 @@
       "seed_key": "4b6ea1f31729932d40fd6fe916b7265c"
     },
     {
-      "provider": "Krüll Motor Company",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15188_kruell-motor-company-gmbh-co-kg",
+      "provider": "Preisgeber dda5264a9c64",
+      "source": "",
       "city": "Rostock",
       "region": "Mecklenburg-Vorpommern",
       "vat": 19,
@@ -5679,8 +5679,8 @@
       "seed_key": "ed4ff86b20250d8c7918489cd5f1488c"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5701,8 +5701,8 @@
       "seed_key": "a2250e4519fb597a56888ad0326e5ffd"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5723,8 +5723,8 @@
       "seed_key": "7ecec4217fd234d99c3b2683734c1e4b"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5745,8 +5745,8 @@
       "seed_key": "392fa326a0335dc227e31d0aadc579f0"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5767,8 +5767,8 @@
       "seed_key": "8a7f012fcdfe38aaa7251a4d8f69b658"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5789,8 +5789,8 @@
       "seed_key": "af25e89f5501eec66085ed6291e30acf"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5811,8 +5811,8 @@
       "seed_key": "6d60bc8d33da7eb4b248ce4bee836ee3"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5833,8 +5833,8 @@
       "seed_key": "9d7d4535c6d1855c16cfc2c7a187f6ce"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5855,8 +5855,8 @@
       "seed_key": "83a36056513e6f8b6f509c8a7a080a15"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5877,8 +5877,8 @@
       "seed_key": "6b66f41a195bcdeebe891998cc5984a9"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5899,8 +5899,8 @@
       "seed_key": "7e19d1862ecd60cd2afe742833cbea74"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5921,8 +5921,8 @@
       "seed_key": "a58fd07ef82122814673f6edc5fce055"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5943,8 +5943,8 @@
       "seed_key": "98deec7390699c723b20e4f412e1bd81"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5965,8 +5965,8 @@
       "seed_key": "1e24f1cdcd8ddce1784dfa189dba384a"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -5987,8 +5987,8 @@
       "seed_key": "52290242dd421146c347a296cf9ce32f"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -6009,8 +6009,8 @@
       "seed_key": "d24f547289020f56f0a9ba005bbf57ff"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -6031,8 +6031,8 @@
       "seed_key": "21680cf059494db498478a461e884195"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -6053,8 +6053,8 @@
       "seed_key": "1283e863f7bd2201b6f1f084605b07d2"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -6075,8 +6075,8 @@
       "seed_key": "6ab4871097d442e606ca70d2edd242b2"
     },
     {
-      "provider": "Autoservice Schröder GmbH",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/15649_autoservice-schroeder-gmbh",
+      "provider": "Preisgeber e5097a1d75f6",
+      "source": "",
       "city": "Werder",
       "region": "Brandenburg",
       "vat": 19,
@@ -6097,8 +6097,8 @@
       "seed_key": "0d991e85ca0834ca545aba1ecff07979"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6119,8 +6119,8 @@
       "seed_key": "3ed5b55b492709fcc1abbaa1381ea96d"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6141,8 +6141,8 @@
       "seed_key": "3660f46cf530227921a0b7df1dd37fdd"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6163,8 +6163,8 @@
       "seed_key": "51038945a47fe202eb68039434782e6e"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6185,8 +6185,8 @@
       "seed_key": "8e3e1ad25a990697ad47a6925ccac13e"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6207,8 +6207,8 @@
       "seed_key": "d0f9a83229c304b996da12d5461c3fb5"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6229,8 +6229,8 @@
       "seed_key": "c257d135f5807b4601ba8c16ba6ae3ac"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6251,8 +6251,8 @@
       "seed_key": "31aec0696f00ddc3cbf61eb62b2668a8"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6273,8 +6273,8 @@
       "seed_key": "d459fbcf71a4acca5541a4b9da87717e"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6295,8 +6295,8 @@
       "seed_key": "232ebd5a0d70418d2deceb407e655daf"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6317,8 +6317,8 @@
       "seed_key": "121259eb6f26cd4c7706bce772732ea0"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6339,8 +6339,8 @@
       "seed_key": "df7aa0a57853a5d9f3db3c798b0ffa2d"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6361,8 +6361,8 @@
       "seed_key": "ef0a680c4df6e9b4e0ac20537ce2c37b"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6383,8 +6383,8 @@
       "seed_key": "490ce5ca8d5e515e61bc5f207ab9f830"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6405,8 +6405,8 @@
       "seed_key": "ccf0ef3307f301097d364b3b02b36ac6"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6427,8 +6427,8 @@
       "seed_key": "c91369f31be9a76121921edced9adcb9"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6449,8 +6449,8 @@
       "seed_key": "86a6eb37736808a729ed805380b39600"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6471,8 +6471,8 @@
       "seed_key": "bc068f985c44d00a16945af22bfab27a"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6493,8 +6493,8 @@
       "seed_key": "3eb1f457880386a81c5ae4278bef2664"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6515,8 +6515,8 @@
       "seed_key": "244dfd29fdb07be473f461d38fd0f045"
     },
     {
-      "provider": "Reifen Müller GmbH & Co. KG",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/8037_reifen-mueller-filiale-erfurt",
+      "provider": "Preisgeber 4231a8f33ce5",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6537,8 +6537,8 @@
       "seed_key": "c075adc1cf7b72d24ed0ba9379fd4af4"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6559,8 +6559,8 @@
       "seed_key": "df4ef997e46149f1f4cea1a458456995"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6581,8 +6581,8 @@
       "seed_key": "d09662d43bcd979c41be749b05811817"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6603,8 +6603,8 @@
       "seed_key": "cf47dc448e7e10f8f422a5405bb7ce82"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6625,8 +6625,8 @@
       "seed_key": "866908309fa965dce944bb80dda77496"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6647,8 +6647,8 @@
       "seed_key": "4299206386d75ee6d1fc87ff7b7fe153"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6669,8 +6669,8 @@
       "seed_key": "183e41e82319fcb6018f005fb8ca8c74"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6691,8 +6691,8 @@
       "seed_key": "512553a25ee35a01bff6ffe09029d9e1"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6713,8 +6713,8 @@
       "seed_key": "90f92e3d2b33b314812b8fdbd805e2da"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6735,8 +6735,8 @@
       "seed_key": "f2d05197c931e34a051aef995d622056"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6757,8 +6757,8 @@
       "seed_key": "77c25033c5eba0f20d56c8982cfa71a7"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6779,8 +6779,8 @@
       "seed_key": "e3b82493de7e232e11bc8151330bfc43"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6801,8 +6801,8 @@
       "seed_key": "33a0b7513d451bebd4732319076410b6"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6823,8 +6823,8 @@
       "seed_key": "524a46555d9e1f18f5f5f5eec8eeaede"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6845,8 +6845,8 @@
       "seed_key": "348ac87a651e1316e550b7b263625faf"
     },
     {
-      "provider": "Reifen- und Kfz-Service Kirschbaum",
-      "source": "https://www.reifen.com/de-de/storeselect/storedetail/12523_reifen-kfz-service-kirschbaum",
+      "provider": "Preisgeber 91a8e5e2e21e",
+      "source": "",
       "city": "Erfurt",
       "region": "Thüringen",
       "vat": 19,
@@ -6867,8 +6867,8 @@
       "seed_key": "8200aec1119432a99d219bde2e2e61f0"
     },
     {
-      "provider": "FSP / Kfz-Prüfstelle Biesdorf",
-      "source": "https://www.kfz-pruefstelle-berlin.de/preise/",
+      "provider": "Preisgeber be502ae0f35c",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -6889,8 +6889,8 @@
       "seed_key": "57531575b8557c13791f0e7d177af446"
     },
     {
-      "provider": "FSP / Kfz-Prüfstelle Biesdorf",
-      "source": "https://www.kfz-pruefstelle-berlin.de/preise/",
+      "provider": "Preisgeber be502ae0f35c",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -6911,8 +6911,8 @@
       "seed_key": "44703435e7ff557f754c22fee5879506"
     },
     {
-      "provider": "FSP / Kfz-Prüfstelle Biesdorf",
-      "source": "https://www.kfz-pruefstelle-berlin.de/preise/",
+      "provider": "Preisgeber be502ae0f35c",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -6923,7 +6923,7 @@
       "undated": false,
       "service_key": "reparatur-nachprufen",
       "gross_cents": 1750,
-      "scope": "Nachprüfung nach eigener FSP-HU",
+      "scope": "Nachprüfung nach eigener HU bei derselben Prüfstelle",
       "unit": "Prüfung",
       "material": "Prüfgebühr enthalten",
       "price_kind": "fixed",
@@ -6933,8 +6933,8 @@
       "seed_key": "235f054ee05453f65e667fda35b5f72e"
     },
     {
-      "provider": "FSP / Kfz-Prüfstelle Biesdorf",
-      "source": "https://www.kfz-pruefstelle-berlin.de/preise/",
+      "provider": "Preisgeber be502ae0f35c",
+      "source": "",
       "city": "Berlin",
       "region": "Berlin",
       "vat": 19,
@@ -6955,8 +6955,8 @@
       "seed_key": "3b73b3043150729a594aa2a1b2b544bb"
     },
     {
-      "provider": "Drive In Sachsenring",
-      "source": "https://www.drivein-sachsenring.de/werkstatt",
+      "provider": "Preisgeber 36e46e22465b",
+      "source": "",
       "city": "Hohenstein-Ernstthal",
       "region": "Sachsen",
       "vat": null,
@@ -6977,8 +6977,8 @@
       "seed_key": "68530ffaba471f11958e552746c99cee"
     },
     {
-      "provider": "Drive In Sachsenring",
-      "source": "https://www.drivein-sachsenring.de/werkstatt",
+      "provider": "Preisgeber 36e46e22465b",
+      "source": "",
       "city": "Hohenstein-Ernstthal",
       "region": "Sachsen",
       "vat": null,
@@ -6999,8 +6999,8 @@
       "seed_key": "87e357a7c3a7910855472f16a84a341c"
     },
     {
-      "provider": "Drive In Sachsenring",
-      "source": "https://www.drivein-sachsenring.de/werkstatt",
+      "provider": "Preisgeber 36e46e22465b",
+      "source": "",
       "city": "Hohenstein-Ernstthal",
       "region": "Sachsen",
       "vat": null,
@@ -7021,8 +7021,8 @@
       "seed_key": "62efd960e665a359208d967ec0b94074"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7043,8 +7043,8 @@
       "seed_key": "6e6c7671b75821cea10e8eba24272f32"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7065,8 +7065,8 @@
       "seed_key": "30719c3fcefc5086bc0f6cb5358f3aa8"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7087,8 +7087,8 @@
       "seed_key": "58d206513d960b65f713a61b9476da58"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7109,8 +7109,8 @@
       "seed_key": "a73a3545cc65c08cd366f68b5de6abe8"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7131,8 +7131,8 @@
       "seed_key": "5fd9dc2708ef49016a24548cfe902f6d"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7153,8 +7153,8 @@
       "seed_key": "33949b90b9d48642c0b5dedaa9d54f4c"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7175,8 +7175,8 @@
       "seed_key": "74a385c7a62e3cdc9dfc3e3aa5e9358f"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7197,8 +7197,8 @@
       "seed_key": "99b38f5262df2a4c83f377da6babc1df"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7219,8 +7219,8 @@
       "seed_key": "5f30ead765dbf49ea9381ba77943b4d5"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7241,8 +7241,8 @@
       "seed_key": "c3d0e80be95060fb02c114d6231bdbaa"
     },
     {
-      "provider": "ADAC Berlin-Brandenburg",
-      "source": "https://www.adac.de/der-adac/regionalclubs/berlin-brandenburg/rund-ums-fahrzeug/kfz-pruefstellen/",
+      "provider": "Preisgeber 32f96e49ec0c",
+      "source": "",
       "city": "Berlin/Brandenburg",
       "region": "Berlin",
       "vat": null,
@@ -7263,8 +7263,8 @@
       "seed_key": "e5bd39f9dfb3a811fcb6ec5c6e425dde"
     },
     {
-      "provider": "ATU",
-      "source": "https://autowerkstatt.atu.de/sachsen-anhalt/magdeburg/leipziger-chaussee-127",
+      "provider": "Preisgeber 7411a2fa48cd",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": null,
@@ -7285,8 +7285,8 @@
       "seed_key": "3497963cd71d8757516b34f6ecf307f7"
     },
     {
-      "provider": "ATU",
-      "source": "https://autowerkstatt.atu.de/sachsen-anhalt/magdeburg/leipziger-chaussee-127",
+      "provider": "Preisgeber 7411a2fa48cd",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": null,
@@ -7307,8 +7307,8 @@
       "seed_key": "417a6256434d8b6028e0ba2380ca4b23"
     },
     {
-      "provider": "ATU",
-      "source": "https://autowerkstatt.atu.de/sachsen-anhalt/magdeburg/leipziger-chaussee-127",
+      "provider": "Preisgeber 7411a2fa48cd",
+      "source": "",
       "city": "Magdeburg",
       "region": "Sachsen-Anhalt",
       "vat": null,
@@ -7329,8 +7329,8 @@
       "seed_key": "44d0e15e60c628ff54202f567f0648bf"
     },
     {
-      "provider": "Motor Gruppe Sachsen",
-      "source": "https://www.mgs-sachsen.de/aktion/mgs5-service/",
+      "provider": "Preisgeber d33f6c7e7eff",
+      "source": "",
       "city": "Dresden/Radebeul",
       "region": "Sachsen",
       "vat": null,
@@ -7341,7 +7341,7 @@
       "undated": true,
       "service_key": "kleine-inspektion",
       "gross_cents": null,
-      "scope": "MGS5+: privater PKW älter als fünf Jahre, keine SUV/Elektro/Gasfahrzeuge",
+      "scope": "Aktionsinspektion: privater PKW älter als fünf Jahre, keine SUV/Elektro/Gasfahrzeuge",
       "unit": "Leistung",
       "material": "Öl, Filter, Dichtring, Scheibenklar und Lohn enthalten",
       "price_kind": "fixed",

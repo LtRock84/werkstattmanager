@@ -1,6 +1,6 @@
 # Vorbereitete Store-Beschreibung
 
-Entwurf für 0.5.0 vom 2026-10-16. Noch nicht eingereicht; öffentliche Veröffentlichung,
+Entwurf für 0.5.1-beta.1 vom 2026-10-16. Noch nicht eingereicht; öffentliche Veröffentlichung,
 Signatur und Geräteabnahme stehen aus. `info.xml` enthält den ausdrücklichen Hinweis auf eine sehr frühe Testversion in Deutsch und Englisch.
 
 ## Vorgesehene Angaben
@@ -39,7 +39,7 @@ ihre Dauer. 295 Werkstattleistungen sind vorinstalliert und für Termine, Auftr�
 und Kalkulation verfügbar. Ein Termin wird zum verknüpften Auftragsentwurf.
 Assistenzkräfte können einen begrenzten Zugang ausschließlich zur Terminannahme
 erhalten. Ein eigener Preisrechner verwendet Betriebskosten und produktive Stunden;
-veröffentlichte Vergleichspreise bleiben mit Quellen und Datenlücken gekennzeichnet.
+Vergleichspreise bleiben mit Prüfdatum, Leistungsumfang und Datenlücken gekennzeichnet. Unternehmensnamen und Anbieterlinks werden nicht veröffentlicht.
 
 Meister sehen eigene Plan-/Istumsätze, Monatswerte, Tagesauslastung, Mitarbeiterzeiten
 und Soll-/Ist-Abweichungen. Beträge werden ausdrücklich erfasst; die Auswertung
@@ -99,9 +99,9 @@ Weitere Informationen: [Betrieb und Datenschutz](operations.md).
 | App-Store-Konto | Anmeldung im Nutzer-Tab am16.10.2026 bestätigt; Kontodaten unverändert |
 | Quellcode und Support | Seit16.10.2026 nach Eigentümerfreigabe öffentlich |
 | Zertifikatsanfrage | Öffentlicher CSR eingereicht: nextcloud/app-certificate-requests#1345; ein geändertes CSR-File, kein privater Schlüssel |
-| Nextcloud-Zertifikat | Noch nicht ausgestellt; keine gültige App- oder Archivsignatur vorhanden |
-| Installationspaket | Unsignierter Kandidat0.5.0 mit frühem Testhinweis; noch kein signiertes öffentliches Releasearchiv |
-| Bilder | Drei fiktive0.5.0-Aufnahmen öffentlich per HTTPS ohne Anmeldung geprüft |
+| Nextcloud-Zertifikat | Am16.10.2026 ausgestellt; öffentliches Zertifikat zum bestehenden Schlüssel geprüft |
+| Installationspaket | Unsignierter Kandidat0.5.1-beta.1 mit frühem Testhinweis; noch kein signiertes öffentliches Releasearchiv |
+| Bilder | Drei fiktive0.5.1-beta.1-Aufnahmen öffentlich per HTTPS ohne Anmeldung geprüft |
 | Qualität und Datenrechte | Vorhandene Tests siehe Prüfbericht; signiertes Endpaket, Geräte-/Betriebsabnahmen und Rechteprüfung noch offen |
 
 Eine Anmeldung allein erzeugt keinen Store-Eintrag. Die App-Registrierung und
@@ -115,13 +115,13 @@ Offizielle Quellen, erneut geprüft am 16.10.2026:
 [Store-Regeln](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/publishing.html).
 
 
-## Prepared English listing (0.5.0)
+## Prepared English listing (0.5.1-beta.1)
 
 **Very early test version: Werkstattmanager is at an early stage of development and is intended for evaluation and testing. Features and workflows may change, and errors are possible. Please start with test data or a separate test installation. This release has not received full approval for production workshop use.**
 
 **Workshop management for Nextcloud: vehicles, appointments, work orders and reporting.**
 
-Werkstattmanager helps a vehicle workshop manage customer vehicles and its own fleet, book appointments with daily capacity, and turn agreed work into workshop orders. Reusable templates and a service catalogue simplify routine work. The pricing calculator uses your own operating costs; published comparison prices are clearly labelled reference data with sources and limitations.
+Werkstattmanager helps a vehicle workshop manage customer vehicles and its own fleet, book appointments with daily capacity, and turn agreed work into workshop orders. Reusable templates and a service catalogue simplify routine work. The pricing calculator uses your own operating costs; published comparison prices are clearly labelled reference data with a review date and limitations. Company names and supplier links are not published.
 
 A workshop supervisor can suggest an employee for a draft, open or paused order. The workshop tablet displays the planned name prominently. This is a planning hint: colleagues can take over, and assigning a name starts no timer. Employees select their own name when they actually start, pause or finish work. The supervisor reviews and approves the completed job. Parts requests and vehicle defects remain linked to the order.
 
@@ -133,6 +133,6 @@ This is a pilot candidate for one workshop organisation, not a production-approv
 
 ### Image provenance and remaining publication checks
 
-The three images under `docs/screenshots/0.5.0/` show the shipped 0.5.0 bundle with explicitly labelled synthetic UI-fixture data. They are not photographs of a real workshop or proof of physical iPad/Nextcloud integration. Their raw-GitHub HTTPS URLs are listed in `info.xml`. All three images were checked without authentication on16October2026 and match the local files byte for byte.
+The three images under `docs/screenshots/0.5.1-beta.1/` show the shipped 0.5.1-beta.1 bundle with explicitly labelled synthetic UI-fixture data. They are not photographs of a real workshop or proof of physical iPad/Nextcloud integration. Their raw-GitHub HTTPS URLs are listed in `info.xml`. All three images were checked without authentication on16October2026 and match the local files byte for byte.
 
-The signing certificate has not been issued. Source publication was explicitly approved and completed on16October2026. Certificate request https://github.com/nextcloud/app-certificate-requests/pull/1345 is open. Source-data reuse review, final signatures, immutable archive hosting and installation of the exact signed artifact remain outstanding. The offline inventory tool does not complete or waive these checks.
+The signing certificate was issued on16October2026. Source publication was explicitly approved and completed on16October2026. Certificate request https://github.com/nextcloud/app-certificate-requests/pull/1345 has been merged and the certificate issued. Source-data reuse review, final signatures, immutable archive hosting and installation of the exact signed artifact remain outstanding. The offline inventory tool does not complete or waive these checks.

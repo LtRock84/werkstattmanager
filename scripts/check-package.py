@@ -44,4 +44,6 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:
         raise SystemExit('Usage: python3 scripts/check-package.py package.tar.gz')
     version, count = check(sys.argv[1])
-    print(f'PASS package boundaries: version {version}, {count} regular files; unsigned')
+    with tarfile.open(sys.argv[1], 'r:gz') as archive:
+        signature = 'signature metadata present; cryptographic verification separate' if 'werkstattmanager/appinfo/signature.json' in archive.getnames() else 'unsigned'
+    print(f'PASS package boundaries: version {version}, {count} regular files; {signature}')

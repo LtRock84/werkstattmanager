@@ -666,6 +666,7 @@ namespace {
     });
     require __DIR__.'/employee-planning.php';
     require __DIR__.'/planning.php';
+    require __DIR__.'/price-privacy.php';
     require __DIR__.'/company-mail.php';
     require __DIR__.'/statistics.php';
     require __DIR__.'/customer-mail.php';

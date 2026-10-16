@@ -457,3 +457,12 @@ Browsernachweise und aktuelle Screenshots werden mit dem ausgelieferten Bundle i
 ### Sicherheitsnachprüfung der Entwicklungswerkzeuge (16.10.2026)
 
 Vitest 3.2.7 wurde wegen GHSA-82fw-gwwq-j7x9 auf die kompatible reparierte Version 4.1.11 aktualisiert. Die vollständige npm-Prüfung meldet anschließend keine bekannten Schwachstellen (einschließlich Entwicklungsabhängigkeiten). 105 Frontendtests, Typecheck, ESLint und Produktionsbuild mit vier Rollenstarts erneut bestanden. Die CI prüft künftig sämtliche npm-Abhängigkeiten. Die Laufzeit bleibt auf Vite 6.4.3. Der erste 0.5.0-CI-Lauf fand einen unvollständig typisierten neuen Testdatensatz; alle Pflichtfelder wurden ergänzt, ohne Prüfregeln abzuschwächen. Ein neuer CI-Lauf muss den korrigierten Commit prüfen.
+
+
+## Erste öffentliche Test-Beta0.5.1-beta.1 (16.10.2026)
+
+Vergleichspreise behalten:334 Beobachtungen/32 unabhängige Preisgeber, Beträge/Steuer/Seed-Schlüssel unverändert. Namen/Anbieterlinks in Paket und API neutralisiert, auch für Altdaten ohne Datenbankschreibvorgang. Drei neue PHP-Fälle prüfen Statistikgleichheit, wiederholbare Ausgabe und unveränderten Datenbestand; zwei neue Frontendfälle prüfen fehlende Namens-/Linkanzeige sowie weiterhin ausdrückliche Preisübernahme. Eigene Werkstattpreise/Zeiten/Favoriten werden nicht ersetzt.
+
+Erfolgreich lokal ausgeführt:107 Frontendtests, Typecheck, ESLint, Produktionsbuild mit vier Rollenstarts;77 native PHP8.3.35-Fachszenarien, CodingStandard57Dateien, Psalm ohne Fehler. XSD/Paketinventar und weitere PHP-/SQL-Prüfungen des neuen Commits sind über dessen Actions-Lauf zu verifizieren. Eine Workflowdefinition gilt nicht als bestandene Prüfung. Der Release-Beleg für das exakte signierte Archiv wird getrennt bei den GitHub-Release-Assets geführt.
+
+Nextcloud hat Zertifikat zum bestehenden Schlüssel ausgestellt; Überprüfung gegen die mitNC35.0.1 ausgelieferte Vertrauensdatei bestanden. Der Schlüssel bleibt außerhalb von Git/Paket/CI. Signiertes Endpaket benötigt separate Integritäts-, Neuinstallations-, Upgrade- und Downloadprüfung. Physisches iPad, reale NAS-/Office-/Mailboxabnahme, volle A11y-/Lastprüfung und offene Preisquellenrechte bleiben ausdrücklich getrennt. Vorhandene Unternehmensangaben in historischen Git-Commits werden durch diesen Release nicht gelöscht.

@@ -411,6 +411,11 @@ def main():
             extra_orders = intake_access.check(base, passwords, Client, occ)
             import statistics
             extra_orders += statistics.check(base, passwords, Client)
+            # Existing 0.4.1 installations also retain raw research rows; the API must mask them.
+            public_prices = Client(base, 'ci-master', passwords['master']).call('/api/v1/services/saisonaler-raderwechsel/prices')
+            assert public_prices['items'] and all(p['source'] == '' and p['provider'].startswith('Preisgeber ') for p in public_prices['items'])
+            assert all(o['source'] == '' and o['provider'].startswith('Preisgeber ') for g in public_prices['groups'] for o in g['observations'])
+            print('PASS anonymous comparison prices: observations/groups mask names and links on fresh installs and legacy upgrades')
             import employee_planning
             extra_orders += employee_planning.check(base, passwords, Client)
             import customer_mail
