@@ -1,8 +1,7 @@
 # Vorbereitete Store-Beschreibung
 
 Entwurf für 0.5.0 vom 2026-10-16. Noch nicht eingereicht; öffentliche Veröffentlichung,
-Signatur und Geräteabnahme stehen aus. Die internen Pilotkennzeichnungen in
-`info.xml` bleiben bis zur tatsächlichen Freigabe erhalten.
+Signatur und Geräteabnahme stehen aus. `info.xml` enthält den ausdrücklichen Hinweis auf eine sehr frühe Testversion in Deutsch und Englisch.
 
 ## Vorgesehene Angaben
 
@@ -29,6 +28,8 @@ Er schaltet keine Zusatzfunktionen frei; es wird keine Spendenbescheinigung ausg
 Die tatsächliche Kontoeignung muss der Empfänger vor öffentlichem Betrieb bestätigen.
 
 ## Vorgesehener Beschreibungstext
+
+**Sehr frühe Testversion: Werkstattmanager befindet sich noch in einer frühen Entwicklungsphase und ist zum Ausprobieren und Testen gedacht. Funktionen und Abläufe können sich ändern; Fehler sind möglich. Bitte zunächst mit Testdaten oder in einer separaten Testinstallation verwenden. Für den produktiven Werkstattbetrieb liegt noch keine vollständige Freigabe vor.**
 
 Werkstattmanager unterstützt die tägliche Arbeit in einer KFZ-Werkstatt:
 Kundenfahrzeuge und eigene Flottenfahrzeuge verwalten, Termine und Fristen im
@@ -117,6 +118,8 @@ Offizielle Quellen, erneut geprüft am 16.10.2026:
 
 ## Prepared English listing (0.5.0)
 
+**Very early test version: Werkstattmanager is at an early stage of development and is intended for evaluation and testing. Features and workflows may change, and errors are possible. Please start with test data or a separate test installation. This release has not received full approval for production workshop use.**
+
 **Workshop management for Nextcloud: vehicles, appointments, work orders and reporting.**
 
 Werkstattmanager helps a vehicle workshop manage customer vehicles and its own fleet, book appointments with daily capacity, and turn agreed work into workshop orders. Reusable templates and a service catalogue simplify routine work. The pricing calculator uses your own operating costs; published comparison prices are clearly labelled reference data with sources and limitations.
@@ -133,4 +136,4 @@ This is a pilot candidate for one workshop organisation, not a production-approv
 
 The three images under `docs/screenshots/0.5.0/` show the shipped 0.5.0 bundle with explicitly labelled synthetic UI-fixture data. They are not photographs of a real workshop or proof of physical iPad/Nextcloud integration. Their future raw-GitHub HTTPS URLs are listed in `info.xml`; while the repository remains private, anonymous store downloads are not available. Do not describe these URLs as publicly verified.
 
-The signing certificate has not been issued. Store account recovery, explicit source visibility approval, source-data reuse review, final signatures, immutable download hosting and installation of the exact signed artifact remain outstanding. The offline inventory tool does not complete or waive these checks.
+The signing certificate has not been issued. Explicit source visibility approval, source-data reuse review, final signatures, immutable download hosting and installation of the exact signed artifact remain outstanding. The offline inventory tool does not complete or waive these checks.

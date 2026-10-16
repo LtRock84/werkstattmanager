@@ -2,6 +2,8 @@
 
 ## 0.5.0 – Mitarbeiter für Arbeitsaufträge vorplanen
 
+- Deutsche und englische Store-Metadaten kennzeichnen die App ausdrücklich als sehr frühe Testversion zum Ausprobieren.
+
 - Testwerkzeug Vitest auf 4.1.11 aktualisiert; vollständige npm-Sicherheitsprüfung einschließlich Entwicklungsabhängigkeiten in CI aufgenommen.
 
 - Meister können beim Erstellen und bei Entwürfen, offenen oder pausierten Aufträgen einen Mitarbeiter vorsehen, ändern oder die Vorplanung aufheben.
