@@ -2,6 +2,8 @@
 
 ## 0.5.0 – Mitarbeiter für Arbeitsaufträge vorplanen
 
+- Testwerkzeug Vitest auf 4.1.11 aktualisiert; vollständige npm-Sicherheitsprüfung einschließlich Entwicklungsabhängigkeiten in CI aufgenommen.
+
 - Meister können beim Erstellen und bei Entwürfen, offenen oder pausierten Aufträgen einen Mitarbeiter vorsehen, ändern oder die Vorplanung aufheben.
 - Tablet und Meister sehen den Namen als auffälligen Hinweis. Kollegen dürfen weiterhin übernehmen; die Vorplanung startet keinen Timer und reserviert keinen Mitarbeiter.
 - Namensfilter berücksichtigt Vorplanung und letzten Bearbeiter; Versionskonflikte, Wiederholungsschutz, archivierte Mitarbeiter und lesbares Änderungsprotokoll sind berücksichtigt.

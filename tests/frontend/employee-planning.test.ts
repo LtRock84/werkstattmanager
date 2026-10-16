@@ -13,9 +13,10 @@ import OrderComposer from '../../src/components/OrderComposer.vue'
 import OrderDetail from '../../src/components/OrderDetail.vue'
 import Modal from '../../src/components/Modal.vue'
 import { auditEntry } from '../../src/audit'
-const employees = [{ id: 'e1', name: 'Alex', archived: false }, { id: 'e2', name: 'Robin', archived: false }] as Employee[]
-const vehicle = { id: 'v1', kind: 'fleet', plate: 'DEMO', archived: false } as Vehicle
-const order = { id: 'o1', version: 1, vehicle_id: 'v1', title: 'Prüfen', status: 'open', steps: [], description: '', planned_employee_id: 'e1', last_employee_id: null } as Order
+const base = (id: string) => ({ id, version: 1, created_at: 1, updated_at: 1 })
+const employees: Employee[] = [{ ...base('e1'), name: 'Alex', archived: false }, { ...base('e2'), name: 'Robin', archived: false }]
+const vehicle: Vehicle = { ...base('v1'), customer_id: null, kind: 'fleet', plate: 'DEMO', number: '', vin: '', make: '', model: '', registration: null, mileage: null, mileage_date: null, notes: '', archived: false }
+const order: Order = { ...base('o1'), vehicle_id: 'v1', title: 'Prüfen', status: 'open', steps: [], description: '', planned_employee_id: 'e1', last_employee_id: null, minutes: 45, planned_start: null, due_at: null, priority: 'normal', pause_reason: null, completed_at: null }
 beforeEach(() => {
   vi.resetAllMocks()
   api.all.mockImplementation((kind: string) => Promise.resolve(kind === 'employees' ? employees : []))

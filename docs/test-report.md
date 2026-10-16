@@ -1,6 +1,6 @@
 # Prüfbericht – Werkstattmanager
 
-Stand 2026-10-11. **Interner Prüfkandidat, keine vollständige Produktionsfreigabe.**
+Stand 2026-10-16. **Interner Prüfkandidat, keine vollständige Produktionsfreigabe.**
 Dieser Bericht beschreibt die Reichweite der Prüfungen ohne standortspezifische
 Betriebsdaten. Automatische Prüfungen sind über die
 [GitHub-Pipeline](https://github.com/LtRock84/werkstattmanager/actions/workflows/quality.yml)
@@ -452,3 +452,8 @@ Lokal erfolgreich: 105 Frontendtests, Typecheck, ESLint, Produktionsbuild/vier R
 Die erweiterte CI prüft den hochgeladenen Stand zusätzlich nativ auf PHP8.3/8.4/8.5 und in vier frischen NC35.0.0/35.0.1×PostgreSQL17/MariaDB11.8-Instanzen sowie Upgrades von exakt 0.4.1 auf PostgreSQL/35.0.1 und MariaDB/35.0.0. Der neue SQL-Fall kontrolliert Planung/Filter, Entwurfsprivatsphäre, Rechte einschließlich Terminannahme, konkurrierende Versionen, Wiederholungen, Übernahme, Archivierung und Journal. Nachweis/Ergebnis des jeweiligen Commit-Laufs ist über GitHub Actions zu prüfen; aus der Definition allein folgt kein bestandener Lauf.
 
 Browsernachweise und aktuelle Screenshots werden mit dem ausgelieferten Bundle in einer klar gekennzeichneten lokalen UI-Fixture mit fiktiven Daten erstellt. Sie ersetzen keine echte Nextcloud-/physische iPad-/Touch-/Kamera-Abnahme. Signiertes Endpaket, Store-Konto, öffentlicher Download, Rechteprüfung der Preisquellen und bestehende Geräte-/Betriebsabnahmen bleiben getrennt offen. Keine erneute native PHP-/SQL-Matrix als lokalen WASM-Erfolg ausgeben.
+
+
+### Sicherheitsnachprüfung der Entwicklungswerkzeuge (16.10.2026)
+
+Vitest 3.2.7 wurde wegen GHSA-82fw-gwwq-j7x9 auf die kompatible reparierte Version 4.1.11 aktualisiert. Die vollständige npm-Prüfung meldet anschließend keine bekannten Schwachstellen (einschließlich Entwicklungsabhängigkeiten). 105 Frontendtests, Typecheck, ESLint und Produktionsbuild mit vier Rollenstarts erneut bestanden. Die CI prüft künftig sämtliche npm-Abhängigkeiten. Die Laufzeit bleibt auf Vite 6.4.3. Der erste 0.5.0-CI-Lauf fand einen unvollständig typisierten neuen Testdatensatz; alle Pflichtfelder wurden ergänzt, ohne Prüfregeln abzuschwächen. Ein neuer CI-Lauf muss den korrigierten Commit prüfen.
