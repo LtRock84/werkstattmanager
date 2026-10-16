@@ -145,6 +145,9 @@ jobs:
         with:
           node-version: 24.18.0
       - if: matrix.upgrade
+        name: Install metadata validator for the historical package
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+      - if: matrix.upgrade
         name: Rebuild the exact previous version for the migration test
         run: |
           npm install --global npm@11.16.0
