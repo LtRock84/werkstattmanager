@@ -8,7 +8,7 @@ Zertifikat ausgestellt: [Nextcloud-PR #1345](https://github.com/nextcloud/app-ce
 – freiwilliger Beitrag zu Projektkosten und Weiterentwicklung, ohne Zusatzleistungen
 oder Spendenbescheinigung. Die App bleibt kostenlos nutzbar.
 
-Frühe Test-Beta 0.5.1-beta.1 für eine Werkstattorganisation. Fahrzeugakten für Kunden
+Frühe Test-Beta 0.5.1-beta.2 für eine Werkstattorganisation. Fahrzeugakten für Kunden
 und eigene Flotte, schnelle Aufträge, Tablet-Zeiterfassung, Teileanforderungen und
 externe Mängelmeldungen, Terminbuch, Leistungskatalog, Preiskalkulation,
 Umsatz-/Arbeitszeitauswertung und anpassbare Kundennachrichten mit Fristenerinnerungen. Der aktuelle Stand ist **nicht für Produktivbetrieb freigegeben**.
@@ -19,7 +19,7 @@ Neu in 0.5.0: **Mitarbeiter vorplanen**, sichtbar am Tablet als unverbindlicher 
 
 Weitere Funktionen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
 sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
-Das Repository ist öffentlich. Die erste signierte Test-Beta wird vorbereitet; der Store-Status steht in den Release-Unterlagen. Vergleichspreise bleiben enthalten, Unternehmensnamen und Anbieterlinks werden nicht veröffentlicht.
+Das Repository ist öffentlich. Die erste signierte Test-Beta ist im Nextcloud App Store verfügbar. Version 0.5.1-beta.2 korrigiert unnötige Kalenderjobs bei nicht eingerichteter optionaler Anbindung; den Stand der Veröffentlichung zeigen die GitHub-Releases. Vergleichspreise bleiben enthalten, Unternehmensnamen und Anbieterlinks werden nicht veröffentlicht.
 
 ## Bedienung
 

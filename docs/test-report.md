@@ -1,6 +1,6 @@
 # Prüfbericht – Werkstattmanager
 
-Stand 2026-10-16. **Interner Prüfkandidat, keine vollständige Produktionsfreigabe.**
+Stand 2026-10-17. **Interner Prüfkandidat, keine vollständige Produktionsfreigabe.**
 Dieser Bericht beschreibt die Reichweite der Prüfungen ohne standortspezifische
 Betriebsdaten. Automatische Prüfungen sind über die
 [GitHub-Pipeline](https://github.com/LtRock84/werkstattmanager/actions/workflows/quality.yml)
@@ -466,3 +466,15 @@ Vergleichspreise behalten:334 Beobachtungen/32 unabhängige Preisgeber, Beträge
 Erfolgreich lokal ausgeführt:107 Frontendtests, Typecheck, ESLint, Produktionsbuild mit vier Rollenstarts;77 native PHP8.3.35-Fachszenarien, CodingStandard57Dateien, Psalm ohne Fehler. XSD/Paketinventar und weitere PHP-/SQL-Prüfungen des neuen Commits sind über dessen Actions-Lauf zu verifizieren. Eine Workflowdefinition gilt nicht als bestandene Prüfung. Der Release-Beleg für das exakte signierte Archiv wird getrennt bei den GitHub-Release-Assets geführt.
 
 Nextcloud hat Zertifikat zum bestehenden Schlüssel ausgestellt; Überprüfung gegen die mitNC35.0.1 ausgelieferte Vertrauensdatei bestanden. Der Schlüssel bleibt außerhalb von Git/Paket/CI. Signiertes Endpaket benötigt separate Integritäts-, Neuinstallations-, Upgrade- und Downloadprüfung. Physisches iPad, reale NAS-/Office-/Mailboxabnahme, volle A11y-/Lastprüfung und offene Preisquellenrechte bleiben ausdrücklich getrennt. Vorhandene Unternehmensangaben in historischen Git-Commits werden durch diesen Release nicht gelöscht.
+
+## Kalenderkorrektur 0.5.1-beta.2 (17.10.2026)
+
+Drei PHP-Services ändern ausschließlich das Verhalten der optionalen CalDAV-Queue. Zwei neue Unit-Szenarien und ein realer SQL-/TLS-Zustellablauf prüfen ausgeschaltete Integration, unveränderte Kundenmail, Passwortentzug, Abbruch alter wartender Jobs ohne weitere Versuche/Logwarnung sowie erfolgreiche Wiederaktivierung.
+
+Erfolgreich ausgeführt:79 Unit-Szenarien jeweils nativ auf PHP8.3/8.4/8.5; Codingstandard57Dateien, Psalm ohne Errors; vollständige PostgreSQL17/Nextcloud35.0.1-Installation mit echtem TLS/SMTP/CalDAV/Cron, Ausfällen, Wiederholungsschutz, Rechten und Neustart. Auch der vollständige MariaDB11.8/Nextcloud35.0.1-Lauf ist bestanden. Das getrennte unsigned Prüfpaket hat SHA256 f9be9d0a6ea032325548bdae1c455d115c0b7d486746538d1621d43d9652bd8b und unveränderte Metadatenversion0.5.1-beta.1; es ist kein nachträglich ersetztes Store-Release. Betriebsdokumentation und dieser Nachtrag entstanden anschließend.
+
+Zusätzlich lokal Mail5.12.3/EuroOffice11.0.5 geprüft: Doppelbelegung application/pdf durch Office und eingebauten PDF-Viewer. Nur Office-PDF-Standardzuordnung in isolierter Backup-Kopie deaktiviert; frischer Mailtab ohne bisherigen Registrierungsfehler. PDF tatsächlich im eingebauten Viewer geöffnet, DOCX weiterhin in Office bearbeitet und per WebDAV/XML mit altem und neuem Testtext zurückgelesen. Werkstatt-Store-App bleibt signaturgültig. Fremde Programmdateien unverändert.
+
+Im vorangegangenen reinen Fix-Lauf wurden Frontendtests/Build und die GitHub-CI nicht erneut ausgeführt. Für die versionierte Veröffentlichung wurden anschließend Typecheck, ESLint,107 Frontendtests und Produktionsbuild mit vier Rollenstarts erneut erfolgreich geprüft; die erzeugten Frontenddateien sind unverändert. Die endgültigen CI-, Signatur- und Storeergebnisse stehen beim konkreten Release. NAS, produktive Mailbox, physisches iPad sowie allgemeine Geräte-/Barrierefreiheitsabnahmen bleiben offen.
+
+Für die versionierte Beta0.5.1-beta.2 sind das aktuelle offizielle App-Store-XSD, Versionsgleichheit,82Dateien-Paketgrenzen und npm-Audit ohne bekannte Schwachstellen geprüft. Vor Veröffentlichung müssen zusätzlich die vorgesehene CI-Matrix und die signierten Installations-/Upgradeprüfungen abgeschlossen sein. Die drei PHP-Dateien enthalten denselben bereits auf PostgreSQL/MariaDB geprüften Fix. Exakte Paketidentität, Signatur-, Neuinstallations- und Upgrade-Ergebnisse sind den Release-Nachweisen zuzuordnen; frühere Testarchive werden nicht als das neue Release ausgegeben.

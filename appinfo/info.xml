@@ -8,7 +8,7 @@ Manage customer vehicles and your own fleet, appointments with daily capacity, a
  <description lang="de">Sehr frühe Testversion: Werkstattmanager befindet sich noch in einer frühen Entwicklungsphase und ist zum Ausprobieren und Testen gedacht. Funktionen und Abläufe können sich ändern; Fehler sind möglich. Bitte zunächst mit Testdaten oder in einer separaten Testinstallation verwenden. Für den produktiven Werkstattbetrieb liegt noch keine vollständige Freigabe vor.
 
 Fahrzeugakten für Kunden und eigene Flotte, Terminbuch mit Tageskapazitäten, Leistungskatalog und Preisrechner. Schnelle Werkstattaufträge mit unverbindlicher Mitarbeiter-Vorplanung, Tablet-Zeiterfassung, Teileanforderungen und externe Mängelmeldungen per Fahrzeug-QR-Code. Auswertung eigener Plan- und Istumsätze sowie Arbeitszeiten. Vergleichspreise bleiben ohne Unternehmensnamen und Anbieterlinks als datierte Orientierungswerte sichtbar. Anpassbare Kundennachrichten, optionale Abholbereit-Mails und automatische Fahrzeugfristen-Erinnerungen.</description>
- <version>0.5.1-beta.1</version><licence>AGPL-3.0-or-later</licence><author>Thomas Keilhaupt</author><namespace>Werkstattmanager</namespace><category>organization</category>
+ <version>0.5.1-beta.2</version><licence>AGPL-3.0-or-later</licence><author>Thomas Keilhaupt</author><namespace>Werkstattmanager</namespace><category>organization</category>
  <website>https://github.com/LtRock84/werkstattmanager</website>
  <bugs>https://github.com/LtRock84/werkstattmanager/issues</bugs>
  <repository type="git">https://github.com/LtRock84/werkstattmanager.git</repository>

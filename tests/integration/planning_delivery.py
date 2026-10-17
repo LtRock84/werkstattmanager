@@ -187,6 +187,25 @@ def check(base, passwords, app, occ, run, Client):
             master.call('/api/v1/calendar-settings',{'data':{'calendar_url':public+calendar_path,'calendar_user':'ci-calendar','password':calendar_pass}},method='PUT')
             fixture_run("foreach($s->find('deliveries',['appointment_id'=>'"+revoked_cal['id']+"','status'=>'pending'])as$d)$s->update('deliveries',$d,['next_try'=>time()-1]);")
             dispatch();assert b'BEGIN:VEVENT' in dav('GET',calendar_path+'werkstatt-'+revoked_cal['id']+'-arrival.ics')
+            # Optional integration disabled: no new jobs; legacy pending rows end without retries or warnings.
+            fixture_run("foreach($s->find('deliveries',['appointment_id'=>'"+revoked_cal['id']+"','channel'=>'calendar'])as$d)$s->update('deliveries',$d,['status'=>'pending','attempts'=>1,'last_error'=>'Kalenderzugang noch nicht eingerichtet.','next_try'=>time()-1]);")
+            master.call('/api/v1/calendar-settings',{'data':{'calendar_url':'','calendar_user':''}},method='PUT')
+            legacy=json.loads(fixture_run("echo json_encode($s->find('deliveries',['appointment_id'=>'"+revoked_cal['id']+"','channel'=>'calendar']));"))
+            cal_data.update(id=revoked_cal['id'],version=revoked_cal['version'],title='CI Calendar disabled',request_id=str(uuid.uuid4()))
+            disabled=master.call('/api/v1/appointments',{'data':cal_data})
+            rows=json.loads(fixture_run("echo json_encode($s->find('deliveries',['appointment_id'=>'"+revoked_cal['id']+"','channel'=>'calendar']));"))
+            assert rows==legacy, 'Disabled integration queued new events'
+            log_count=lambda:int(run('docker','exec',app,'php','-r',"$p='/var/www/html/data/nextcloud.log';echo is_file($p)?substr_count(file_get_contents($p),'Werkstatt appointment delivery failed'):0;"))
+            before_warnings=log_count()
+            dispatch();dispatch()
+            rows=json.loads(fixture_run("echo json_encode($s->find('deliveries',['appointment_id'=>'"+revoked_cal['id']+"','channel'=>'calendar']));"))
+            assert rows and all(d['status']=='cancelled' and d['attempts']==1 and d['last_error']=='' for d in rows)
+            assert log_count()==before_warnings, 'Disabled integration logged a delivery failure'
+            master.call('/api/v1/calendar-settings',{'data':{'calendar_url':public+calendar_path,'calendar_user':'ci-calendar','password':calendar_pass}},method='PUT')
+            cal_data.update(version=disabled['version'],title='CI Calendar enabled again',request_id=str(uuid.uuid4()))
+            master.call('/api/v1/appointments',{'data':cal_data});dispatch()
+            assert b'CI Calendar enabled again' in dav('GET',calendar_path+'werkstatt-'+revoked_cal['id']+'-arrival.ics')
+            print('PASS optional calendar: no jobs while disabled; legacy queue cancelled without warning/retry; reactivation delivers; revoked credentials and outage still retry')
             # Customer messages share the actual SMTP queue but ready/deadline send no second calendar invitation.
             customer=master.call('/api/v1/records/customers',{'data':{'name':'CI Mailkunde','contact':'Erika Beispiel','email':'personal@example.invalid'}})
             assert customer['deadline_emails'] is True

@@ -1,7 +1,7 @@
 <?php
 use OCA\Werkstattmanager\Domain\{Pricing, AppointmentCalendar, CatalogueUpdate};
 use OCA\Werkstattmanager\Service\{ServiceLibrary, PlanningLedger, AppointmentBook, Orders, Access, Catalog, Journal};
-function planSetup(): array
+function planSetup(?Config $config = null): array
 {
     [$s, $u, $access, $c, $j, $o, $v] = setup();
     $week = [];
@@ -11,7 +11,7 @@ function planSetup(): array
     $s->insert('planning', ['id' => PlanningLedger::ID, 'settings' => ['weekdays' => $week]]);
     $lib = new ServiceLibrary($s, $access, $j);
     $ledger = new PlanningLedger($s);
-    $book = new AppointmentBook($s, $access, $c, $j, $lib, $ledger);
+    $book = new AppointmentBook($s, $access, $c, $j, $lib, $ledger, $config ?? new Config());
     $o = new Orders($s, $access, $c, $j, $lib, $ledger);
     return [$s, $u, $v, $lib, $ledger, $book, $o];
 }
@@ -370,4 +370,20 @@ test('deleting a Nextcloud user removes only their direct grants and is repeatab
     $config->values['master_users']='["former","director"]'; $config->values['reception_users']='["former","assistant"]';
     $access->removeUser('former'); same(['director'],$access->users('master')); same(['assistant'],$access->users('reception')); $access->removeUser('former'); same(['director'],$access->users('master'));
     $session->uid='former'; rejects(fn () => $access->role(),'forbidden');
+});
+
+test('disabled optional calendar queues no jobs while customer mail remains independent', function () {
+    [$s, , $v, , , $book] = planSetup();
+    $a = $book->save(appointment($v, ['customer_email' => 'kunde@example.test']));
+    same([], $s->find('deliveries', ['appointment_id' => $a['id'], 'channel' => 'calendar']));
+    same(1, count($s->find('deliveries', ['appointment_id' => $a['id'], 'channel' => 'email'])));
+});
+test('configured calendar still queues with revoked credentials and stops after disabling', function () {
+    $config = new Config(); $config->values['calendar_url'] = 'https://cloud.example.test/remote.php/dav/calendars/user/workshop/';
+    [$s, , $v, , , $book] = planSetup($config);
+    $a = $book->save(appointment($v));
+    same(2, count($s->find('deliveries', ['appointment_id' => $a['id'], 'channel' => 'calendar'])));
+    $config->values['calendar_url'] = '';
+    $book->save(appointment($v, ['id' => $a['id'], 'version' => $a['version'], 'title' => 'Neuer Titel']));
+    same(2, count($s->find('deliveries', ['appointment_id' => $a['id'], 'channel' => 'calendar'])));
 });

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.1-beta.2 – Optionalen Kalender korrigiert (17.10.2026)
+
+- Optionale CalDAV-Integration erzeugt ohne Kalenderadresse keine Zustellungen. Fällige alte Warteschlangeneinträge werden ohne weitere Warnung abgebrochen; Kunden-E-Mails bleiben unabhängig. Entzogene Zugangsdaten bei bestehender Adresse und echte Kalenderausfälle bleiben sichtbare Fehler.
+
+- Regressionen für ausgeschalteten Kalender, Kundenmail, Altjobs und Wiederaktivierung ergänzt; Passwortentzug und echte CalDAV-Ausfälle bleiben geprüft.
+- Betriebsdokumentation zur PDF-Standardzuordnung bei Mail/EuroOffice ergänzt. Die App verändert keine fremden Office-Einstellungen.
+
 ## 0.5.1-beta.1 – Erste öffentliche Test-Beta
 
 - Ausdrücklicher früher Teststatus in Deutsch/Englisch und Beta-Version für den Store.

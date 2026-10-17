@@ -37,6 +37,10 @@ final class AppointmentDelivery {
 			$smtpAttempted = false;
 			$status = 'sent';
 			try {
+				if ($row['channel'] === 'calendar' && !$this->calendar->enabled()) {
+					$this->store->update('deliveries', $row, ['status' => 'cancelled', 'last_error' => '']);
+					continue;
+				}
 				$payload = $row['payload'];
 				if ($row['kind'] === 'deadline') {
 					$obsolete = !$this->reminders->valid($payload);

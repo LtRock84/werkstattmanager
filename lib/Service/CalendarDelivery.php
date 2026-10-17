@@ -82,6 +82,10 @@ final class CalendarDelivery {
 			);
 		}
 	}
+	public function enabled(): bool {
+		// An existing address with revoked credentials remains an actionable configuration error.
+		return $this->config->getAppValue('werkstattmanager', 'calendar_url', '') !== '';
+	}
 	public function send(array $payload, string $kind): void {
 		$url = $this->config->getAppValue('werkstattmanager', 'calendar_url', '');
 		$user = $this->config->getAppValue('werkstattmanager', 'calendar_user', '');

@@ -245,3 +245,13 @@ tragen den Hinweis auf die fehlende Spendenbescheinigung im Linktitel.
 
 Quellen geprüft 11.10.2026: [PayPal.Me](https://www.paypal.com/de/cshelp/article/was-ist-paypalme-help432),
 [Nextcloud-Unterstützungslinks](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/monetizing.html).
+
+## Optionaler Kalender ohne Konfiguration
+
+Eine leere Kalenderadresse schaltet die CalDAV-Übertragung aus. Ab Version0.5.1-beta.2 werden dabei keine Kalenderjobs angelegt; bereits wartende Jobs werden beim nächsten fälligen Zustelllauf abgebrochen. Das ändert weder Termine noch Kunden-E-Mails. Bei hinterlegter Adresse müssen fehlende Zugangsdaten oder Ausfälle weiterhin behoben werden. Nach späterer Einrichtung überträgt die nächste relevante Terminänderung den aktuellen Stand; eine vollständige rückwirkende Synchronisierung gibt es nicht. Abschalten löscht keine bereits übertragenen Ereignisse aus dem entfernten Kalender.
+
+## Mail und EuroOffice: doppelte PDF-Viewer-Zuordnung
+
+Bei der lokalen Kombination Nextcloud35.0.0, Mail5.12.3 und EuroOffice11.0.5 erschien in Mail die Browsermeldung „The following mime is already registered“. Auch bei ausgeschaltetem Werkstattmanager reproduzierbar. EuroOffice war als PDF-Standard aktiviert und beanspruchte application/pdf gleichzeitig mit dem eingebauten files_pdfviewer. In den Office-Administrationseinstellungen PDF als Standardformat abwählen; DOCX/XLSX/PPTX unverändert lassen. Damit übernimmt die eingebaute PDF-Anzeige; Office bleibt zum Bearbeiten anderer Dokumente aktiv. Keine signierten Programmdateien ändern. Vorherige Formateinstellungen sichern und anschließend PDF-Anzeige und DOCX-Bearbeitung prüfen. Dies ist eine optionale Konfigurationslösung für diese konkret geprüfte Kombination, keine automatische Änderung fremder Apps durch Werkstattmanager.
+
+Quellprüfung17.10.2026: [EuroOffice11.0.5 Viewer](https://github.com/Euro-Office/eurooffice-nextcloud/blob/v11.0.5/src/viewer.js). Die getrennte Vorschauwarnung bei absichtlich deaktivierten Nextcloud-Vorschauen wird dadurch nicht behoben.

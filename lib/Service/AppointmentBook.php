@@ -8,6 +8,7 @@ use OCA\Werkstattmanager\Db\Store;
 use OCA\Werkstattmanager\Domain\Problem;
 use OCA\Werkstattmanager\Domain\ReceptionChecklist;
 use OCA\Werkstattmanager\Domain\Rules;
+use OCP\IConfig;
 
 final class AppointmentBook {
 	public function __construct(
@@ -17,6 +18,7 @@ final class AppointmentBook {
 		private Journal $journal,
 		private ServiceLibrary $library,
 		private PlanningLedger $ledger,
+		private IConfig $config,
 	) {
 	}
 	public function view(string $from, string $to): array {
@@ -249,6 +251,9 @@ final class AppointmentBook {
 	}
 	private function queue(array $row, string $channel, string $kind, ?int $when = null): void {
 		if ($channel === 'calendar') {
+			if ($this->config->getAppValue('werkstattmanager', 'calendar_url', '') === '') {
+				return;
+			}
 			$current = ['arrival'];
 			if ($row['pickup']) {
 				$current[] = 'pickup';
