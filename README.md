@@ -1,7 +1,8 @@
 # Werkstattmanager für Nextcloud
 
 Herausgeber: **Thomas Keilhaupt** · GitHub: [LtRock84](https://github.com/LtRock84).
-**Sehr frühe Testversion zum Ausprobieren und Testen.** Die App-Store-Veröffentlichung wird vorbereitet; es gibt noch keinen Store-Eintrag.
+**Sehr frühe Testversion zum Ausprobieren und Testen.** Die signierte Beta ist im
+[Nextcloud App Store](https://apps.nextcloud.com/apps/werkstattmanager) verfügbar.
 Zertifikat ausgestellt: [Nextcloud-PR #1345](https://github.com/nextcloud/app-certificate-requests/pull/1345).
 
 **[♥ Projekt über PayPal unterstützen](https://www.paypal.me/Werkstattmanager)**
@@ -20,6 +21,29 @@ Neu in 0.5.0: **Mitarbeiter vorplanen**, sichtbar am Tablet als unverbindlicher 
 Weitere Funktionen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
 sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
 Das Repository ist öffentlich. Die erste signierte Test-Beta ist im Nextcloud App Store verfügbar. Version 0.5.1-beta.2 korrigiert unnötige Kalenderjobs bei nicht eingerichteter optionaler Anbindung; den Stand der Veröffentlichung zeigen die GitHub-Releases. Vergleichspreise bleiben enthalten, Unternehmensnamen und Anbieterlinks werden nicht veröffentlicht.
+
+## Einblicke in die App
+
+Die Aufnahmen zeigen die veröffentlichte Test-Beta mit ausschließlich fiktiven
+Beispieldaten. Sie enthalten keine echten Kunden-, Fahrzeug- oder Mitarbeiterdaten.
+
+### Meisterübersicht
+
+Fahrzeuge, Termine, offene Arbeiten und wichtige Meldungen auf einen Blick.
+
+![Meisterübersicht des Werkstattmanagers](docs/screenshots/0.5.1-beta.1/meister.png)
+
+### Schnelle Auftragserstellung
+
+Fahrzeug und Leistungen auswählen, Sollzeit prüfen und den Auftrag für die Werkstatt freigeben.
+
+![Auftragserstellung mit Leistungen und Sollzeit](docs/screenshots/0.5.1-beta.1/auftrag.png)
+
+### Werkstatt-Tablet
+
+Große Bedienelemente für offene Aufträge, Mitarbeiter-Vorplanung und Zeiterfassung.
+
+![Tabletansicht für Werkstattmitarbeiter](docs/screenshots/0.5.1-beta.1/tablet.png)
 
 ## Bedienung
 
