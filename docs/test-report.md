@@ -481,6 +481,10 @@ Für die versionierte Beta0.5.1-beta.2 sind das aktuelle offizielle App-Store-XS
 
 ## Stabile Store-Version 0.5.1 (19.10.2026)
 
-0.5.1 übernimmt den Laufzeitstand der vollständig geprüften0.5.1-beta.2 ohne Datenbank- oder Funktionsänderung. Versionsmetadaten und öffentliche Dokumentation wurden für den stabilen App-Store-Kanal angepasst. Der konkrete0.5.1-Kandidat wird vor Veröffentlichung erneut durch lokale Qualität, CI-Matrix, signierte Neuinstallation und Upgradeprüfung geführt; Ergebnisse werden erst nach tatsächlichem Abschluss ergänzt.
+0.5.1 übernimmt den Laufzeitstand der vollständig geprüften0.5.1-beta.2 ohne Datenbank- oder Funktionsänderung. Versionsmetadaten und öffentliche Dokumentation wurden für den stabilen App-Store-Kanal angepasst.
+
+Erfolgreich ausgeführt:107 Frontendtests, Typecheck, ESLint, Produktionsbuild mit vier Rollenstarts, zehn Pakettests, aktuelles App-Store-XSD, reproduzierbares82-Dateien-Paket und npm-Audit ohne Meldung. GitHub Actions [Lauf39202411955](https://github.com/LtRock84/werkstattmanager/actions/runs/39202411955) für Commit`056d748` bestand alle elf Jobs: Node24.18/npm11.16, PHP8.3/8.4/8.5, Codingstandard/Psalm, vier frische Installationen auf Nextcloud35.0.0/35.0.1 mit PostgreSQL17/MariaDB11.8 und zwei Upgrades. Das CI-Artefakt war bytegleich zum lokal reproduzierten Kandidaten.
+
+Ein daraus signierter Prüfstand bestand die native Nextcloud-Integrität und RSA/SHA-512-Archivsignatur. Das signierte Archiv wurde anschließend frisch auf MariaDB/Nextcloud35.0.0 installiert sowie von der veröffentlichten signierten0.5.1-beta.2 auf PostgreSQL/Nextcloud35.0.1 aktualisiert. Beide vollständigen21-Gruppen-Läufe bestanden einschließlich TLS, SMTP, CalDAV, Cron, Rollen, konkurrierenden Aufträgen, Tablet, Fahrer-QR/Fotos, Teile, Termine, Fristen, Auswertung, Deaktivieren/Aktivieren und Neustart mit Datenerhalt. Die abschließende Dokumentationsaktualisierung verändert keine Laufzeitdatei; ihr eigener CI- und Paketstand wird vor Veröffentlichung nochmals geprüft.
 
 Installationsabhängig offen bleiben physisches iPad/Touch/Kamera, reale NAS-/Werkstattmailbox-/Office-Abnahme, vollständige WCAG-/Screenreader-Prüfung und längerer Dauerbetrieb.
