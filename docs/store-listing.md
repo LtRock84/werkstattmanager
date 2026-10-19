@@ -1,7 +1,6 @@
 # Vorbereitete Store-Beschreibung
 
-Entwurf für 0.5.1-beta.1 vom 2026-10-16. Noch nicht eingereicht; öffentliche Veröffentlichung,
-Signatur und Geräteabnahme stehen aus. `info.xml` enthält den ausdrücklichen Hinweis auf eine sehr frühe Testversion in Deutsch und Englisch.
+Stand für die stabile Version0.5.1 vom 19.10.2026. Die beiden signierten Betas wurden veröffentlicht und installiert geprüft. Der konkrete stabile Kandidat benötigt vor der Einreichung erneut Signatur-, Installations- und Upgradeprüfung. Geräte- und Betriebsabnahmen bleiben getrennt offen.
 
 ## Vorgesehene Angaben
 
@@ -28,7 +27,7 @@ Die tatsächliche Kontoeignung muss der Empfänger vor öffentlichem Betrieb bes
 
 ## Vorgesehener Beschreibungstext
 
-**Sehr frühe Testversion: Werkstattmanager befindet sich noch in einer frühen Entwicklungsphase und ist zum Ausprobieren und Testen gedacht. Funktionen und Abläufe können sich ändern; Fehler sind möglich. Bitte zunächst mit Testdaten oder in einer separaten Testinstallation verwenden. Für den produktiven Werkstattbetrieb liegt noch keine vollständige Freigabe vor.**
+**Werkstattmanager führt Fahrzeugakten, Termine, Arbeitsaufträge und Werkstattauswertungen in Nextcloud zusammen. Vor dem Produktivbetrieb Rollen, Hintergrundjobs, Sicherungen und optionale Integrationen für die eigene Installation einrichten und die eigenen Abläufe und Geräte in einem Pilotbetrieb prüfen.**
 
 Werkstattmanager unterstützt die tägliche Arbeit in einer KFZ-Werkstatt:
 Kundenfahrzeuge und eigene Flottenfahrzeuge verwalten, Termine und Fristen im
@@ -91,7 +90,7 @@ Weitere Informationen: [Betrieb und Datenschutz](operations.md).
 - Eigentümerkonto im App Store; Beschreibung und unterstützte Versionen kontrollieren.
 - Wiederverwendungsbedingungen der Preisquellen und verbleibende Betriebsabnahmen prüfen.
 
-## Freigabestand vom 16. Oktober 2026
+## Freigabestand vom 19. Oktober 2026
 
 | Voraussetzung | Stand |
 | --- | --- |
@@ -100,9 +99,9 @@ Weitere Informationen: [Betrieb und Datenschutz](operations.md).
 | Quellcode und Support | Seit16.10.2026 nach Eigentümerfreigabe öffentlich |
 | Zertifikatsanfrage | Öffentlicher CSR eingereicht: nextcloud/app-certificate-requests#1345; ein geändertes CSR-File, kein privater Schlüssel |
 | Nextcloud-Zertifikat | Am16.10.2026 ausgestellt; öffentliches Zertifikat zum bestehenden Schlüssel geprüft |
-| Installationspaket | Unsignierter Kandidat0.5.1-beta.1 mit frühem Testhinweis; noch kein signiertes öffentliches Releasearchiv |
+| Installationspaket | Signierte Betas veröffentlicht und installiert geprüft; signiertes Stable-Endarchiv0.5.1 wird nach erneuter CI- und Paketprüfung erstellt |
 | Bilder | Drei fiktive0.5.1-beta.1-Aufnahmen öffentlich per HTTPS ohne Anmeldung geprüft |
-| Qualität und Datenrechte | Vorhandene Tests siehe Prüfbericht; signiertes Endpaket, Geräte-/Betriebsabnahmen und Rechteprüfung noch offen |
+| Qualität und Datenrechte | Beta2-Matrix und Store-Upgrade bestanden; Stable-Endpaket sowie Geräte-/Betriebsabnahmen und Rechteprüfung noch offen |
 
 Eine Anmeldung allein erzeugt keinen Store-Eintrag. Die App-Registrierung und
 Release-Einreichung erfolgen erst nach den oben genannten Freigaben und der
@@ -115,9 +114,9 @@ Offizielle Quellen, erneut geprüft am 16.10.2026:
 [Store-Regeln](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/publishing.html).
 
 
-## Prepared English listing (0.5.1-beta.1)
+## Prepared English listing (0.5.1)
 
-**Very early test version: Werkstattmanager is at an early stage of development and is intended for evaluation and testing. Features and workflows may change, and errors are possible. Please start with test data or a separate test installation. This release has not received full approval for production workshop use.**
+**Werkstattmanager brings vehicle files, appointments, work orders and workshop reporting together in Nextcloud. Before productive use, configure roles, background jobs, backups and optional integrations for your installation, then complete a pilot with your own workflows and devices.**
 
 **Workshop management for Nextcloud: vehicles, appointments, work orders and reporting.**
 
@@ -129,7 +128,7 @@ Drivers can report defects and mileage through a revocable vehicle link without 
 
 Optional email and calendar integration supports appointment notices, collection-ready messages and vehicle-deadline reminders. Administrators can grant full supervisor access or a restricted appointment-reception role. A shared tablet's employee choice records attribution, not individual identity verification. There is no invoicing, inventory accounting, automatic staff scheduling or offline time booking.
 
-This is a pilot candidate for one workshop organisation, not a production-approved release. Configure roles, background jobs, retention and optional integrations, then test on your target installation. Data stays in your Nextcloud; optional mail/calendar providers receive the data required for the configured messages and events. There is no telemetry. A voluntary PayPal link supports project costs without unlocking features or offering a donation receipt.
+This release is intended for one workshop organisation. Configure roles, background jobs, retention and optional integrations, then validate your workflows and devices before productive use. Data stays in your Nextcloud; optional mail/calendar providers receive the data required for the configured messages and events. There is no telemetry. A voluntary PayPal link supports project costs without unlocking features or offering a donation receipt.
 
 ### Image provenance and remaining publication checks
 

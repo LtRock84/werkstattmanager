@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.1 – Erste stabile Store-Version (19.10.2026)
+
+- Der auf Nextcloud 35, PostgreSQL und MariaDB geprüfte Stand der zweiten Beta wird ohne Vorabversionssuffix für den stabilen App-Store-Kanal veröffentlicht.
+- Fahrzeugakten, Terminbuch, Leistungskatalog, Kalkulation, Aufträge, Mitarbeiter-Vorplanung, Tablet-Zeiterfassung, Teileanforderungen, Fahrer-QR-Meldungen, Kundennachrichten und Auswertungen sind gemeinsam enthalten.
+- Gegenüber `0.5.1-beta.2` gibt es keine Änderung an Datenmodell oder Laufzeitlogik. Metadaten und öffentliche Dokumentation beschreiben den stabilen Store-Kanal und die weiterhin erforderliche betriebliche Pilotabnahme.
+- Physisches iPad, reale NAS-/Werkstattmailbox-Abnahme, vollständige Barrierefreiheitsprüfung und längerer Dauerbetrieb bleiben installationsabhängige Prüfungen vor dem produktiven Einsatz.
+
 ## 0.5.1-beta.2 – Optionalen Kalender korrigiert (17.10.2026)
 
 - Optionale CalDAV-Integration erzeugt ohne Kalenderadresse keine Zustellungen. Fällige alte Warteschlangeneinträge werden ohne weitere Warnung abgebrochen; Kunden-E-Mails bleiben unabhängig. Entzogene Zugangsdaten bei bestehender Adresse und echte Kalenderausfälle bleiben sichtbare Fehler.

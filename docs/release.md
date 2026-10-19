@@ -1,8 +1,7 @@
 # Release und Store-Veröffentlichung
 
-Stand 2026-10-16, früher Prüfkandidat0.5.1-beta.1, öffentliches Quellprojekt;
-lokale Demo bleibt auf dem separat geprüften Stand0.5.0. Das Projekt befindet sich in der Veröffentlichungsvorbereitung.
-Ein internes Kandidatenpaket ist keine Produktions- oder App-Store-Freigabe.
+Stand 2026-10-19: stabile Version0.5.1 in Vorbereitung, öffentliches Quellprojekt.
+Ein internes Kandidatenpaket ist keine App-Store-Freigabe; veröffentlicht wird ausschließlich das abschließend signierte und installierte Endarchiv.
 
 ## Automatische Prüfungen
 
@@ -92,3 +91,9 @@ Der Kontozugang wurde am16.10.2026 im vom Nutzer geöffneten Chrome-Tab bestäti
 Die zweite frühe Test-Beta korrigiert die Kalenderqueue bei leerer CalDAV-Adresse. Kundennachrichten bleiben unabhängig; fehlende Zugangsdaten bei weiterhin hinterlegter Adresse und echte HTTP-Ausfälle bleiben sichtbar und wiederholbar. Es gibt keine Datenbankmigration und keine automatische Änderung der Mail-/Office-Konfiguration.
 
 Der Release ist als GitHub-Pre-release und instabiles Storeupdate zu veröffentlichen. Die freigegebenen Installationsdateien sind das signierte TAR-Archiv, dessen SHA-256-Datei und RSA/SHA-512-Archivsignatur unter dem Tagv0.5.1-beta.2. Ergebnisse des konkreten Commits und signierten Pakets in den Release-Nachweisen prüfen; allgemeine Testergebnisse sind kein Ersatz. Ein Upgrade von der ersten öffentlichen Beta muss explizit geprüft werden. Bilder bleiben auf dem vorhandenen unveränderlichen Tag, da sich die Oberfläche nicht ändert; die bekannte Bildproxy-Störung wird separat verfolgt.
+
+## 0.5.1 – stabiler App-Store-Kanal
+
+Version0.5.1 übernimmt die Laufzeitlogik der vollständig geprüften0.5.1-beta.2. Geändert werden Versions- und Veröffentlichungstexte; es gibt keine neue Migration. Der konkrete Stable-Kandidat muss trotzdem erneut durch Frontend-, PHP-, XSD-, Paket-, Installations- und Upgradetests laufen, danach mit dem bestehenden Nextcloud-Zertifikat signiert und als eigenes unveränderliches GitHub-Release veröffentlicht werden. Erst der vom Store angenommene signierte Download gilt als0.5.1-Veröffentlichung.
+
+Die stabile Kanalzuordnung ersetzt keine betriebliche Abnahme. Physisches iPad, reale NAS-/Werkstattmailbox-/Office-Konfiguration, vollständige Barrierefreiheitsprüfung und längerer Dauerbetrieb bleiben vor Einsatz in der jeweiligen Werkstatt zu prüfen.

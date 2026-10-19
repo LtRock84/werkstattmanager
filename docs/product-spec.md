@@ -356,3 +356,7 @@ Nutzer beauftragt Store-Veröffentlichung mit erhaltenen Vergleichspreisen, aber
 ## Korrektur 0.5.1-beta.2: optionaler Kalender
 
 Eine leere Kalenderadresse bedeutet, dass die einseitige CalDAV-Integration ausgeschaltet ist. Terminbestätigungen und Kunden-E-Mails funktionieren unabhängig davon. Ohne Adresse werden keine neuen Kalenderzustellungen angelegt; beim nächsten fälligen Zustelllauf werden alte wartende Kalenderzustellungen ohne weiteren Fehlversuch als abgebrochen markiert und ihre überholte Fehlermeldung geleert. Es erfolgt keine rückwirkende Übertragung aller Termine bei späterer Einrichtung; eine folgende relevante Terminänderung überträgt den aktuellen Stand. Bei weiterhin hinterlegter Adresse bleiben entzogene Zugangsdaten und HTTP-Ausfälle sichtbar und werden mit bestehender begrenzter Wiederholung behandelt. Bereits versandte Kalenderereignisse werden beim Abschalten nicht automatisch aus dem entfernten Kalender gelöscht.
+
+## Stabile Store-Version 0.5.1 (19.10.2026)
+
+Der fachlich und technisch geprüfte Laufzeitstand von0.5.1-beta.2 wird ohne Vorabversionssuffix im stabilen Nextcloud-App-Kanal angeboten. Es gibt keine neue Migration oder Funktionsänderung. Die stabile Kanalzuordnung setzt weiterhin eine betriebliche Pilotabnahme der konkreten Installation, Geräte, Sicherungen und Integrationen voraus.

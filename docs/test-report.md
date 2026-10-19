@@ -478,3 +478,9 @@ Zusätzlich lokal Mail5.12.3/EuroOffice11.0.5 geprüft: Doppelbelegung applicati
 Im vorangegangenen reinen Fix-Lauf wurden Frontendtests/Build und die GitHub-CI nicht erneut ausgeführt. Für die versionierte Veröffentlichung wurden anschließend Typecheck, ESLint,107 Frontendtests und Produktionsbuild mit vier Rollenstarts erneut erfolgreich geprüft; die erzeugten Frontenddateien sind unverändert. Die endgültigen CI-, Signatur- und Storeergebnisse stehen beim konkreten Release. NAS, produktive Mailbox, physisches iPad sowie allgemeine Geräte-/Barrierefreiheitsabnahmen bleiben offen.
 
 Für die versionierte Beta0.5.1-beta.2 sind das aktuelle offizielle App-Store-XSD, Versionsgleichheit,82Dateien-Paketgrenzen und npm-Audit ohne bekannte Schwachstellen geprüft. Vor Veröffentlichung müssen zusätzlich die vorgesehene CI-Matrix und die signierten Installations-/Upgradeprüfungen abgeschlossen sein. Die drei PHP-Dateien enthalten denselben bereits auf PostgreSQL/MariaDB geprüften Fix. Exakte Paketidentität, Signatur-, Neuinstallations- und Upgrade-Ergebnisse sind den Release-Nachweisen zuzuordnen; frühere Testarchive werden nicht als das neue Release ausgegeben.
+
+## Stabile Store-Version 0.5.1 (19.10.2026)
+
+0.5.1 übernimmt den Laufzeitstand der vollständig geprüften0.5.1-beta.2 ohne Datenbank- oder Funktionsänderung. Versionsmetadaten und öffentliche Dokumentation wurden für den stabilen App-Store-Kanal angepasst. Der konkrete0.5.1-Kandidat wird vor Veröffentlichung erneut durch lokale Qualität, CI-Matrix, signierte Neuinstallation und Upgradeprüfung geführt; Ergebnisse werden erst nach tatsächlichem Abschluss ergänzt.
+
+Installationsabhängig offen bleiben physisches iPad/Touch/Kamera, reale NAS-/Werkstattmailbox-/Office-Abnahme, vollständige WCAG-/Screenreader-Prüfung und längerer Dauerbetrieb.

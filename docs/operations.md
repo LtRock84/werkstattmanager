@@ -248,7 +248,7 @@ Quellen geprüft 11.10.2026: [PayPal.Me](https://www.paypal.com/de/cshelp/articl
 
 ## Optionaler Kalender ohne Konfiguration
 
-Eine leere Kalenderadresse schaltet die CalDAV-Übertragung aus. Ab Version0.5.1-beta.2 werden dabei keine Kalenderjobs angelegt; bereits wartende Jobs werden beim nächsten fälligen Zustelllauf abgebrochen. Das ändert weder Termine noch Kunden-E-Mails. Bei hinterlegter Adresse müssen fehlende Zugangsdaten oder Ausfälle weiterhin behoben werden. Nach späterer Einrichtung überträgt die nächste relevante Terminänderung den aktuellen Stand; eine vollständige rückwirkende Synchronisierung gibt es nicht. Abschalten löscht keine bereits übertragenen Ereignisse aus dem entfernten Kalender.
+Eine leere Kalenderadresse schaltet die CalDAV-Übertragung aus. Seit Version0.5.1-beta.2 und damit auch in0.5.1 werden dabei keine Kalenderjobs angelegt; bereits wartende Jobs werden beim nächsten fälligen Zustelllauf abgebrochen. Das ändert weder Termine noch Kunden-E-Mails. Bei hinterlegter Adresse müssen fehlende Zugangsdaten oder Ausfälle weiterhin behoben werden. Nach späterer Einrichtung überträgt die nächste relevante Terminänderung den aktuellen Stand; eine vollständige rückwirkende Synchronisierung gibt es nicht. Abschalten löscht keine bereits übertragenen Ereignisse aus dem entfernten Kalender.
 
 ## Mail und EuroOffice: doppelte PDF-Viewer-Zuordnung
 
