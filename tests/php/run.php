@@ -2,6 +2,10 @@
 /** Unit tests with narrow OCP doubles. This is not a Nextcloud integration test. */
 declare(strict_types=1);
 namespace OCP {
+	class Constants
+	{
+		public const PERMISSION_READ = 1;
+	}
     interface IUserSession
     {
         public function getUser();
@@ -21,6 +25,26 @@ namespace OCP {
         public function set($key, $value);
         public function get($key);
     }
+}
+namespace OCP\Calendar {
+	interface ICalendarProvider
+	{
+		public function getCalendars(string $principalUri, array $calendarUris = []): array;
+	}
+	interface ICalendar
+	{
+		public function getKey(): string;
+		public function getUri(): string;
+		public function getDisplayName(): ?string;
+		public function getDisplayColor(): ?string;
+		public function search(string $pattern, array $searchProperties = [], array $options = [], ?int $limit = null, ?int $offset = null): array;
+		public function getPermissions(): int;
+		public function isDeleted(): bool;
+	}
+	interface ICalendarIsEnabled
+	{
+		public function isEnabled(): bool;
+	}
 }
 namespace OCP\DB {
     class Exception extends \RuntimeException
@@ -104,6 +128,21 @@ namespace {
                 return $first&&$first<=$to&&$last>=$from;
             })), $offset,500);
         }
+		public function calendarAppointments(string $from, string $to): iterable {
+			$zone = new \DateTimeZone('Europe/Berlin');
+			$utc = new \DateTimeZone('UTC');
+			$start = (new \DateTimeImmutable($from, $zone))->setTimezone($utc);
+			$end = (new \DateTimeImmutable($to, $zone))->modify('+1 day')->setTimezone($utc);
+			foreach ($this->rows['appointments'] ?? [] as $row) {
+				if (($row['status'] ?? null) !== 'confirmed') { continue; }
+				$arrival = new \DateTimeImmutable($row['arrival']);
+				$pickup = $row['pickup'] ? new \DateTimeImmutable($row['pickup']) : null;
+				$days = ($row['first_day'] ?? '') <= $to && ($row['last_day'] ?? '') >= $from;
+				if (($arrival >= $start && $arrival < $end) || ($pickup && $pickup >= $start && $pickup < $end) || $days) {
+					yield $row;
+				}
+			}
+		}
         public function reportPage(string $table, string $cursor): array {
             $rows = array_filter($this->rows[$table] ?? [], fn ($r) => strcmp($r['id'], $cursor) > 0);
             uasort($rows, fn ($a, $b) => strcmp($a['id'], $b['id']));

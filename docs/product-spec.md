@@ -70,7 +70,8 @@ Keine fachliche Löschung bei Deaktivierung oder Entfernung der App.
 
 ## Grenzen
 Keine Abrechnung, Lagerbuchhaltung, Lieferanten-API, Telematik, automatische Personalplanung,
-zweiseitige Kalender-Synchronisation oder Offline-Zeitbuchung. Einseitige CalDAV-Übertragung ist seit 0.2.0 implementiert und benötigt Einrichtung. Zunächst internes Paket/Pilotbetrieb.
+zweiseitige Kalender-Synchronisation oder Offline-Zeitbuchung. Seit 0.5.2 stellt die App
+bestätigte Termine ohne Zugangsdaten als nativen schreibgeschützten Nextcloud-Kalender bereit.
 Produktionsfreigabe erst nach Installation und vollständiger Testmatrix auf
 der vorgesehenen Betriebsumgebung.
 
@@ -157,10 +158,10 @@ Aus bestätigtem Termin genau ein verknüpfter Auftragsentwurf mit Arbeitsschrit
 Sollzeit und Planung. Tabletfreigabe ausdrücklich; spätere Änderungen überschreiben
 keinen Auftrag. Mechaniker erhalten Arbeitsinformationen, keine Kosten oder Marktpreise.
 
-Automatische einseitige Übertragung bestätigter Termine in einen eigenen Kalender
-über öffentliches HTTPS-CalDAV. Dediziertes Integrationskonto und Lesefreigabe für Meister
-werden einmalig administrativ eingerichtet. Passwort verschlüsselt, stabile Ereignis-IDs,
-getrennte Annahme/Abholung/Arbeitstage und wiederholbare PUT/DELETE-Aufträge.
+Bestätigte Termine erscheinen über einen nativen, schreibgeschützten Nextcloud-Kalenderprovider
+automatisch bei Meistern und Administratoren. Ein Integrationskonto, Lesefreigaben und
+App-Passwort sind nicht erforderlich. Stabile Ereignis-IDs sowie getrennte
+Annahme-/Abholung-/Arbeitseinträge werden direkt aus den Termindaten erzeugt.
 Kundennachrichten bei Bestätigung, Änderung und Absage über Nextcloud-Mail mit ICS;
 optionale Erinnerung 24 Stunden vorher, keine sofortige nachträgliche Erinnerung.
 Keine internen Notizen, Mitarbeiterzeiten oder Kalkulationsdaten. Kein ATTENDEE im
@@ -360,3 +361,11 @@ Eine leere Kalenderadresse bedeutet, dass die einseitige CalDAV-Integration ausg
 ## Stabile Store-Version 0.5.1 (19.10.2026)
 
 Der fachlich und technisch geprüfte Laufzeitstand von0.5.1-beta.2 wird ohne Vorabversionssuffix im stabilen Nextcloud-App-Kanal angeboten. Es gibt keine neue Migration oder Funktionsänderung. Die stabile Kanalzuordnung setzt weiterhin eine betriebliche Pilotabnahme der konkreten Installation, Geräte, Sicherungen und Integrationen voraus.
+
+## Automatischer Werkstattkalender 0.5.2 (20.10.2026)
+
+Die App registriert über `OCP\Calendar\ICalendarProvider` für jedes aktuell als Meister oder Administrator berechtigte Nextcloud-Konto einen virtuellen Kalender „Werkstatt“. Er enthält nur bestätigte Termine und ist ausschließlich lesbar. Rechte werden beim Laden und bei jeder Suche erneut anhand der aktuellen Werkstattrolle geprüft. Tablet- und Terminannahme-Konten erhalten keinen Kalender. Ausgegeben werden Fahrzeugkennung, Arbeitstitel, Ankunft, Abholung und Arbeitsplanung; Kundenadresse, interne Notiz, Checkliste, Mitarbeiterzeit und Kalkulation bleiben intern.
+
+Die Kalenderansicht liest bestehende Termindaten unmittelbar, speichert keine Kopien und benötigt keine Zugangsdaten. Eine additive Migration ergänzt ausschließlich Abfrageindizes. Bereits hinterlegte externe CalDAV-Konfigurationen bleiben zur Upgrade-Kompatibilität aktiv und unterdrücken den nativen Kalender, damit keine Duplikate entstehen. Ein Administrator kann Zugang und verschlüsseltes Altpasswort entfernen und damit auf den nativen Kalender wechseln.
+
+Bei einem Wechsel bleiben bereits in den externen Kalender kopierte Ereignisse dort bestehen. Die Einstellungsansicht weist vor der Aktion auf die einmalige manuelle Bereinigung hin. Ereignisse, die über einen Tageswechsel reichen, müssen in jedem tatsächlich überlappten Abfragefenster erscheinen; dies gilt auch für die 15-Minuten-Marker von Annahme und Abholung.

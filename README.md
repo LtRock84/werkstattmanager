@@ -9,7 +9,7 @@ Zertifikat ausgestellt: [Nextcloud-PR #1345](https://github.com/nextcloud/app-ce
 – freiwilliger Beitrag zu Projektkosten und Weiterentwicklung, ohne Zusatzleistungen
 oder Spendenbescheinigung. Die App bleibt kostenlos nutzbar.
 
-Version 0.5.1 für eine Werkstattorganisation. Fahrzeugakten für Kunden
+Version 0.5.2 für eine Werkstattorganisation. Fahrzeugakten für Kunden
 und eigene Flotte, schnelle Aufträge, Tablet-Zeiterfassung, Teileanforderungen und
 externe Mängelmeldungen, Terminbuch, Leistungskatalog, Preiskalkulation,
 Umsatz-/Arbeitszeitauswertung und anpassbare Kundennachrichten mit Fristenerinnerungen. Vor dem Produktivbetrieb müssen Rollen, Sicherungen, Hintergrundjobs und optionale Integrationen eingerichtet und die eigenen Geräte und Abläufe in einem Pilotbetrieb geprüft werden.
@@ -20,7 +20,7 @@ Neu in 0.5.0: **Mitarbeiter vorplanen**, sichtbar am Tablet als unverbindlicher 
 
 Weitere Funktionen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
 sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
-Das Repository ist öffentlich. Version 0.5.1 übernimmt den vollständig geprüften Laufzeitstand von 0.5.1-beta.2 und erscheint im stabilen Nextcloud-App-Kanal. Sie korrigiert unnötige Kalenderjobs bei nicht eingerichteter optionaler Anbindung; den Stand der Veröffentlichung zeigen die GitHub-Releases. Vergleichspreise bleiben enthalten, Unternehmensnamen und Anbieterlinks werden nicht veröffentlicht.
+Das Repository ist öffentlich. Version 0.5.2 ergänzt einen automatisch sichtbaren, schreibgeschützten Werkstattkalender für Meister und Administratoren. Ein eigenes Kalenderkonto und App-Passwort entfallen. Den Stand der Veröffentlichung zeigen die GitHub-Releases. Vergleichspreise bleiben enthalten, Unternehmensnamen und Anbieterlinks werden nicht veröffentlicht.
 
 ## Einblicke in die App
 
@@ -95,11 +95,12 @@ und bestätigter Steuerangabe. 57 Leistungen haben mindestens eine veröffentlic
 238 haben noch keine geeignete Quelle. Eine Angabe bedeutet noch keinen Durchschnitt.
 [Datengrundlage und Datenlücken](docs/service-prices.md) erklären die Aussagekraft.
 
-Kalenderübertragung und Kundennachrichten benötigen eine einmalige Einrichtung durch
-Administratoren: eigenes Integrationskonto, Werkstattkalender mit Lesefreigaben,
-HTTPS-CalDAV-Adresse/App-Passwort und Nextcloud-SMTP. Die öffentliche Adresse für
-Cron (`overwrite.cli.url`) muss ebenfalls korrekt auf HTTPS zeigen.
-[Einrichtung und Fehlerbehandlung](docs/operations.md#kalender-und-kundennachrichten-ab-020).
+Bestätigte Termine erscheinen für Meister und Administratoren automatisch im
+schreibgeschützten Nextcloud-Kalender **Werkstatt**. Dafür sind kein zusätzliches Konto,
+keine Freigabe und kein App-Passwort nötig. Termine werden weiterhin im Werkstattmanager
+bearbeitet. Nur Kundennachrichten benötigen eine eingerichtete Nextcloud-Mailzustellung;
+für deren Hintergrundjob muss System-Cron korrekt laufen.
+[Einrichtung und Fehlerbehandlung](docs/operations.md#werkstattkalender-und-kundennachrichten).
 Optional lässt sich ein ausdrücklich ausgewähltes eigenes Konto aus Nextcloud Mail
 als gemeinsame Werkstattadresse verwenden; die Zugangsdaten verbleiben dort.
 Firmenname und Logo werden in den Stammdaten gepflegt und erscheinen auch im

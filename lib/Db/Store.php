@@ -215,6 +215,41 @@ class Store {
 			$result->closeCursor();
 		}
 	}
+	/** Confirmed appointments touching a calendar window, in stable pages. */
+	public function calendarAppointments(string $from, string $to): iterable {
+		$zone = new \DateTimeZone('Europe/Berlin');
+		$utc = new \DateTimeZone('UTC');
+		$dayStart = new \DateTimeImmutable($from, $zone);
+		// Annahme/Abholung last 15 minutes and may overlap the following local day.
+		$start = $dayStart->modify('-15 minutes')->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+		// A validated allocation can last up to 100000 minutes. Fetch overlapping
+		// timed work too; the calendar filters the candidates by their exact end.
+		$workFrom = $dayStart->modify('-100000 minutes')->format('Y-m-d');
+		$end = (new \DateTimeImmutable($to, $zone))->modify('+1 day')->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+		for ($offset = 0; ; $offset += 500) {
+			$q = $this->db->getQueryBuilder();
+			$e = $q->expr();
+			$q->select('*')->from('wm_appointments')
+				->where($e->eq('status', $q->createNamedParameter('confirmed')))
+				->andWhere($e->orX(
+					$e->andX($e->gte('arrival', $q->createNamedParameter($start)), $e->lt('arrival', $q->createNamedParameter($end))),
+					$e->andX($e->isNotNull('pickup'), $e->gte('pickup', $q->createNamedParameter($start)), $e->lt('pickup', $q->createNamedParameter($end))),
+					$e->andX($e->lte('first_day', $q->createNamedParameter($to)), $e->gte('last_day', $q->createNamedParameter($from))),
+					$e->andX($e->isNotNull('work_start'), $e->lte('first_day', $q->createNamedParameter($to)), $e->gte('last_day', $q->createNamedParameter($workFrom))),
+				))
+				->orderBy('id', 'ASC')->setFirstResult($offset)->setMaxResults(500);
+			$result = $q->executeQuery();
+			try {
+				$page = array_map(fn (array $row) => $this->decode('appointments', $row), $result->fetchAllAssociative());
+			} finally {
+				$result->closeCursor();
+			}
+			yield from $page;
+			if (count($page) < 500) {
+				break;
+			}
+		}
+	}
 	public function serviceCounts(): array {
 		$q = $this->db->getQueryBuilder();
 		$q->select('service_id')->selectAlias($q->func()->count('*'), 'uses')->from('wm_service_usage')->groupBy('service_id');

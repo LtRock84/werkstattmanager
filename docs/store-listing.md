@@ -1,6 +1,6 @@
 # Vorbereitete Store-Beschreibung
 
-Stand für die stabile Version0.5.1 vom 19.10.2026. Die beiden signierten Betas wurden veröffentlicht und installiert geprüft. Der konkrete stabile Kandidat benötigt vor der Einreichung erneut Signatur-, Installations- und Upgradeprüfung. Geräte- und Betriebsabnahmen bleiben getrennt offen.
+Stand für den 0.5.2-Kandidaten vom 20.10.2026. Version0.5.1 ist stabil veröffentlicht. Der neue automatische Werkstattkalender benötigt vor der Einreichung erneut CI-, Signatur-, Installations- und Upgradeprüfung. Geräte- und Betriebsabnahmen bleiben getrennt offen.
 
 ## Vorgesehene Angaben
 
@@ -44,8 +44,9 @@ Meister sehen eigene Plan-/Istumsätze, Monatswerte, Tagesauslastung, Mitarbeite
 und Soll-/Ist-Abweichungen. Beträge werden ausdrücklich erfasst; die Auswertung
 ersetzt keine Buchhaltung.
 
-Nach Einrichtung von SMTP und CalDAV erscheinen bestätigte Termine im eigenen
-Nextcloud-Kalender. Kunden erhalten auf Wunsch Termin- und Abholbereit-Nachrichten.
+Bestätigte Termine erscheinen für Meister automatisch in einem schreibgeschützten
+Nextcloud-Kalender. Kunden erhalten nach Mail-Einrichtung auf Wunsch Termin- und
+Abholbereit-Nachrichten.
 Sieben personalisierte Textvorlagen sind bearbeitbar. Fahrzeugfristen können Kunden
 automatisch zur Terminvereinbarung erinnern; Wunsch, Empfänger und aktuelle
 Fälligkeit werden vor Versand geprüft. Bestehende Kunden werden beim Upgrade
@@ -73,9 +74,9 @@ Personalplanung oder Offline-Zeitbuchung.
 ## Datenschutztext
 
 Werkstattdaten und Anhänge werden in der eigenen Nextcloud gespeichert. Es gibt
-keine Telemetrie und keine Lieferantenanbindung. Optional konfigurierte Mail- und
-Kalenderdienste erhalten nur die für Kundennachrichten beziehungsweise
-Kalenderereignisse erforderlichen Daten. Fahrzeuglinks geben ihren Besitzern
+keine Telemetrie und keine Lieferantenanbindung. Der automatische Werkstattkalender
+bleibt innerhalb derselben Nextcloud. Optional konfigurierte Mail- und alte externe
+Kalenderdienste erhalten nur die jeweils erforderlichen Daten. Fahrzeuglinks geben ihren Besitzern
 Zugriff auf die vom Meister freigegebenen Fahrerinformationen; sie sind widerrufbar.
 Der Betreiber bestimmt Aufbewahrung, Rollen und Zugriff auf exportierte Dateien.
 Weitere Informationen: [Betrieb und Datenschutz](operations.md).
@@ -99,9 +100,9 @@ Weitere Informationen: [Betrieb und Datenschutz](operations.md).
 | Quellcode und Support | Seit16.10.2026 nach Eigentümerfreigabe öffentlich |
 | Zertifikatsanfrage | Öffentlicher CSR eingereicht: nextcloud/app-certificate-requests#1345; ein geändertes CSR-File, kein privater Schlüssel |
 | Nextcloud-Zertifikat | Am16.10.2026 ausgestellt; öffentliches Zertifikat zum bestehenden Schlüssel geprüft |
-| Installationspaket | Signierte Betas veröffentlicht und installiert geprüft; signiertes Stable-Endarchiv0.5.1 wird nach erneuter CI- und Paketprüfung erstellt |
+| Installationspaket | 0.5.1 stabil veröffentlicht; 0.5.2 noch unsigned und nicht eingereicht |
 | Bilder | Drei fiktive0.5.1-beta.1-Aufnahmen öffentlich per HTTPS ohne Anmeldung geprüft |
-| Qualität und Datenrechte | Beta2-Matrix und Store-Upgrade bestanden; Stable-Endpaket sowie Geräte-/Betriebsabnahmen und Rechteprüfung noch offen |
+| Qualität und Datenrechte | 0.5.1-Matrix bestanden; 0.5.2 bisher lokal/SQL geprüft, finale CI/signierte Upgradeprüfung sowie Geräte-/Betriebsabnahmen offen |
 
 Eine Anmeldung allein erzeugt keinen Store-Eintrag. Die App-Registrierung und
 Release-Einreichung erfolgen erst nach den oben genannten Freigaben und der
@@ -114,7 +115,7 @@ Offizielle Quellen, erneut geprüft am 16.10.2026:
 [Store-Regeln](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/publishing.html).
 
 
-## Prepared English listing (0.5.1)
+## Prepared English listing (0.5.2)
 
 **Werkstattmanager brings vehicle files, appointments, work orders and workshop reporting together in Nextcloud. Before productive use, configure roles, background jobs, backups and optional integrations for your installation, then complete a pilot with your own workflows and devices.**
 

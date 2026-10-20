@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OCA\Werkstattmanager\AppInfo;
 
+use OCA\Werkstattmanager\Calendar\WorkshopCalendarProvider;
 use OCA\Werkstattmanager\Listener\UserDeleted;
 use OCA\Werkstattmanager\Notification\Notifier;
 use OCP\AppFramework\App;
@@ -18,6 +19,7 @@ final class Application extends App implements IBootstrap {
 		parent::__construct(self::APP_ID, $urlParams);
 	}
 	public function register(IRegistrationContext $context): void {
+		$context->registerCalendarProvider(WorkshopCalendarProvider::class);
 		$context->registerNotifierService(Notifier::class);
 		$context->registerEventListener(UserDeletedEvent::class, UserDeleted::class);
 	}

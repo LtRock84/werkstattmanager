@@ -82,8 +82,9 @@ oder Logs ausgegeben. Fahrersitzung gültig für zwei Stunden, Fotoberechtigung 
 Jeder Aufruf prüft Fahrzeugart, Archivierung und Widerruf neu. Zustandsänderungen behalten
 CSRF-Schutz. Anonyme und angemeldete Aufrufer unterliegen eigenen Rate Limits.
 Keine Fremdskripte oder Telemetrie; keine Werkstattdaten an Rechercheanbieter.
-Nur ausdrücklich konfigurierte Mail- und CalDAV-Verbindungen übertragen die für
-Kundennachrichten beziehungsweise Kalenderereignisse erforderlichen Daten.
+Der native Kalenderprovider verarbeitet Termine ausschließlich innerhalb derselben
+Nextcloud. Nur ausdrücklich konfigurierte Mail- und alte externe CalDAV-Verbindungen
+übertragen die für Kundennachrichten beziehungsweise Kalenderereignisse erforderlichen Daten.
 
 Fotos: JPEG/PNG/WebP, höchstens 8 MB und 12 Megapixel; GD dekodiert und erzeugt neues JPEG
 (ohne ursprüngliche Metadaten). Maximal fünf Bilder je Fahrermeldung, wiederholte identische
@@ -160,7 +161,7 @@ geprüft, damit Aufträge nicht doppelt zählen. Große Bestände bleiben im Pil
 
 Neue Meister-APIs unter `/api/v1`: `services`, `services/{key}/prices`, `appointments`,
 `appointments/{id}/order`, `capacity`, `pricing`, `deliveries`, `deliveries/{id}/retry`,
-`calendar-settings`. Kalenderkonfiguration zusätzlich nur Administrator; Tablet und Fahrer
+`calendar-settings`. Alt-CalDAV-Konfiguration zusätzlich nur Administrator; Tablet und Fahrer
 haben keinen Zugriff. Bestehende Auftrags-APIs nehmen validierte Leistungskopien entgegen.
 
 `AppointmentDispatch` (60 Sekunden, kein paralleler Lauf) verarbeitet fällige Zustellungen
@@ -172,13 +173,16 @@ SMTP kann nach Verbindungsverlust keinen genau-einmal-Versand garantieren: unkla
 Ausgang oder abgestürzter Versand erfordert manuelle Prüfung/Wiederholung. Vorbereitungs-
 und CalDAV-Fehler verwenden Backoff, nach zehn Versuchen `failed`.
 
-`CalendarDelivery` nutzt öffentliche `IClientService`, `ICrypto`, `IURLGenerator`, `IConfig`;
+`WorkshopCalendarProvider` nutzt `OCP\Calendar\ICalendarProvider` und liefert pro berechtigtem
+Meister einen rein lesbaren Kalender. Aktuelle Rollen werden vor jeder Suche geprüft;
+`Store::calendarAppointments` liest bestätigte Termine in indexierten Zeitfenstern.
+`CalendarDelivery` bleibt ausschließlich für konfigurierte Altinstallationen und nutzt öffentliche `IClientService`, `ICrypto`, `IURLGenerator`, `IConfig`;
 Mail `IMailer`. HTTPS ist verpflichtend, Weiterleitungen aus, TLS-Prüfung an. Zielhost/Port
-und Installationspfad müssen zur eigenen Nextcloud gehören; Kalenderpfad ist auf das
-Integrationskonto begrenzt. Keine fremde DAV-Implementierung und keine privaten App-APIs.
+und Installationspfad müssen zur eigenen Nextcloud gehören; der Alt-Kalenderpfad ist auf das
+Integrationskonto begrenzt. Keine fremde OCA-Implementierung und keine privaten App-APIs.
 Die kanonische Cron-Adresse `overwrite.cli.url` muss konsistent konfiguriert sein.
 
-Kalender-/Mailintegration: [Betrieb](operations.md#kalender-und-kundennachrichten-ab-020).
+Kalender-/Mailintegration: [Betrieb](operations.md#werkstattkalender-und-kundennachrichten).
 Öffentliche Preisquellen bleiben statische Bundle-Daten; keine Werkstattdaten gehen an
 Rechercheanbieter. Native Prüfungen gegen installierte Nextcloud 35 bestätigen die
 DI und öffentlichen Verträge. API-Grundlagen: [NC-35-App-Dokumentation](https://docs.nextcloud.com/server/35/developer_manual/app_development/index.html),
@@ -263,3 +267,9 @@ Fristenzustellungen; offene/unklare Sendungen dürfen dabei nicht übergangen we
 Neue Migration `Version000500Date20261016000000` ergänzt `wm_orders.planned_employee_id` nullable STRING(32) mit Index. Veröffentlichte Migrationen bleiben unverändert. Bestehende Aufträge erhalten NULL. `Orders::create` nimmt die Referenz optional an, `POST /api/v1/orders/{id}/plan` nutzt den bestehenden Command-Endpunkt mit `version`, `request_id`, `planned_employee_id` (NULL zum Aufheben). Nur Meister und nur draft/open/paused; fehlendes Feld ist ein Validierungsfehler. Die Auswahl sperrt den Mitarbeiterdatensatz gegen gleichzeitige Archivierung, reserviert aber keine Arbeitszeit. Start-/Übernahmeregeln verwenden ausschließlich den tatsächlich ausgewählten Mitarbeiter.
 
 Die Vorplanung ist im eingeschränkten Tablet-DTO enthalten. Der virtuelle Order-Filter employee_id wird als parametrisierte OR-Bedingung über planned_employee_id/last_employee_id vor Limit/Offset ausgeführt. `order.plan` protokolliert vorherige/nächste IDs; Journal-Kontext löst aktuelle Namen einschließlich des vorher vorgesehenen Mitarbeiters gebündelt auf. Keine Namenssnapshots. UI-Hinweis und Bearbeiterauswahl bleiben getrennt, DOM-Textbindung statt HTML; Farben verwenden Nextcloud-Tokens und stehen zusätzlich zu Klartext. Store-Inventar prüft offline das konkrete Archiv, erteilt keine Veröffentlichungs- oder Signaturfreigabe.
+
+### Kalenderprovider 0.5.2: geprüfte Adaptergrenze (20.10.2026)
+
+Registrierung und Kalenderzugriff erfolgen über öffentliche OCP-Verträge. Der ausgelieferte NC35-DAV-Adapter ruft `search` ohne Optionen bzw. mit `X-FILENAME`/`UID` auf und erwartet VEVENT-Komponenten; andere Kalenderabfragen erhalten die OCP-Ergebnisstruktur. Diese Kompatibilitätsgrenze wird mit echtem DAV-GET/REPORT und verweigerten Schreib-/Tabletzugriffen geprüft. Referenz: [NC35.0.1-Adapter](https://github.com/nextcloud/server/blob/v35.0.1/apps/dav/lib/CalDAV/AppCalendar/AppCalendar.php), keine Abhängigkeit auf dessen private Klassen.
+
+Die SQL-Vorauswahl berücksichtigt überlappende 15-Minuten-Marker sowie die validierte maximale Dauer einer Arbeitszuordnung (100000Minuten); danach filtert der Provider die exakten Start-/Endzeiten. Der DAV-Adapter lädt vor seiner eigenen Filterung alle Kalenderobjekte: Große Bestände und Abrufe ohne Zeitfenster benötigen weiterhin einen gesonderten Lastnachweis. Die Suche ist lesend und verwendet keine persistierten Ereigniskopien.

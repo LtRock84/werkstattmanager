@@ -23,8 +23,11 @@ final class CalendarDelivery {
 	}
 	public function settings(): array {
 		$this->access->master();
+		$url = $this->config->getAppValue('werkstattmanager', 'calendar_url', '');
 		return [
-			'calendar_url' => $this->config->getAppValue('werkstattmanager', 'calendar_url', ''),
+			'mode' => $url === '' ? 'native' : 'external',
+			'native_enabled' => $url === '',
+			'calendar_url' => $url,
 			'calendar_user' => $this->config->getAppValue('werkstattmanager', 'calendar_user', ''),
 			'has_password'
 				=> $this->config->getAppValue('werkstattmanager', 'calendar_secret', '') !== '',

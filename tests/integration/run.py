@@ -345,6 +345,7 @@ def main():
             occ('app:enable', 'werkstattmanager')
             old_rank_appointment = old_rank_order = old_rank_service = None
             preserved_order = None
+            old_appointment = None
             if os.environ.get('WM_TEST_UPGRADE_FROM'):
                 occ('config:system:set','trusted_domains','1','--value='+address)
                 wait_for_http('http://'+address)
@@ -355,8 +356,11 @@ def main():
                 old_customer=old_client.call('/api/v1/records/customers',{'data':{'name':'CI existing customer','email':'upgrade@example.invalid'}})
                 preserved_order=old_client.call('/api/v1/orders', {'data':dict(vehicle_id=preserved['id'], title='CI preserved unplanned order', status='draft', request_id=str(uuid.uuid4()))})
                 old_appointment=None
-                if previous_version.startswith('0.2.'):
-                    old_appointment=old_client.call('/api/v1/appointments', {'data':dict(vehicle_id=preserved['id'],title='CI preserved appointment',arrival='2026-12-07T07:00:00Z',minutes=35,status='draft',note='CI preserved internal note',request_id=str(uuid.uuid4()))})
+                if previous_version.startswith('0.2.') or previous_version == '0.5.1':
+                    old_appointment=old_client.call('/api/v1/appointments', {'data':dict(vehicle_id=preserved['id'],title='CI preserved appointment',arrival='2026-12-07T07:00:00Z',minutes=35,status='confirmed' if previous_version == '0.5.1' else 'draft',note='CI preserved internal note',request_id=str(uuid.uuid4()))})
+                if previous_version == '0.5.1':
+                    occ('config:app:set', 'werkstattmanager', 'calendar_url', '--value=https://cloud.example.test/remote.php/dav/calendars/legacy/workshop/')
+                    occ('config:app:set', 'werkstattmanager', 'calendar_user', '--value=ci-legacy')
                 if previous_version=='0.2.1':
                     old_rank_service=old_client.call('/api/v1/services', {'data':dict(title='CI old ranking',category='Prüfung',minutes=30)})
                     old_line=dict(service_id=old_rank_service['id'],title='CI old ranking',minutes=30,quantity=2)
@@ -380,6 +384,16 @@ def main():
                     now=next(a for a in current.call('/api/v1/appointments?from=2026-12-07&to=2026-12-07')['items'] if a['id']==old_appointment['id'])
                     if 'checklist' not in old_appointment: assert now.pop('checklist') is None
                     assert now==old_appointment
+                if previous_version == '0.5.1':
+                    calendar_settings = current.call('/api/v1/calendar-settings')
+                    assert calendar_settings['mode'] == 'external' and calendar_settings['native_enabled'] is False
+                    assert calendar_settings['calendar_url'] == 'https://cloud.example.test/remote.php/dav/calendars/legacy/workshop/'
+                    assert calendar_settings['calendar_user'] == 'ci-legacy'
+                    switched = current.call('/api/v1/calendar-settings', {'data': {
+                        'calendar_url': '', 'calendar_user': '', 'password': '', 'remove_password': True,
+                    }}, method='PUT')
+                    assert switched['native_enabled'] is True and switched['has_password'] is False
+                    print('PASS legacy calendar settings preserved on upgrade and explicit administrator switch to native')
                 if old_rank_service:
                     assert next(s for s in current.call('/api/v1/services')['items'] if s['id']==old_rank_service['id'])['usage_count']==1
                     upgraded_rank_order=current.call('/api/v1/records/orders?id='+old_rank_order['id'])['items'][0]
@@ -400,6 +414,8 @@ def main():
             wait_for_http(base)
             if os.environ.get('WM_TEST_MAIL_PACKAGE'): occ('app:enable','mail')
             workflow(base, passwords)
+            import native_calendar
+            native_calendar.check(base, passwords, Client, app, run, old_appointment)
             if os.environ.get('WM_TEST_DELIVERY') != '1':
                 import driver_workflow
                 driver_workflow.check(base, passwords, Client)

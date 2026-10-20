@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.5.2 – 2026-10-20
+
+### Added
+
+- Bestätigte Werkstatttermine erscheinen für Meister und Administratoren automatisch im schreibgeschützten Nextcloud-Kalender „Werkstatt“. Ein zusätzliches Konto oder App-Passwort ist nicht erforderlich.
+- Annahme, zugesagte Abholung und Arbeitsplanung werden direkt aus den Terminen angezeigt. Änderungen und Absagen sind sofort sichtbar; bearbeitet wird weiterhin im Werkstattmanager.
+
+### Changed
+
+- Vorhandene externe CalDAV-Verbindungen bleiben beim Update erhalten. Administratoren können ausdrücklich auf den automatischen Kalender wechseln. Bereits extern kopierte Ereignisse müssen dort einmalig entfernt werden; ein verständlicher Hinweis erklärt dies vor dem Wechsel.
+- Drei zusätzliche Datenbankindizes unterstützen Kalenderabfragen. Bestehende Termine und Werkstattdaten bleiben erhalten.
+- Tablet- und Terminannahme-Konten erhalten keinen Kalender. Kundenadressen, interne Notizen, Checklisten, Mitarbeiterzeiten und Kalkulation bleiben intern.
+
+### Fixed
+
+- Ereignisse, die über Mitternacht laufen, bleiben im folgenden Zeitfenster sichtbar. Dies gilt für Annahme, Abholung und feste Arbeitsplanung.
+
 ## 0.5.1 – Erste stabile Store-Version (19.10.2026)
 
 - Der auf Nextcloud 35, PostgreSQL und MariaDB geprüfte Stand der zweiten Beta wird ohne Vorabversionssuffix für den stabilen App-Store-Kanal veröffentlicht.

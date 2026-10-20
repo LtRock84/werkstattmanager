@@ -1,6 +1,6 @@
 # Release und Store-Veröffentlichung
 
-Stand 2026-10-19: stabile Version0.5.1 in Vorbereitung, öffentliches Quellprojekt.
+Stand 2026-10-20: stabile Version0.5.2 in Veröffentlichungsprüfung; zuletzt veröffentlichte stabile Version0.5.1, öffentliches Quellprojekt.
 Ein internes Kandidatenpaket ist keine App-Store-Freigabe; veröffentlicht wird ausschließlich das abschließend signierte und installierte Endarchiv.
 
 ## Automatische Prüfungen
@@ -97,3 +97,9 @@ Der Release ist als GitHub-Pre-release und instabiles Storeupdate zu veröffentl
 Version0.5.1 übernimmt die Laufzeitlogik der vollständig geprüften0.5.1-beta.2. Geändert werden Versions- und Veröffentlichungstexte; es gibt keine neue Migration. Der erste Stable-Kandidat bestand Frontend, PHP8.3/8.4/8.5, XSD, Paket, vier Neuinstallationen und zwei Upgrades in GitHub Actions sowie zusätzlich eine signierte Neuinstallation und das signierte Upgrade von0.5.1-beta.2. Die abschließende Dokumentationsaktualisierung erhält alle Laufzeitdateien und durchläuft vor Veröffentlichung nochmals die vollständige CI. Danach wird exakt dieser Stand mit dem bestehenden Nextcloud-Zertifikat signiert und als eigenes unveränderliches GitHub-Release veröffentlicht. Erst der vom Store angenommene signierte Download gilt als0.5.1-Veröffentlichung.
 
 Die stabile Kanalzuordnung ersetzt keine betriebliche Abnahme. Physisches iPad, reale NAS-/Werkstattmailbox-/Office-Konfiguration, vollständige Barrierefreiheitsprüfung und längerer Dauerbetrieb bleiben vor Einsatz in der jeweiligen Werkstatt zu prüfen.
+
+## 0.5.2 – stabiler Werkstattkalender
+
+Die stabile Versionskennung lautet `0.5.2`, der neue unveränderliche GitHub-Tag `v0.5.2`. Weder Pre-release noch Nightly aktivieren. `CHANGELOG.md` enthält einen Store-kompatiblen Abschnitt `## 0.5.2` mit Added/Changed/Fixed; der Store importiert den Abschnitt der Paketversion. Referenz: [offizielle Metadatendokumentation](https://github.com/nextcloud/appstore/blob/master/docs/developer.rst#changelog), geprüft20.10.2026.
+
+Neben der vollständigen CI-Matrix ist der echte Upgradepfad von der bereits veröffentlichten signierten0.5.1 ausdrücklich abzunehmen: bestätigte Termine und alte CalDAV-Einstellungen bleiben erhalten; nur der ausdrückliche Administratorwechsel aktiviert den nativen Kalender. Extern kopierte alte Ereignisse werden dabei nicht gelöscht. Das endgültig signierte Paket wird zusätzlich frisch auf MariaDB/NC35.0.0 und als0.5.1-Upgrade auf PostgreSQL/NC35.0.1 einschließlich nativer Nextcloud-Integrität geprüft. Das lokal geprüfte Kandidatenpaket und ein erfolgreiches Build ersetzen diese Signatur-/Releaseprüfungen nicht. Konkrete Ergebnisse gehören zum Actions-Lauf und dem veröffentlichten Release dieses Quellstands.

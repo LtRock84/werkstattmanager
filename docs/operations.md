@@ -70,44 +70,35 @@ die Übersicht garantiert derzeit keine globale Dringlichkeitssortierung. Detail
 und Auswahlbibliotheken werden seitenweise vollständig nachgeladen. Große Bestände müssen
 im Pilot vermessen werden. Keine automatische Einsatzplanung oder Offline-Zeitbuchung.
 
-## Kalender und Kundennachrichten ab 0.2.0
+## Werkstattkalender und Kundennachrichten
 
-1. In Nextcloud ein dediziertes Integrationskonto ohne allgemeine Werkstattrechte anlegen.
-2. Mit diesem Konto einen Kalender „Werkstatt“ erstellen und mit der Meistergruppe nur
-   zum Lesen teilen. Meister bearbeiten Termine ausschließlich im Werkstattmanager.
-3. Die CalDAV-Adresse des einzelnen Kalenders kopieren, nicht die Adresse der gesamten
-   Kalenderliste. Sie endet beispielsweise auf `/remote.php/dav/calendars/integration/werkstatt/`.
-4. Ein App-Passwort des Integrationskontos erzeugen; unter Werkstatt-Einstellungen als
-   Administrator Benutzer, HTTPS-Adresse und Passwort speichern. Es wird verschlüsselt
-   mit Nextcloud `ICrypto` gespeichert und nicht an den Browser zurückgegeben.
-5. Öffentliche HTTPS-Adresse und `overwrite.cli.url` prüfen, insbesondere bei Reverseproxy.
-   Der Hintergrundjob muss dieselbe eigene Instanz erreichen. Ein öffentlich gültiges oder
-   systemseitig vertrauenswürdiges Zertifikat verwenden; TLS-Prüfung bleibt eingeschaltet.
-6. Nextcloud-System-Cron und SMTP konfigurieren. Ausschließlich mit eigener Testadresse
-   Bestätigung, Terminänderung, Absage und ICS-Datei prüfen; erst danach Kundennachrichten nutzen.
+Ab 0.5.2 ist keine Kalender-Einrichtung erforderlich. Jeder aktuell berechtigte Meister
+und Administrator sieht in der Nextcloud-Kalender-App automatisch den schreibgeschützten
+Kalender **Werkstatt**. Nach einer neuen Rollenzuweisung die Kalender-App neu laden.
+Bestätigte Termine erscheinen mit Annahme, gegebenenfalls Abholung und Arbeitsplanung;
+Arbeitstage ohne feste Uhrzeit sind als ganztägige Planung gekennzeichnet. Termine werden
+ausschließlich im Werkstattmanager geändert oder abgesagt. Tablet- und reine
+Terminannahmekonten erhalten diesen Kalender nicht.
 
-Cron führt den Zustelljob frühestens nach 60 Sekunden aus. Kalenderressourcen enthalten
-Ankunft, gegebenenfalls Abholung und Arbeitsplanung. Ohne feste Arbeitsuhrzeit entsteht
-für den Arbeitstag ein ausdrücklich gekennzeichnetes ganztägiges Planungselement.
-Interne Ressourcen enthalten keine Teilnehmer und lösen keine zweite Einladung aus.
+Für Kundennachrichten weiterhin Nextcloud-System-Cron und einen Werkstatt-Absender
+einrichten. Ausschließlich mit eigener Testadresse Bestätigung, Änderung, Absage,
+Erinnerung und ICS-Anhang prüfen. SMTP-Ausgänge können unklar sein; deshalb vor
+„Erneut zustellen“ kontrollieren, ob die erste Nachricht bereits angekommen ist.
+Ein Kalendereintrag startet keine Arbeitszeit.
 
-Bei Zustellfehlern den Bereich im Terminbuch prüfen. Kalenderfehler werden mit Backoff
-wiederholt. SMTP-Ausgänge können unklar sein; deshalb vor „Erneut zustellen“ kontrollieren,
-ob die erste Nachricht bereits angekommen ist. Ein erfolgreiches Vormerken ist noch kein
-Versandnachweis. Kunden erhalten eine Kalenderdatei; deren Import/Absagenbehandlung hängt
-von ihrem Kalenderprogramm ab. Ein Kalendereintrag ist keine automatische Zeitbuchung.
+Bestehende Installationen mit hinterlegter externer CalDAV-Adresse verwenden diese
+Verbindung weiter; der native Kalender bleibt dann zur Vermeidung von Duplikaten aus.
+Unter Einstellungen → Werkstattkalender kann ein Administrator auf die automatische
+Variante umstellen. Dabei werden Adresse, Benutzer und verschlüsseltes Altpasswort
+entfernt. Bereits in den externen Kalender übertragene Ereignisse werden nicht gelöscht.
 
-Das Integrationskonto kontrolliert seinen eigenen Kalender. Lesefreigaben bleiben eine
-Nextcloud-Einstellung, die die App nicht automatisch erzeugt. Konto/Passwort/Widerruf
-administrativ pflegen. Fehlende Kalenderkonfiguration verhindert nicht das Terminbuch;
-ausstehende Kalenderaufträge erscheinen als Fehler, bis sie eingerichtet ist.
-
-Termine und Zustellkopien enthalten Fahrzeugkennung, Titel, Kundenadresse und Zeiten.
+Der native Kalender enthält Fahrzeugkennung, Titel und Zeiten. Kundennachrichten und deren
+Zustellkopien enthalten zusätzlich die Kundenadresse.
 Interne Notizen gehören nicht in Kundennachrichten. Kundendaten-Anonymisierung ändert
 historische Termin-/Versandkopien und Freitexte nicht automatisch; diese beim Löschvorgang
 gezielt prüfen. Fahrzeuglöschung setzt abgesagte Termine und abgeschlossene/verworfene
 Zustellungen voraus. CSV-Export enthält auch Termine. Backups umfassen neue Tabellen
-und verschlüsselte Integrationszugänge samt Nextcloud-Konfiguration.
+und bei Altinstallationen noch vorhandene verschlüsselte Integrationszugänge.
 
 Vor Upgrade sichern und Migration auf einer separaten Kopie testen. Zurück auf 0.1.7
 nur durch Wiederherstellung des zusammengehörigen Sicherungsstands; kein Schema-Downgrade.
@@ -246,9 +237,13 @@ tragen den Hinweis auf die fehlende Spendenbescheinigung im Linktitel.
 Quellen geprüft 11.10.2026: [PayPal.Me](https://www.paypal.com/de/cshelp/article/was-ist-paypalme-help432),
 [Nextcloud-Unterstützungslinks](https://docs.nextcloud.com/server/stable/developer_manual/app_publishing_maintenance/monetizing.html).
 
-## Optionaler Kalender ohne Konfiguration
+## Alt-Kompatibilität für externe Kalender
 
-Eine leere Kalenderadresse schaltet die CalDAV-Übertragung aus. Seit Version0.5.1-beta.2 und damit auch in0.5.1 werden dabei keine Kalenderjobs angelegt; bereits wartende Jobs werden beim nächsten fälligen Zustelllauf abgebrochen. Das ändert weder Termine noch Kunden-E-Mails. Bei hinterlegter Adresse müssen fehlende Zugangsdaten oder Ausfälle weiterhin behoben werden. Nach späterer Einrichtung überträgt die nächste relevante Terminänderung den aktuellen Stand; eine vollständige rückwirkende Synchronisierung gibt es nicht. Abschalten löscht keine bereits übertragenen Ereignisse aus dem entfernten Kalender.
+Bis 0.5.1 bedeutete eine leere Kalenderadresse „keine Kalenderübertragung“. Ab 0.5.2
+aktiviert derselbe sichere Ausgangszustand den nativen Werkstattkalender. Bereits wartende
+externe Kalenderjobs werden weiterhin ohne Fehlversuch abgebrochen. Eine vorhandene Adresse
+aktiviert ausschließlich die bisherige externe CalDAV-Zustellung mit Backoff und
+Fehleranzeige. Kunden-E-Mails bleiben von beiden Varianten unabhängig.
 
 ## Mail und EuroOffice: doppelte PDF-Viewer-Zuordnung
 

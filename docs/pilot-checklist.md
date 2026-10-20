@@ -63,8 +63,8 @@ Nur mit Testkonten und Testfahrzeugen in einer isolierten Instanz durchführen.
 
 ## Kundennachrichten und Fristen
 
-- SMTP-Absender, Werkstattadresse, HTTPS-CalDAV und Cron zuerst mit abgeschottetem
-  Testempfänger prüfen; anschließend Mailbox-/Kalenderintegration gesondert abnehmen.
+- Automatischen Werkstattkalender mit Meister- und Nicht-Meisterkonto prüfen. SMTP-Absender,
+  Werkstattadresse und Cron zuerst mit abgeschottetem Testempfänger abnehmen.
 - Alle sieben Vorlagen mit Kundenname, Fahrzeug, Termin und Frist prüfen;
   ungültige Platzhalter und konkurrierende Änderungen zurückweisen.
 - Bestätigung/Änderung/Absage/Erinnerung mit Kalenderdatei; Abholbereit nur bei

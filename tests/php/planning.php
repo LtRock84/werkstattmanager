@@ -1,6 +1,7 @@
 <?php
 use OCA\Werkstattmanager\Domain\{Pricing, AppointmentCalendar, CatalogueUpdate};
 use OCA\Werkstattmanager\Service\{ServiceLibrary, PlanningLedger, AppointmentBook, Orders, Access, Catalog, Journal};
+use OCA\Werkstattmanager\Calendar\WorkshopCalendarProvider;
 function planSetup(?Config $config = null): array
 {
     [$s, $u, $access, $c, $j, $o, $v] = setup();
@@ -155,6 +156,54 @@ test('appointment idempotency drafts capacity override and multiday sums', funct
         'validation',
     );
     rejects(fn() => $ledger->days('', '2026-10-07'), 'validation');
+});
+test('native workshop calendar is automatic read only private and master scoped', function () {
+	$config = new Config();
+	[$s, $u, $v, $lib, $ledger, $book] = planSetup($config);
+	$a = $book->save(appointment($v, [
+		'title' => 'Inspektion geheim@example.test',
+		'customer_email' => 'kunde@example.test',
+		'note' => 'interne Diagnose',
+		'pickup' => '2026-10-08T14:00:00Z',
+		'work_start' => '2026-10-06T07:00:00Z',
+		'allocations' => [['date' => '2026-10-06', 'minutes' => 60]],
+	]));
+	$book->save(appointment($v, ['status' => 'draft', 'title' => 'Nicht sichtbar']));
+	$access = new Access($u, new Groups(), $config);
+	$provider = new WorkshopCalendarProvider($access, $s, $config);
+	same([], $provider->getCalendars('principals/groups/werkstatt-meister'));
+	same([], $provider->getCalendars('principals/users/master/extra'));
+	same([], $provider->getCalendars('principals/users/master', ['other']));
+	$calendar = $provider->getCalendars('principals/users/master')[0];
+	same('werkstattmanager', $calendar->getUri());
+	same(\OCP\Constants::PERMISSION_READ, $calendar->getPermissions());
+	$pickup = $calendar->search('', [], ['timerange' => [
+		'start' => new \DateTimeImmutable('2026-10-08T00:00:00Z'),
+		'end' => new \DateTimeImmutable('2026-10-09T00:00:00Z'),
+	]]);
+	same(1, count($pickup));
+	same('werkstatt-' . $a['id'] . '-pickup@werkstattmanager', $pickup[0]['uid']);
+	$all = $calendar->search('Inspektion', ['SUMMARY'], ['timerange' => [
+		'start' => new \DateTimeImmutable('2026-10-05T00:00:00Z'),
+		'end' => new \DateTimeImmutable('2026-10-09T00:00:00Z'),
+	]]);
+	same(3, count($all));
+	$encoded = json_encode($all, JSON_THROW_ON_ERROR);
+	same(false, str_contains($encoded, 'kunde@example.test'));
+	same(false, str_contains($encoded, 'interne Diagnose'));
+	same(false, str_contains($encoded, 'Nicht sichtbar'));
+	same(1, count($calendar->search('', [], ['uri' => $pickup[0]['uri']], 1, 0)));
+	$config->values['master_group'] = 'revoked-master-group';
+	same([], $calendar->search('', [], ['timerange' => [
+		'start' => new \DateTimeImmutable('2026-10-05T00:00:00Z'),
+		'end' => new \DateTimeImmutable('2026-10-09T00:00:00Z'),
+	]]));
+	$config->values['master_group'] = 'werkstatt-meister';
+	$u->uid = 'tablet';
+	same([], $provider->getCalendars('principals/users/tablet'));
+	$u->uid = 'master';
+	$config->values['calendar_url'] = 'https://cloud.example.test/remote.php/dav/calendars/legacy/workshop/';
+	same([], $provider->getCalendars('principals/users/master'));
 });
 test(
     'one linked draft order copied once preserves snapshots and counts capacity once',
