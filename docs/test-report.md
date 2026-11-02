@@ -1,11 +1,42 @@
 # Prüfbericht – Werkstattmanager
 
-Stand 2026-10-17. **Interner Prüfkandidat, keine vollständige Produktionsfreigabe.**
+Stand 2026-10-20. Stabile Version 0.5.2 veröffentlicht; Umfang und Grenzen der
+zusätzlichen Kompatibilitätsprüfungen stehen im jeweiligen Nachtrag.
 Dieser Bericht beschreibt die Reichweite der Prüfungen ohne standortspezifische
 Betriebsdaten. Automatische Prüfungen sind über die
 [GitHub-Pipeline](https://github.com/LtRock84/werkstattmanager/actions/workflows/quality.yml)
 nachvollziehbar; bei privatem Repository benötigen sie entsprechende Zugriffsrechte.
 Ein neues Paket muss die Pipeline erneut bestehen.
+
+## Nextcloud 35.0.2 mit veröffentlichtem Werkstattmanager 0.5.2 (20.10.2026)
+
+**Keine erforderliche Laufzeitanpassung gefunden.** Das unveränderte signierte
+0.5.2-Archiv (SHA-256 `97ab922306f1db52c344df37f59a14041c5a045061de1dfd6ea9da92d4680e7c`)
+wurde auf Nextcloud 35.0.2/PHP 8.5.11 mit MariaDB 11.8.9 frisch installiert und
+nach einem tatsächlichen Serverupgrade von 35.0.1 auf 35.0.2 mit PostgreSQL 17.11
+geprüft. Fünf native App-Integritätskontrollen bestanden. Bestandsfahrzeug,
+bestätigter Termin und Vorlagen blieben beim Serverupgrade feldgleich erhalten.
+
+Beide vollständigen SQL/API-Prüfläufe einschließlich Auftragsabläufen, Rollen,
+Terminplanung, nativem schreibgeschütztem DAV-Kalender, Mitternachtsüberlappung,
+QR-Meldungen und Fotos, Cron, echten isolierten SMTP-/CalDAV-Ausfällen sowie
+Disable/Enable und Neustart mit Datenerhalt bestanden. Der erste zusätzliche
+Upgradevergleich erfasste den Fahrzeugstand vor der versionsändernden
+Fixture-Terminbuchung; mit einem vollständigen Snapshot unmittelbar vor dem
+Serverupgrade bestand der unveränderte Feldvergleich. Dies war ein Fehler im
+Testaufbau, keine Produktkorrektur.
+
+Alle 57 direkt importierten öffentlichen API-Dateien wurden zwischen den beiden
+offiziellen Serverimages verglichen; keine fehlt, die OCP-Kalenderverträge sind
+unverändert. Die drei geänderten importierten Dateien erfordern keine Anpassung
+der verwendeten Aufrufe. Zehn Paketgrenztests, Python-Zielauswahl und Diffprüfung
+bestanden. Die Testmatrix ergänzt 35.0.2 für beide Datenbanken; daraus allein folgt
+noch kein neuer bestandener GitHub-Actions-Lauf.
+
+Kein neues App-Paket und kein Produktionsupgrade. PHP 8.3/8.4, vollständige
+Frontend-/Unit-/Analyseprüfungen wurden in dieser Runde nicht erneut ausgeführt,
+da Laufzeitcode und Bundles unverändert sind. Ein neuer Browser-/Geräte-/Mail-/
+Office-/NAS-Pilot auf 35.0.2 ist mit diesen API-Tests nicht nachgewiesen.
 
 ## Private GitHub-Aktualisierung 0.4.0 → 0.4.1 (11.10.2026)
 
@@ -498,3 +529,67 @@ Vollintegration des korrigierten Laufzeitstands: frische MariaDB11.8/Nextcloud35
 Über OCP und echtes DAV-GET/REPORT geprüft: Meisterzugriff, keine Entwürfe, keine Kundenadresse/interne Notiz, verweigerte Schreibzugriffe und tatsächliche Tablet-Fremdzugriffe, unmittelbare Terminänderungen/Absagen. Eine SQL-Regression reproduzierte vor der Korrektur fehlende über Mitternacht laufende Ereignisse und bestand nach der Korrektur auf MariaDB und PostgreSQL. Ganztags-Datumsserialisierung zusätzlich mit SabreVObject4.5.6 korrekt.
 
 Die Ergebnisse betreffen den lokalen0.5.2-Quell-/Kandidatenstand. Neue öffentliche CI, Signierung, signierte Paketabnahme und Storeveröffentlichung sind damit nicht behauptet. Die zusätzliche Chrome-Sichtprüfung mit Kalender6.6.2/Nextcloud35.0.1 ist bestanden: Kalender erscheint ohne Einrichtung; Ganztagsplanung, Annahme, feste Arbeitszeit und Abholung werden korrekt angezeigt, Details sind schreibgeschützt. Der verständliche Altverbindungs-Hinweis und ausdrückliche Wechsel mit Erfolgsbestätigung sind im Browser geprüft. Ein einmaliger Kalender-Initialisierungshinweis in der Konsole, keine Fehler; kein Werkstatt-Laufzeitfehler beobachtet. Reales iPad, NAS-/Mailbox-/Office-Pilot, große Kalenderbestände und vollständige Barrierefreiheit bleiben eigene Abnahmen; der NC35-DAV-Adapter lädt vor seiner Filterung alle Kalenderobjekte.
+
+## 0.6.0 – Abholcode-Zwischenstand 02.11.2026
+
+- **Bestanden:** Vue-Typecheck, ESLint, 112 Frontendtests und 84 PHP-Fachszenarien im PHP-8.5-/Nextcloud-35.0.2-Container. Enthalten sind automatische Erstellung, Hash-/Verschlüsselungsablage, reduzierte öffentliche Antwort, Rollen, gleicher Code beim Abholbereit-Versand, Rotation, Widerruf, Stornierung, Abholung und echte lokale PNG-Erzeugung. PHP-Syntaxprüfung bestanden.
+- **Noch nicht ausgeführt:** vollständige 0.6.0-Frischinstallation/Upgrade mit PostgreSQL und MariaDB, echter HTTP-/Cron-/Mailanhang-Ablauf, XSD/Paketprüfung, physischer Smartphone-/iPad-Scan und Papierdruck.
+- **Unverändert offen:** reale Werkstatt-Mailbox/NAS-/Office-Pilotabnahme, längerer Dauerbetrieb und vollständige WCAG-/Screenreader-Abnahme. Keine Produktions-, GitHub- oder Storeänderung.
+
+### Fortsetzung der Abholcode-Prüfung
+
+Der interne Kandidat mit SHA-256 `6ace98ce424f08a8dfeeb3a17f985069d031ebdce289be4e89e2276e899a180b` bestand die vollständige PostgreSQL-Frischinstallation auf Nextcloud 35.0.2 einschließlich Neustart und Datenerhalt. Ein neuer echter HTTP-Test prüft Meister-/Tablet-Rechte, reduzierte öffentliche Daten und die Sperre eines alten Codes samt bereits eröffneter Sitzung nach Rotation. Dieser Test bestand auf PostgreSQL und MariaDB. Er hatte zunächst einen echten Fehler in der Sitzungsbindung aufgedeckt; der Fehler wurde korrigiert und erneut geprüft.
+
+Der Paketbau und zehn Pakettests bestanden nach Korrektur eines überschriebenen Archivnamens; die vorhandene lokale XSD-Kopie validiert die Metadaten. Der Produktionsbuild und vier Rollenstarts bestanden mit Node 22, die vorgesehene Node-24-Prüfung bleibt offen. Der lokale PHP-WASM-Teststart scheiterte an einem Prozentkodierungsproblem im Pfad mit Leerzeichen und ist kein bestandenes Testergebnis. Weitere laufende Integrations-, Upgrade- und SMTP-Prüfungen sind erst nach Abschluss zu bewerten; physischer Scan, Druck und Betriebsabnahmen bleiben offen.
+
+Ein zusätzlicher SMTP-Test scheiterte auf beiden Datenbanken: Die erste Abholmail wurde nicht zugestellt. Ein Fehler in den Empfängerfeldern wurde anschließend korrigiert. Für den korrigierten Kandidaten `01b76f72f1ebe59bb5b6148cd70eb021481d0a7ff67bab865ac6a892ae722818` bestanden 84 native PHP-8.5-Fachszenarien einschließlich entsprechender Regressionen; der SMTP-Wiederholungslauf ist noch offen. Das Upgrade 0.5.2 auf den vorherigen Kandidaten `6ace98ce…` bestand vollständig auf MariaDB/Nextcloud 35.0.2; die spätere Zustellkorrektur ist darin noch nicht enthalten.
+
+Für den später korrigierten internen Kandidaten `f692d4513308624d3687a72adb94b70e957d5330719b928c723c7d0df42a43c6` bestanden 84 native PHP-8.5-Fachszenarien, vollständige PostgreSQL-/Nextcloud-35.0.2-Frischinstallation und MariaDB-/Nextcloud-35.0.2-Upgrade von der signierten 0.5.2 einschließlich Rollen, HTTP-Rotation, Neustart und Datenerhalt. Im PostgreSQL-Lauf wurden über lokalen SMTP-Empfänger Erstversand und Abholbereit-Nachricht tatsächlich empfangen: beide mit identischem vollständigem Link und PNG-Anhang; wiederholte Zustellläufe erzeugten keine Duplikate. Der Lauf umfasste außerdem TLS, Cron und bestehende Ausfalltests. Ein zuvor im Cron-Kontext unvollständig erzeugter Link wurde korrigiert und damit nachgeprüft.
+
+Noch offen sind insbesondere Upgrade mit PostgreSQL und Frischinstallation mit MariaDB für diesen Kandidaten, weitere PHP-/NC-Zielmatrix und Node-24-Build, Herkunft/Aktualität des verwendeten XSD sowie tatsächlicher Smartphone-/iPad-Scan und Papierdruck. Dies ist kein signiertes Release und keine Produktionsfreigabe.
+
+## Abschlussprüfung 0.6.1 – optionaler automatischer Abholcode (02.11.2026)
+
+Die automatische Übermittlung wurde gegenüber dem Zwischenstand bewusst datensparsamer abgeschlossen: Im Kundentermin gibt es die ausdrückliche Auswahl „Abholcode per E-Mail senden und bei Abholbereitschaft erneut senden“. Nur bei aktivierter Auswahl enthalten Bestätigung, Änderung, aktivierte Erinnerung und Abholbereit-Nachricht denselben QR-Code. Ohne Auswahl werden weder QR-Anhang noch Abholbereit-Mail automatisch erzeugt; Drucken und manueller Versand aus dem Auftrag bleiben möglich. Ein fehlender oder gelöschter Kunden-E-Mail-Eintrag deaktiviert die Auswahl serverseitig. Flottenfahrzeuge erhalten keine Kundenmail.
+
+**Erfolgreich ausgeführt:** Node-Typecheck, ESLint, Produktionsbuild mit vier Rollenstarts, 115 Frontendtests in 20 Dateien, Abhängigkeits-Kompatibilitätstest und zehn Pakettests; 89 PHP-Fachszenarien, PHP-Syntaxprüfung, Nextcloud-Codingstandard für 66 Dateien und Psalm ohne Fehler. `npm audit` meldet weder insgesamt noch mit `--omit=dev` bekannte Schwachstellen. Das am 02.11.2026 neu geladene offizielle App-Store-XSD mit SHA-256 `a8ec208d4be9e507dc28b24e1bb7d8fafa45cbf00ed4b460f1545b131369d362` validiert `info.xml`.
+
+Der vollständig installierte interne Laufzeitkandidat enthielt 164 reguläre Dateien und hatte vor der abschließenden reinen Changelog-/Prüfbericht-Aktualisierung SHA-256 `097884baf51f8fca5c3f55a64e54088e90d0c1291ba7993fc5c2212e46f6b744`. Paketgrenzen und Offline-Store-Inventar bestanden. Das anschließend reproduzierbar erzeugte Dokumentationspaket unterscheidet sich davon ausschließlich in `CHANGELOG.md` und diesem Prüfbericht; sein außerhalb des Archivs protokollierter Hash steht im Übergabeprotokoll. Beide Kandidaten sind unsigned und nicht zur Veröffentlichung oder Produktion freigegeben.
+
+Die vollständige PostgreSQL-17-/Nextcloud-35.0.2-Frischinstallation bestand einschließlich echtem isoliertem HTTPS, SMTP, CalDAV, Cron, Zustellausfällen, expliziter Wiederholung, identischem Link und bytegleichem PNG in Termin- und Abholbereit-Mail, Opt-out, öffentlicher Datenminimierung, Rotation/Widerruf, Fahrer-QR mit Foto- und Kilometerablauf, Rollen, parallelen Mechanikeraufträgen, Teile/Pausen, Termine/Kapazität, Auswertungen sowie Deaktivieren/Aktivieren und Neustart mit Datenerhalt. Eine zufällige Fahrzeugauswahl im Test wurde als Testfehler erkannt und durch ein ausdrücklich angelegtes Kundenfahrzeug ersetzt; der reproduzierbare Wiederholungslauf bestand.
+
+Die frische MariaDB-11.8-/Nextcloud-35.0.0-Installation und das reale PostgreSQL-/Nextcloud-35.0.1-Upgrade von 0.5.2 auf 0.6.1 bestanden ebenfalls, jeweils einschließlich Migration, vorhandenem Fahrzeug, Rollen, QR-Rechten, Kernabläufen und Neustart mit Datenerhalt.
+
+**Offen beziehungsweise nicht ausgeführt:** signiertes Endpaket, neue öffentliche GitHub-CI und Store-Veröffentlichung, physischer Ausdruck der App-Druckvorlage, vollständige Bedienabnahme auf einem realen iPad, produktive NAS-/Werkstattmailbox-/Office-Pilotabnahme, Dauerlast sowie vollständige WCAG-/Screenreader-Prüfung. Produktive Nextcloud, GitHub und Store wurden durch diese Prüfung nicht verändert.
+
+Für denselben Kandidaten `f692d451…` bestanden anschließend auch die MariaDB-Frischinstallation und das PostgreSQL-Upgrade von der signierten 0.5.2, jeweils auf NC35.0.2 einschließlich HTTP-Rechte-/Rotationsprüfung und Neustart mit Datenerhalt. Diese beiden Gegenläufe enthielten nicht den separaten SMTP-/CalDAV-Ausfalllauf; dieser wurde oben für PostgreSQL frisch ausgewiesen.
+
+### Qualitäts- und Sicherheitsnachlauf 02.11.2026
+
+Node 24.18.0/npm 11.16.0: Typecheck, ESLint, 112 Frontendtests und Build mit vier Rollenstarts bestanden. Zunächst meldete npm-Audit 27 Schwachstellen (darunter kritisch und hoch); kompatible Updates sowie Vite 6.4.5/Vitest 4.1.12 beseitigen die kritischen und hohen Meldungen. Das erneute Audit ist **fehlgeschlagen** mit 22 mittelschweren Meldungen über die indirekten Pakete `minimatch` und `glob`; mit `--omit=dev` verbleiben sechs mittelschwere Meldungen im Abhängigkeitsbaum. Die Advisory-Datenbank nennt für minimatch erst Version 11.0.1 als behoben; ein erzwungener Major-Override für verschiedene Nextcloud- und Entwicklerabhängigkeiten ist nicht als kompatibel belegt. Die bestehende CI-Auditstufe würde deshalb derzeit fehlschlagen. Kein sicherheitsfreier Stand behauptet.
+
+Das am 02.11.2026 direkt von `https://apps.nextcloud.com/schema/apps/info.xsd` bezogene offizielle XSD (SHA-256 `a8ec208d4be9e507dc28b24e1bb7d8fafa45cbf00ed4b460f1545b131369d362`) validiert die Metadaten. PHP 8.3.35 und 8.4.26 bestanden je 84 Fachszenarien am vorherigen Laufzeitstand; PHP 8.5 bestand die 84 Szenarien nach der QR-Optionskorrektur. Der Nextcloud-Codingstandard für 65 Dateien und Psalm (null Fehler, 208 Informationshinweise) bestanden nach Korrekturen. Wegen geänderter Abhängigkeiten und QR-Implementierung müssen Paket und Integrationsläufe dem neuen Stand erneut zugeordnet werden.
+
+Für den nach Sicherheits- und Analysekorrekturen erzeugten, reproduzierbaren internen Kandidaten SHA-256 `054dd8a51bc7f46897063a16ca972c92cc698d74053aa5d9d631877f3baac947` bestanden: PostgreSQL-/NC35.0.2-Frischinstallation mit realem TLS-/SMTP-/Cron-/CalDAV-Ausfalllauf und beiden Abholmails, MariaDB-/NC35.0.0-Upgrade von signiertem 0.5.2, PostgreSQL-/NC35.0.1-Upgrade sowie MariaDB-/NC35.0.1-Frischinstallation. Alle umfassen Rollen, HTTP-Rotation, Deaktivieren/Aktivieren und Neustart mit Datenerhalt; der vollständige Zustellausfalllauf wurde dabei nur auf PostgreSQL/35.0.2 ausgeführt. Auf PHP 8.3, 8.4 und 8.5 bestanden je 84 Fachszenarien nach den QR-Korrekturen. Eine saubere npm-Lockfile-Installation (`npm ci --ignore-scripts`) war erfolgreich; sie meldete veraltete Entwicklungsabhängigkeiten einschließlich ESLint 9. Ein unabhängig mit jsQR dekodiertes PNG ergab die vollständige fiktive Abhol-URL. Der vorherige macOS-Vision-Versuch scheiterte an der lokalen Laufzeitumgebung; keine physische Geräteprüfung. Die 22 moderaten npm-Auditmeldungen und tatsächliche Geräte-/Betriebsabnahmen bleiben offen.
+
+### Behebung der npm-Auditmeldungen
+
+ESLint wurde auf die von den verwendeten Vue-/TypeScript-Plugins unterstützte Hauptversion 10 aktualisiert. Für die indirekten Abhängigkeiten sind `minimatch` 11.0.4 und `glob` 14.0.3 per npm-Override festgelegt, da die bisherigen Abhängigkeitsbereiche noch keine bereinigten Versionen zuließen. Nach sauberem `npm ci --ignore-scripts` bestanden npm-Audit ohne bekannte Meldungen, Typecheck, ESLint, 112 Frontendtests, ein neuer Kompatibilitätstest für die tatsächlich verwendete WebDAV-Filter-/Glob-Schnittstelle sowie der Build mit vier Rollenstarts. Das erzeugte Frontend-JavaScript war bytegleich zum zuvor integrationsgeprüften Kandidaten `054dd8a5…`.
+
+Die Overrides übergehen die Versionsbereiche der abhängigen Pakete und müssen bei deren Aktualisierung erneut auf Kompatibilität geprüft werden; die Tests decken die konkret angesprochenen Schnittstellen und nicht alle Funktionen der Fremdpakete ab. Das Audit bewertet den npm-Abhängigkeitsbaum, keine möglicherweise bereits in Fremdpaketen eingebetteten Kopien. Der physische Scan, Druck und die Betriebsabnahmen bleiben offen.
+
+Der Nutzer bestätigte am 02.11.2026 den erfolgreichen Scan eines in einer isolierten Nextcloud-Testinstanz erzeugten QR-Abholcodes für einen fiktiven Auftrag. Gerät und Browser wurden nicht spezifiziert; Papierdruck und eine umfassende Geräteabnahme bleiben offen.
+
+In der laufenden isolierten Scan-Testinstanz wurden Austausch und Abholbestätigung mit fiktiven Aufträgen über echte HTTP-Sitzungen geprüft: Nach Rotation waren der alte Token und eine bereits geöffnete Sitzung ungültig, der neue Token blieb gültig. Nach bestätigter Abholung wurden Token und Sitzung eines zweiten Auftrags abgewiesen. Der neue QR wurde unabhängig dekodiert; die physische Nachprüfung beider Codes und Papierdruck stehen noch aus. Die vorbereitete lokale Druckansicht ist keine Prüfung der appinternen Druckfunktion.
+
+## Bearbeitbarer Abholschein – Zwischenstand
+
+Eine eigene Druckvorlage mit Überschrift und Text ergänzt die bestehenden Kundennachrichten. Die Vorlagenverwaltung ist auch unter „Stammdaten & Vorlagen“ erreichbar. Der Server füllt die Platzhalter für den autorisierten Meister aus; der QR-Code wird im Druck ergänzt. Gespeicherte Nachrichtentexte bleiben erhalten, und ein älterer Client ohne das neue Vorlagenfeld überschreibt eine vorhandene Druckvorlage nicht.
+
+Erfolgreich: 85 PHP-8.5-Fachszenarien, PHP-Codingstandard und Psalm, Node-24-Typecheck, ESLint, 115 Frontendtests und Produktionsbuild. Ein UI-Test sichert, dass die aktuelle Vorlage vor dem Drucken neu geladen wird; ein weiterer prüft die Behandlung von HTML im Text. Der tatsächliche Browserdruck, Installation und Upgrade dieses neuen Standes sind noch nicht abgeschlossen und werden nicht aus diesen Einzeltests abgeleitet.
+
+Nachtrag: 115 Frontendtests, Typecheck, ESLint, Build und vier Bundle-Starts bestanden; 85 native PHP-Fachszenarien, Codingstandard und Psalm ohne Fehler bestanden. Der Backendstand des Kandidaten `672650c72ee7c406742fc31d485abe1023abfe5fb1e04e787da68c0651a1e951` bestand echte PostgreSQL-/NC35.0.2-Frischinstallation einschließlich SMTP-/Cron-/Ausfalltest und MariaDB-/NC35.0.1-Upgrade einschließlich Altkunden-/Vorlagenverträglichkeit. Der danach erzeugte Kandidat `add25ef2ea495d07475677ccf35f1d444b678d5aad37992f1bdcbc846b850872` unterschied sich ausschließlich im Frontend-JavaScript durch die Korrektur der Druckfenster-Ladereihenfolge. Diese Fassung bestand erneut die Frontendtests und wurde in der fiktiven Scan-Testkopie installiert; Fahrzeug und bestehender QR-Code blieben erhalten. In einer getrennten gekennzeichneten UI-Fixture wurde die Auswahl der bearbeitbaren Vorlage unter „Stammdaten & Vorlagen“ und das geöffnete Druckfenster mit Text und QR-Code in Chrome sichtbar geprüft. Ein physischer Papierausdruck der neuen App-Druckvorlage wurde nicht ausgeführt.
+
+## 0.6.1 – Terminbezogene Abholcodes (02.11.2026)
+
+Die Umsetzung erweitert Abholcodes auf bestätigte Termine vor der Auftragsanlage. Fachtechnisch geprüft wurden Identität des Codes nach Auftragsübernahme, Empfänger- und Fahrzeugwechsel, Widerruf/Absage sowie die Vermeidung einer doppelten Abholbereit-Nachricht. Die isolierten Nextcloud-/SMTP-Prüfungen umfassen tatsächliche PNG-Anhänge in Bestätigung, Erinnerung und Abholbereit-Nachricht. Prüfungen und Paket-Hashes des jeweils untersuchten Stands sind im lokalen Übergabeprotokoll dokumentiert; noch laufende Prüfungen und eine produktive Betriebsabnahme sind nicht als bestanden anzusehen.

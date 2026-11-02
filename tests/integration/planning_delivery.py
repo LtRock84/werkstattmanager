@@ -6,6 +6,7 @@ import http.server
 import ipaddress
 import json
 import os
+import re
 from pathlib import Path
 import socketserver
 import ssl
@@ -154,7 +155,9 @@ def check(base, passwords, app, occ, run, Client):
             assert len([m for m in messages if b'outage@example.invalid' in m])==1
             # Controlled fixture moves the reminder to its 24-hour due boundary; system clock is unchanged.
             tomorrow=datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(days=2)
-            reminder_data=dict(vehicle_id=vehicle['id'],title='CI Reminder',arrival=tomorrow.strftime('%Y-%m-%dT%H:%M:%SZ'),minutes=30,status='confirmed',customer_email='reminder@example.invalid',reminder=True,override_reason='Isolated fixture',request_id=str(uuid.uuid4()))
+            reminder_customer=master.call('/api/v1/records/customers',{'data':{'name':'CI Reminder customer','email':'reminder@example.invalid'}})
+            reminder_vehicle=master.call('/api/v1/records/vehicles',{'data':{'kind':'customer','customer_id':reminder_customer['id'],'plate':'CI-REMINDER'}})
+            reminder_data=dict(vehicle_id=reminder_vehicle['id'],title='CI Reminder',arrival=tomorrow.strftime('%Y-%m-%dT%H:%M:%SZ'),minutes=30,status='confirmed',customer_email='reminder@example.invalid',reminder=True,notify_ready=True,override_reason='Isolated fixture',request_id=str(uuid.uuid4()))
             reminder=master.call('/api/v1/appointments',{'data':reminder_data});dispatch()
             before=len([m for m in messages if b'reminder@example.invalid' in m]);assert before==1
             fixture=Path(stage)/'fixture.php'
@@ -164,6 +167,11 @@ def check(base, passwords, app, occ, run, Client):
                 return run('docker','exec','-u','www-data',app,'php','/tmp/wm-fixture.php')
             fixture_run("$a=$s->get('appointments','"+reminder['id']+"');$rows=$s->find('deliveries',['appointment_id'=>$a['id'],'kind'=>'reminder']);assert(count($rows)===1);$d=$rows[0];if($d['next_try']!==strtotime($a['arrival'])-86400)throw new \\RuntimeException('Reminder boundary');$arrival=gmdate('Y-m-d\\TH:i:s\\Z',time()+86400-5);$s->update('appointments',$a,['arrival'=>$arrival]);$p=$d['payload'];$p['arrival']=$arrival;$s->update('deliveries',$d,['payload'=>$p,'next_try'=>time()-5]);")
             dispatch();dispatch();assert len([m for m in messages if b'reminder@example.invalid' in m])==2
+            pair=[email.message_from_bytes(raw,policy=policy.default) for raw in messages if b'reminder@example.invalid' in raw]
+            qr_pair=[[p.get_payload(decode=True) for p in message.walk() if p.get_content_type()=='image/png'] for message in pair]
+            if not (len(qr_pair[0])==len(qr_pair[1])==1 and qr_pair[0][0]==qr_pair[1][0]):
+                print('Pickup reminder diagnostics:', [len(files) for files in qr_pair], [str(message['Subject']) for message in pair], flush=True)
+            assert len(qr_pair[0])==len(qr_pair[1])==1 and qr_pair[0][0]==qr_pair[1][0]
             # Revoked reminder must be discarded at dispatch time.
             reminder_data.update(customer_email='revoked@example.invalid',request_id=str(uuid.uuid4()))
             revoked=master.call('/api/v1/appointments',{'data':reminder_data});dispatch()
@@ -226,17 +234,25 @@ def check(base, passwords, app, occ, run, Client):
             ready_message=next(m for m in personal if str(m['Subject'])=='Abholbereit CI-MAIL')
             body=ready_message.get_body(preferencelist=('plain',)).get_content()
             assert 'Erika Beispiel' in body and 'CI-MAIL' in body and 'CI Fertigmeldung' in body and '{kundenname}' not in body
-            assert not list(ready_message.iter_attachments())
+            ready_attachments=list(ready_message.iter_attachments());assert len(ready_attachments)==1 and ready_attachments[0].get_content_type()=='image/png'
+            confirmation=personal[0]; confirm_body=confirmation.get_body(preferencelist=('plain',)).get_content()
+            match=re.search(r'https?://[^\s#]+/abholung/?#[a-f0-9]{64}',confirm_body)
+            assert match, 'Pickup URL missing from confirmation: ' + repr(confirm_body)
+            link=match.group(0)
+            assert link in body and len(list(confirmation.iter_attachments()))>=1
+            confirm_png=[p for p in confirmation.walk() if p.get_content_type()=='image/png'];assert len(confirm_png)==1
+            assert confirm_png[0].get_payload(decode=True)==ready_attachments[0].get_payload(decode=True)
             ready_data.update(version=ready['version'],stage='arrived',request_id=str(uuid.uuid4()))
             ready=master.call('/api/v1/appointments',{'data':ready_data})
             ready_data.update(version=ready['version'],stage='ready',request_id=str(uuid.uuid4()))
             ready=master.call('/api/v1/appointments',{'data':ready_data});dispatch();assert len(mails(customer['email']))==2
-            # Revoke the customer's wish while another ready message is pending.
+            # An explicit opt-out suppresses automatic QR and ready messages.
             revoked_data=dict(ready_data,id=None,version=None,customer_email='ready-revoked@example.invalid',request_id=str(uuid.uuid4()))
             revoked_ready=master.call('/api/v1/appointments',{'data':revoked_data})
             revoked_data.update(id=revoked_ready['id'],version=revoked_ready['version'],notify_ready=False,request_id=str(uuid.uuid4()))
             master.call('/api/v1/appointments',{'data':revoked_data});dispatch()
-            assert not any(str(m['Subject']).startswith('Abholbereit') for m in mails('ready-revoked@example.invalid'))
+            opted_out=mails('ready-revoked@example.invalid')
+            assert len(opted_out)==1 and not any(str(m['Subject']).startswith('Abholbereit') for m in opted_out)
             due=(datetime.date.today()+datetime.timedelta(days=10)).isoformat()
             dl=master.call('/api/v1/records/deadlines',{'data':{'vehicle_id':cv['id'],'title':'HU / TÜV','due_date':due,'repeat_months':24}})
             fixture_run("\\OCP\\Server::get(\\OCA\\Werkstattmanager\\Service\\CustomerReminders::class)->schedule();")
@@ -253,7 +269,29 @@ def check(base, passwords, app, occ, run, Client):
             templates['version']=saved_templates['version']
             from_templates=master.call('/api/v1/mail-templates')
             assert from_templates['templates']['ready']['subject']=='Abholbereit {fahrzeug}'
-            print('PASS personalized editable SMTP templates; explicit ready once, optout cancellation, customer deadline once and recheck; no ICS attached to ready/deadline')
+            pickup_customer=master.call('/api/v1/records/customers',{'data':{'name':'CI Pickup','email':'pickup@example.invalid'}})
+            pickup_vehicle=master.call('/api/v1/records/vehicles',{'data':{'kind':'customer','customer_id':pickup_customer['id'],'plate':'CI-PICKUP'}})
+            pickup_order=master.call('/api/v1/orders',{'data':{'vehicle_id':pickup_vehicle['id'],'title':'CI Pickup','request_id':str(uuid.uuid4())}})
+            pickup=master.call('/api/v1/orders/'+pickup_order['id']+'/pickup')
+            pickup_url=pickup['url']
+            master.call('/api/v1/orders/'+pickup_order['id']+'/pickup/send',{'data':{'version':pickup['version'],'request_id':str(uuid.uuid4())}})
+            dispatch();dispatch()
+            first=mails('pickup@example.invalid')
+            assert len(first)==1, 'Pickup delivery: ' + repr([d for d in master.call('/api/v1/deliveries')['items'] if d.get('order_id') == pickup_order['id']])
+            attachments=list(first[0].iter_attachments())
+            assert len(attachments)==1 and attachments[0].get_content_type()=='image/png'
+            assert attachments[0].get_payload(decode=True).startswith(b'\x89PNG\r\n\x1a\n')
+            first_body=first[0].get_body(preferencelist=('plain',)).get_content()
+            assert pickup_url in first_body, 'Pickup URL mismatch: ' + repr((pickup_url, first_body))
+            pickup=master.call('/api/v1/orders/'+pickup_order['id']+'/pickup')
+            master.call('/api/v1/orders/'+pickup_order['id']+'/pickup/ready',{'data':{'version':pickup['version'],'request_id':str(uuid.uuid4())}})
+            dispatch();dispatch()
+            sent=mails('pickup@example.invalid')
+            assert len(sent)==2 and pickup_url in sent[1].get_body(preferencelist=('plain',)).get_content()
+            attachments=list(sent[1].iter_attachments())
+            assert len(attachments)==1 and attachments[0].get_content_type()=='image/png'
+            print('PASS pickup SMTP: same URL and PNG attachment for initial and ready messages; no duplicate dispatch')
+            print('PASS personalized editable SMTP templates; opted-in ready QR once, opt-out respected, customer deadline once and recheck; no ICS attached to ready/deadline')
             print('PASS actual cron scheduler; due reminder once, revoked reminder discarded; real CalDAV outage/backoff/recovery and credential removal/restore; removed pickup single-UID customer cancellation')
             print('PASS real SMTP outage: visible uncertain delivery, no automatic duplicate, explicit retry succeeds')
             print('PASS real TLS/CalDAV/SMTP: trusted isolated HTTPS, three single-UID events, conversion/stage edits, repeatable delivery, update, cancellation and no internal-note leakage')

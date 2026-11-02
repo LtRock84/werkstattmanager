@@ -5,12 +5,16 @@ import tarfile
 from pathlib import PurePosixPath
 import xml.etree.ElementTree as ET
 
-ALLOWED_ROOTS = {'appinfo', 'lib', 'templates', 'js', 'css', 'img', 'l10n', 'licenses', 'docs'}
+ALLOWED_ROOTS = {'appinfo', 'lib', 'templates', 'js', 'css', 'img', 'l10n', 'licenses', 'docs', 'vendor'}
 ALLOWED_FILES = {'LICENSE', 'README.md', 'CHANGELOG.md', 'composer.json', 'composer.lock'}
 PUBLIC_DOCS = {'architecture.md', 'operations.md', 'pilot-checklist.md', 'pilot-rollout.md',
                'product-spec.md', 'service-prices.md', 'workshop-functions.md', 'release.md', 'store-listing.md', 'test-report.md'}
 REQUIRED = {'appinfo/info.xml', 'js/werkstattmanager-main.js', 'css/main.css',
-            'js/third-party-notices.txt', 'LICENSE', 'README.md', 'docs/test-report.md'}
+            'js/third-party-notices.txt', 'LICENSE', 'README.md', 'docs/test-report.md',
+            'vendor/chillerlan/php-qrcode/src/QRCode.php',
+            'vendor/chillerlan/php-qrcode/LICENSE-MIT',
+            'vendor/chillerlan/php-settings-container/src/SettingsContainerAbstract.php',
+            'vendor/chillerlan/php-settings-container/LICENSE'}
 
 
 def check(path):
@@ -27,6 +31,10 @@ def check(path):
                 raise ValueError('Archive contains a private/development file')
             if p.parts[1] not in ALLOWED_ROOTS and relative not in ALLOWED_FILES:
                 raise ValueError('Archive contains an unexpected release path')
+            if p.parts[1] == 'vendor' and not (relative.startswith('vendor/chillerlan/php-qrcode/src/') or relative.startswith('vendor/chillerlan/php-settings-container/src/') or relative in {
+                'vendor/chillerlan/php-qrcode/LICENSE-ASL-2.0', 'vendor/chillerlan/php-qrcode/LICENSE-MIT',
+                'vendor/chillerlan/php-qrcode/NOTICE', 'vendor/chillerlan/php-settings-container/LICENSE'}):
+                raise ValueError('Archive contains an unexpected vendor file')
             if p.parts[1] == 'docs' and (len(p.parts) != 3 or p.name not in PUBLIC_DOCS):
                 raise ValueError('Private deployment evidence must not be packaged')
             if member.mode != 0o644:

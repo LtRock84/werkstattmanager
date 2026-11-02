@@ -24,6 +24,7 @@ import type {
 import CompanyHeader from './components/CompanyHeader.vue'
 import CompanySettings from './components/CompanySettings.vue'
 import DriverForm from './components/DriverForm.vue'
+import PickupPass from './components/PickupPass.vue'
 import AccessSettings from './components/AccessSettings.vue'
 import AppointmentBook from './components/AppointmentBook.vue'
 import ServiceCatalogue from './components/ServiceCatalogue.vue'
@@ -412,7 +413,7 @@ onBeforeUnmount(() => {
 watch([page, library, status, employeeFilter], () => {
   if (page.value === 'pricing') pricingVisited.value = true
   if (page.value === 'statistics') statisticsVisited.value = true
-  if (page.value === 'settings') settingsVisited.value = true
+  if (page.value === 'settings' || page.value === 'library') settingsVisited.value = true
   ++revision
   search.value = ''
   more.value = false
@@ -537,6 +538,7 @@ async function erase() {
 </script>
 <template>
   <DriverForm v-if="role === 'driver'" />
+  <PickupPass v-else-if="role === 'pickup'" />
   <main v-else-if="role === 'reception'" class="wm-app wm-reception"><CompanyHeader /><h1>{{ t('Terminannahme') }}</h1><p class="wm-guide">{{ t('Kundentermine vereinbaren, ändern oder absagen. Arbeitsaufträge und Werkstattverwaltung übernimmt der Meister.') }}</p><AppointmentBook :reception="true" /></main>
   <div v-else class="wm-shell" :class="{ 'wm-tablet': !master, 'wm-report-page': page === 'statistics' }">
     <aside class="wm-sidebar" :class="{ 'wm-sidebar--support': master }">
@@ -597,7 +599,7 @@ async function erase() {
       <AppointmentBook v-if="master && page === 'appointments'" @order="openAppointmentOrder" />
       <WorkshopStatistics v-if="master && (page === 'statistics' || statisticsVisited)" v-show="page === 'statistics'" :active="page === 'statistics'" @order="openOrder" @appointments="page = 'appointments'" />
       <ServiceCatalogue v-if="master && page === 'services'" />
-      <CustomerMailSettings v-if="master && (page === 'settings' || settingsVisited)" v-show="page === 'settings'" />
+      <CustomerMailSettings v-if="master && (page === 'settings' || page === 'library' || settingsVisited)" v-show="page === 'settings' || page === 'library'" />
       <PriceCalculator v-if="master && (page === 'pricing' || pricingVisited)" v-show="page === 'pricing'" />
       <template v-if="page === 'dashboard'">
         <p v-if="failedNotifications.length" role="status" class="wm-error">

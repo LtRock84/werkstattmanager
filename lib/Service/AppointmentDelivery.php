@@ -16,6 +16,8 @@ final class AppointmentDelivery {
 		private WorkshopMailer $mailer,
 		private CustomerMailTemplates $templates,
 		private CustomerReminders $reminders,
+		private PickupPasses $pickup,
+		private PickupQrCode $pickupQr,
 		private LoggerInterface $logger,
 	) {
 	}
@@ -42,7 +44,19 @@ final class AppointmentDelivery {
 					continue;
 				}
 				$payload = $row['payload'];
-				if ($row['kind'] === 'deadline') {
+				$isPickup = in_array($row['kind'], ['pickup_code', 'pickup_ready'], true);
+				if ($isPickup) {
+					try {
+						$payload = $this->pickup->deliveryData($row['pickup_link_id'], $payload['customer_email'], $row['kind'] === 'pickup_ready');
+						$obsolete = false;
+					} catch (Problem $e) {
+						if (in_array($e->error, ['obsolete', 'pickup_link'], true)) {
+							$this->store->update('deliveries', $row, ['status' => 'cancelled', 'last_error' => '']);
+							continue;
+						}
+						throw $e;
+					}
+				} elseif ($row['kind'] === 'deadline') {
 					$obsolete = !$this->reminders->valid($payload);
 				} else {
 					$a = $this->store->get('appointments', $row['appointment_id']);
@@ -65,6 +79,7 @@ final class AppointmentDelivery {
 						$obsolete
 							= $a['status'] !== 'confirmed'
 							|| !$a['reminder']
+							|| $a['vehicle_id'] !== $payload['vehicle_id']
 							|| $a['arrival'] !== $payload['arrival']
 							|| $a['customer_email'] !== $payload['customer_email']
 							|| strtotime($a['arrival']) <= time();
@@ -73,6 +88,7 @@ final class AppointmentDelivery {
 					} elseif ($row['channel'] === 'email' && $row['kind'] !== 'cancel') {
 						$obsolete
 							= $a['status'] !== 'confirmed'
+							|| $a['vehicle_id'] !== $payload['vehicle_id']
 							|| $a['customer_email'] !== $payload['customer_email']
 							|| $a['arrival'] !== $payload['arrival']
 							|| $a['pickup'] !== $payload['pickup'];
@@ -83,15 +99,34 @@ final class AppointmentDelivery {
 					$this->store->update('deliveries', $row, ['status' => 'cancelled']);
 					continue;
 				}
+				$appointmentPickup = $row['channel'] === 'email' && $a['notify_ready'] && in_array($row['kind'], ['confirm', 'update', 'reminder', 'ready'], true);
+				if ($appointmentPickup) {
+					try {
+						$payload = array_replace($payload, $this->pickup->appointmentDeliveryData($a));
+					} catch (Problem $e) {
+						if ($e->error === 'pickup_link') {
+							$this->store->update('deliveries', $row, ['status' => 'cancelled', 'last_error' => 'Abholcode ist nicht mehr gültig.']);
+							continue;
+						}
+						throw $e;
+					}
+				}
 				$row = $this->store->update('deliveries', $row, ['status' => 'sending']);
 				if ($row['channel'] === 'calendar') {
 					$this->calendar->send($payload, $row['kind']);
 				} else {
 					$text = $this->templates->render($row['kind'], $payload);
-					$ics = in_array($row['kind'], ['ready', 'deadline'], true) ? '' : AppointmentCalendar::build($payload, $row['kind'] === 'pickup_cancel' ? 'cancel' : $row['kind'], only: $row['kind'] === 'pickup_cancel' ? 'pickup' : null);
-					$send = $this->mailer->prepare($payload['customer_email'], $text['subject'], $text['body'], $ics);
+					if (($isPickup || $appointmentPickup) && !str_contains($text['body'], $payload['pickup_url'])) {
+						$text['body'] .= "\n\nIhr übertragbarer Abholcode ist als QR-Bild angehängt. Bitte vertraulich behandeln und bei der Abholung vorzeigen. Die Abholung ist erst nach Bestätigung durch die Werkstatt möglich.\nAbholseite: " . $payload['pickup_url'];
+					}
+					$ics = in_array($row['kind'], ['ready', 'deadline', 'pickup_code', 'pickup_ready'], true) ? '' : AppointmentCalendar::build($payload, $row['kind'] === 'pickup_cancel' ? 'cancel' : $row['kind'], only: $row['kind'] === 'pickup_cancel' ? 'pickup' : null);
+					$files = ($isPickup || $appointmentPickup) ? [['content' => $this->pickupQr->png($payload['pickup_url']), 'name' => 'abholcode.png', 'mime' => 'image/png']] : [];
+					$send = $this->mailer->prepare($payload['customer_email'], $text['subject'], $text['body'], $ics, $files);
 					$smtpAttempted = true;
 					$status = $send();
+					if ($isPickup) {
+						$this->pickup->sent($row['pickup_link_id'], $row['kind'] === 'pickup_ready');
+					}
 				}
 				$this->store->update('deliveries', $row, ['status' => $status, 'last_error' => '']);
 			} catch (\Throwable $e) {

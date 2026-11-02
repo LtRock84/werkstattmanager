@@ -5439,7 +5439,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 
 
 ========================================================================
-@vue/reactivity 3.5.43
+@vue/reactivity 3.5.44
 SPDX: MIT
 Source: git+https://github.com/vuejs/core.git
 The MIT License (MIT)
@@ -5466,7 +5466,7 @@ THE SOFTWARE.
 
 
 ========================================================================
-@vue/runtime-core 3.5.43
+@vue/runtime-core 3.5.44
 SPDX: MIT
 Source: git+https://github.com/vuejs/core.git
 The MIT License (MIT)
@@ -5493,7 +5493,7 @@ THE SOFTWARE.
 
 
 ========================================================================
-@vue/runtime-dom 3.5.43
+@vue/runtime-dom 3.5.44
 SPDX: MIT
 Source: git+https://github.com/vuejs/core.git
 The MIT License (MIT)
@@ -5520,7 +5520,7 @@ THE SOFTWARE.
 
 
 ========================================================================
-@vue/shared 3.5.43
+@vue/shared 3.5.44
 SPDX: MIT
 Source: git+https://github.com/vuejs/core.git
 The MIT License (MIT)
@@ -5585,7 +5585,7 @@ THE SOFTWARE.
 
 
 ========================================================================
-dompurify 3.4.16
+dompurify 3.4.17
 SPDX: (MPL-2.0 OR Apache-2.0)
 Source: git://github.com/cure53/DOMPurify.git
 

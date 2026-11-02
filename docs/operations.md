@@ -1,6 +1,16 @@
 # Betrieb und Datenschutz
 
-Stand: 2026-10-11, Version 0.4.0. Gilt für den internen Prüfkandidaten, nicht als Betriebsfreigabe.
+Stand: 2026-11-02, Version 0.6.0. Gilt für den Prüfkandidaten, nicht als automatische Betriebsfreigabe.
+
+## Abholcodes ab 0.6.1
+
+Bereits bei einem bestätigten Termin entsteht ein Abholcode. Die Terminbestätigung, eine aktivierte Terminerinnerung und die Abholbereit-Nachricht enthalten denselben Code als QR-Anhang. Bei Übernahme in einen Auftrag bleibt der Code erhalten. Ohne Kunden-E-Mail kann keine Nachricht versendet werden. In der Meisteransicht kann der Code zusätzlich gedruckt oder erneut verschickt werden. Die Mechaniker-Fertigmeldung allein genügt nicht für Abholbereitschaft.
+
+Unter **Stammdaten & Vorlagen → Kundennachrichten, Abholschein und Fristenerinnerungen** lässt sich die Vorlage **Abholschein (Druck)** auswählen. Überschrift und Text sind bearbeitbar; Platzhalter wie `{kundenname}`, `{fahrzeug}`, `{auftragsnummer}` und `{werkstatt}` werden beim nächsten Drucken ausgefüllt. Der QR-Code wird automatisch ergänzt. Gespeicherte eigene Nachrichtenvorlagen bleiben erhalten; die Vorlagen „Abholcode“ und „Abholbereit mit Abholcode“ steuern die zugehörigen E-Mails.
+
+Der Code ist wie ein übertragbarer Abholschein zu behandeln. Wer ihn besitzt, sieht Kundenname, Fahrzeugkennung und Abholstatus und kann ihn vorzeigen. Bei Verlust sofort **Neuen Code erstellen** oder **Code widerrufen** wählen. Nach bestätigter Abholung ist er ungültig. Betriebliche Identitäts-/Schlüsselübergaberegeln bleiben Sache der Werkstatt; die Seite ist keine technische Fahrzeugfreigabe.
+
+Der E-Mail-Versand benötigt System-Cron und die eingerichtete Werkstatt-E-Mailadresse. Vor produktiver Nutzung Versand, PNG-Anhang, Ausdruck, Smartphone-Scan, Widerruf und Abholung mit einer Testadresse prüfen. Die Vorlagen stehen unter Einstellungen → Kundennachrichten. Abholcode-Links nicht in Tickets oder Logs kopieren.
 
 ## Einrichtung und laufender Betrieb
 
@@ -177,11 +187,11 @@ Fahrzeugkennung, Termin, Abholung, Leistung, Frist und Werkstatt ein. Nachrichte
 sind reine Texte. Vorlagen gelten für noch nicht versendete Nachrichten;
 Versionsschutz verhindert das Überschreiben fremder Änderungen.
 
-Im Kundentermin die Option **Kunden per E-Mail benachrichtigen …** auswählen und
-eine Kundenadresse hinterlegen. Wenn der Meister den Termin auf **Abholbereit**
-setzt und speichert, wird die Fertigmeldung vorgemerkt. Pro Termin und Adresse
-wird sie einmal versendet. Auftrag fertigmelden oder abnehmen sendet allein keine
-Abholnachricht. Eigene Flottenfahrzeuge bekommen keine Kunden-Fertigmeldung.
+Im Kundentermin eine Kundenadresse hinterlegen. Wenn der Meister den Termin auf
+**Abholbereit** setzt und speichert, wird die Nachricht automatisch vorgemerkt.
+Pro Termin und Adresse wird sie einmal versendet. Auftrag fertigmelden oder
+abnehmen sendet allein keine Abholnachricht. Eigene Flottenfahrzeuge bekommen
+keine Kunden-Fertigmeldung.
 
 In **Stammdaten → Kunden / Firmen → Bearbeiten** lässt sich die automatische
 Fristenerinnerung aktivieren. Neue Kunden sind vorausgewählt; bestehende Kunden

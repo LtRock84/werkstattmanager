@@ -1,5 +1,41 @@
 # Changelog
 
+## 0.6.1 – 2026-11-02
+
+### Added
+
+- Jeder Termin beziehungsweise Arbeitsauftrag erhält einen übertragbaren, widerrufbaren QR-Abholcode. Meister können einen verständlichen Abholschein drucken oder den Code an die in der Kundenakte hinterlegte E-Mail-Adresse senden.
+- Auf ausdrücklichen Wunsch im Termin enthalten Bestätigung, aktivierte Erinnerung und Abholbereit-Nachricht denselben QR-Code. Die Terminbindung bleibt bei der späteren Auftragsübernahme erhalten.
+- Die öffentliche Abholseite zeigt ausschließlich Kundenname, Fahrzeugkennung, Hersteller/Modell und den Freigabestatus. Meister können Abholung bestätigen, einen verlorenen Code ersetzen oder ihn widerrufen.
+- Bearbeitbare Vorlagen für Abholcode-Mail, Abholbereit-Mail und den gedruckten Abholschein einschließlich Kunden-, Fahrzeug-, Auftrags- und Werkstattplatzhaltern.
+
+### Changed
+
+- Bei aktivierter Abholcode-Auswahl erfolgt die Abholbereit-Nachricht ohne separaten manuellen Erstversand. Ohne Auswahl bleibt der automatische Versand aus; bestehende individuelle Nachrichtentexte bleiben erhalten.
+- Derselbe Code bleibt beim Umwandeln eines Termins in einen Auftrag erhalten. Ein Wechsel von Fahrzeug oder Empfänger erzeugt aus Sicherheitsgründen einen neuen Code.
+
+### Security
+
+- Der QR-Code enthält nur einen 256-Bit-Zufallsschlüssel im URL-Fragment. Stornierung, Abholung, Widerruf oder Ersetzen machen alte Links und bereits eröffnete öffentliche Sitzungen ungültig.
+- QR-Bilder werden lokal auf dem Nextcloud-Server erzeugt. Es werden keine Fahrzeug- oder Kundendaten an einen externen QR-Dienst übertragen.
+
+## 0.6.0 – interner, nicht veröffentlichter Zwischenstand
+
+### Added
+
+- Jeder neue Arbeitsauftrag erhält automatisch einen auftragsgebundenen, übertragbaren Abholcode. Meister können den QR-Abholschein drucken oder an die in Kunden-/Terminakte hinterlegte Adresse senden.
+- Beim ausdrücklichen Status „Fahrzeug abholbereit“ wird derselbe zuvor versandte Code erneut per E-Mail mit PNG-Anhang zugestellt. „Fertig gemeldet“ durch Mechaniker löst keine Abholfreigabe aus.
+- Die öffentliche Abholseite zeigt ausschließlich Kundenname, Kennzeichen/interne Nummer, Hersteller/Modell und den Freigabestatus. Auftragsinhalt, Preis, Kontaktdaten, FIN, Notizen und Mitarbeiter bleiben intern.
+- Meister können Abholung bestätigen, Codes widerrufen oder bei Verlust ersetzen. Stornierung, Abholung, Datenschutzanonymisierung und kontrollierte Fahrzeuglöschung berücksichtigen die neuen Nachweise.
+- Zwei bearbeitbare Nachrichtenvorlagen „Abholcode“ und „Abholbereit mit Abholcode“ einschließlich `{abholcode_link}`.
+- Der gedruckte Abholschein enthält einen unter „Stammdaten & Vorlagen“ bearbeitbaren Text mit Kunden-, Fahrzeug- und Werkstattplatzhaltern; der QR-Code wird automatisch ergänzt.
+
+### Security
+
+- 256-Bit-Zufallscode nur im URL-Fragment; in der Datenbank liegen ein SHA-256-Prüfwert und die mit Nextcloud-Schlüsseln verschlüsselte Fassung für denselben Nachdruck/Neuversand.
+- Öffentliche Sitzung, Fahrzeugbindung und Widerruf werden bei jedem Abruf geprüft; Antworten sind nicht cachebar, nicht indexierbar und über Ratenbegrenzungen geschützt.
+- Servereigene QR-Erzeugung mit fest gebündelten, MIT-lizenzierten Laufzeitbibliotheken; keine Datenübertragung an einen QR-Dienst.
+
 ## 0.5.2 – 2026-10-20
 
 ### Added

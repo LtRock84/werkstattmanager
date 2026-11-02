@@ -910,3 +910,10 @@
 .wm-employee-plan > span { display: block; }
 .wm-employee-plan strong { color: var(--color-main-text); }
 .wm-employee-plan > span { margin-top: 4px; font-size: .9em; }
+.wm-pickup-public { max-width: 680px; margin: 0 auto; }
+.wm-pickup-name { font-size: 1.15rem; font-weight: 700; }
+.wm-pickup-ready, .wm-pickup-wait { padding: 16px; border-radius: 10px; font-size: 1.15rem; font-weight: 700; }
+.wm-pickup-ready { background: #e1f5e6; color: #116329; border: 2px solid #278341; }
+.wm-pickup-wait { background: #fff3cd; color: #664d03; border: 2px solid #997404; }
+.wm-pickup-admin { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+.wm-pickup-admin img { width: 180px; height: 180px; background: #fff; padding: 8px; border-radius: 8px; }

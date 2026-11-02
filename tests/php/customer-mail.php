@@ -18,11 +18,23 @@ test('plain mail templates reject headers and unknown tokens and never evaluate 
     same(255,strlen(CustomerMailText::render(['subject'=>'{kundenname}','body'=>'Text'],['kundenname'=>str_repeat('a',400)])['subject']));
 });
 test('template settings enforce master rights optimistic versions and German dates', function () {
-    [$s,$u,$book,$catalog,$templates]=customerMailSetup(); $initial=$templates->settings(); same(30,$initial['reminder_days']);same(7,count($initial['templates']));
+    [$s,$u,$book,$catalog,$templates]=customerMailSetup(); $initial=$templates->settings(); same(30,$initial['reminder_days']);same(10,count($initial['templates']));
     $saved=$templates->save($initial);same(1,$saved['version']);rejects(fn()=>$templates->save($initial),'conflict');
     foreach(['reception','tablet']as$role){$u->uid=$role;rejects(fn()=>$templates->settings(),'forbidden');rejects(fn()=>$templates->save($saved),'forbidden');}
     $out=$templates->render('confirm',['customer_name'=>'Erika Beispiel','vehicle_label'=>'TEST 12','arrival'=>'2026-10-25T01:30:00Z','title'=>'Inspektion']);
     same(true,str_contains($out['body'],'Erika Beispiel'));same(true,str_contains($out['body'],'25.10.2026 02:30 Uhr'));same(true,str_contains($out['subject'],'TEST 12'));
+});
+test('editable pickup print template preserves custom text with legacy saves', function () {
+    [$s,$u,$book,$catalog,$templates]=customerMailSetup();
+    $initial=$templates->settings();
+    $initial['templates']['pickup_print']['body']='Bitte {kundenname}: {fahrzeug} bei {werkstatt} abholen. {abholcode_link}';
+    $saved=$templates->save($initial);
+    $oldClient=$saved; unset($oldClient['templates']['pickup_print']);
+    $again=$templates->save($oldClient);
+    same($saved['templates']['pickup_print']['body'],$again['templates']['pickup_print']['body']);
+    $text=$templates->render('pickup_print',['customer_name'=>'Erika','vehicle_label'=>'B-AB 123','pickup_url'=>'https://example.invalid/#code']);
+    same(true,str_contains($text['body'],'Bitte Erika: B-AB 123'));
+    same(true,str_contains($text['body'],'https://example.invalid/#code'));
 });
 test('new customer reminders are selected while existing disabled settings survive edits and recurring deadlines use completion', function () {
     [$s,$u,$book,$catalog]=customerMailSetup();$c=$catalog->save('customers',['name'=>'Erika','email'=>'test@example.invalid']);same(true,$c['deadline_emails']);
@@ -34,14 +46,15 @@ test('new customer reminders are selected while existing disabled settings survi
     $catalog->completeDeadline($d['id'],'2026-10-11',1000);
     $next=$s->find('deadlines',['status'=>'open'])[0];same('2026-10-11',$next['last_completed_date']);same('2027-10-11',$next['due_date']);
 });
-test('ready mail is explicit customer only refreshed before delivery and unique after sending',function(){
+test('opted-in ready mail is refreshed before delivery and unique after sending',function(){
     [$s,$u,$book,$catalog]=customerMailSetup();$c=$catalog->save('customers',['name'=>'Erika','email'=>'e@example.invalid']);$v=$catalog->save('vehicles',['kind'=>'customer','plate'=>'TEST','customer_id'=>$c['id']]);
-    $a=$book->save(appointment($v,['customer_email'=>$c['email'],'stage'=>'ready']));same(0,count($s->find('deliveries',['kind'=>'ready'])));
+    $a=$book->save(appointment($v,['customer_email'=>$c['email'],'notify_ready'=>true,'stage'=>'ready']));same(1,count($s->find('deliveries',['kind'=>'ready'])));
     $a=$book->save(payload(array_replace($a,['notify_ready'=>true])));$rows=$s->find('deliveries',['kind'=>'ready']);same(1,count($rows));same('Erika',$rows[0]['payload']['customer_name']);
     $a=$book->save(payload(array_replace($a,['title'=>'Aktuelle Arbeit'])));$row=$s->find('deliveries',['kind'=>'ready'])[0];same('Aktuelle Arbeit',$row['payload']['title']);
     $s->update('deliveries',$row,['status'=>'sent']);$a=$book->save(payload(array_replace($a,['stage'=>'arrived'])));$book->save(payload(array_replace($a,['stage'=>'ready'])));same(1,count($s->find('deliveries',['kind'=>'ready'])));
     $fleet=$catalog->save('vehicles',['kind'=>'fleet','plate'=>'FLEET']);$book->save(appointment($fleet,['stage'=>'ready','notify_ready'=>true,'customer_email'=>'f@example.invalid']));same(1,count($s->find('deliveries',['kind'=>'ready'])));
-    rejects(fn()=>$book->save(appointment($v,['notify_ready'=>true])),'validation');
+    $noEmail=$book->save(appointment($v,['notify_ready'=>true])); same(false,$noEmail['notify_ready']);
+	$optedOut=$book->save(appointment($v,['customer_email'=>$c['email'],'stage'=>'ready'])); same(false,$optedOut['notify_ready']); same(1,count($s->find('deliveries',['kind'=>'ready'])));
 });
 test('deadline reminder threshold recipients vehicle binding completion and optout are rechecked', function(){
     [$s,$u,$book,$catalog,$templates,$reminders]=customerMailSetup();$c=$catalog->save('customers',['name'=>'Erika','email'=>'e@example.invalid']);$v=$catalog->save('vehicles',['kind'=>'customer','plate'=>'TEST','customer_id'=>$c['id']]);

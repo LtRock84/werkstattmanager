@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import QRCode from 'qrcode'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import Modal from './Modal.vue'
 import EmployeePlan from './EmployeePlan.vue'
 import { useDirtySnapshot, confirmDiscard } from '../dirty'
-import { all, command, post, upload, message } from '../api'
+import { pickupPrintHtml } from '../pickup-print'
+import { all, command, get, post, upload, message } from '../api'
 import {
   t,
   vehicleLabel,
@@ -25,6 +27,7 @@ import type {
   Defect,
   Attachment,
   Snippet,
+  PickupPassAdmin,
 } from '../types'
 const printReport = () => window.print()
 const props = defineProps<{
@@ -52,6 +55,8 @@ const employee = ref(''),
   notice = ref('')
 const overrideReason = ref('')
 const plannedEmployee = ref(props.order.planned_employee_id ?? '')
+const pickup = ref<PickupPassAdmin | null>(null)
+const pickupQr = ref('')
 const partForm = ref(false),
   partTitle = ref(''),
   quantity = ref(1),
@@ -83,6 +88,40 @@ async function load() {
   ])
   ;[intervals.value, parts.value, attachments.value, active.value, snippets.value, defects.value] =
     values
+  if (props.master) await loadPickup()
+}
+async function loadPickup() {
+  pickup.value = await get<PickupPassAdmin>(`/api/v1/orders/${current.value.id}/pickup`)
+  pickupQr.value = pickup.value.url ? await QRCode.toDataURL(pickup.value.url, { width: 360, margin: 2, errorCorrectionLevel: 'M' }) : ''
+}
+async function pickupAction(operation: 'send' | 'ready' | 'collected' | 'rotate' | 'revoke') {
+  if (!pickup.value || busy.value) return
+  if (['rotate', 'revoke', 'collected'].includes(operation) && !window.confirm(t('Diese Aktion macht den bisherigen Abholcode ungültig. Fortfahren?'))) return
+  busy.value = true
+  error.value = ''
+  notice.value = ''
+  try {
+    await command(`/api/v1/orders/${current.value.id}/pickup/${operation}`, { version: pickup.value.version })
+    await loadPickup()
+    notice.value = ({ send: t('Abholcode ist für den E-Mail-Versand vorgemerkt.'), ready: t('Fahrzeug ist abholbereit. Bei hinterlegter Kunden-E-Mail wird der Abholcode gesendet.'), collected: t('Fahrzeug als abgeholt markiert; der Code ist ungültig.'), rotate: t('Neuer Abholcode erstellt; der bisherige Code ist ungültig.'), revoke: t('Abholcode widerrufen.') } as Record<string, string>)[operation]
+    emit('changed')
+  } catch (e) { error.value = message(e) } finally { busy.value = false }
+}
+async function printPickup() {
+  if (!pickup.value?.url || !pickupQr.value) return
+  const win = window.open('', '_blank')
+  if (!win) { error.value = t('Druckfenster wurde blockiert. Bitte Pop-ups für diese Seite erlauben.'); return }
+  win.opener = null
+  busy.value = true
+  error.value = ''
+  try {
+    await loadPickup()
+    if (!pickup.value?.url || !pickupQr.value) throw new Error(t('Der Abholcode ist nicht mehr aktiv.'))
+    win.document.open()
+    win.document.write(pickupPrintHtml(pickup.value.print_title, pickup.value.print_body, pickupQr.value, t('QR-Code für die Fahrzeugabholung')))
+    win.addEventListener('load', () => { win.focus(); win.print() }, { once: true })
+    win.document.close()
+  } catch (e) { win.close(); error.value = message(e) } finally { busy.value = false }
 }
 onMounted(async () => {
   try {
@@ -310,6 +349,29 @@ async function reload() {
       </div>
       <p class="wm-preserve">{{ current.description }}</p>
       <EmployeePlan :order="current" :employees="employees" />
+      <fieldset v-if="master && pickup" class="wm-no-print">
+        <legend>{{ t('Abholcode') }}</legend>
+        <p class="wm-muted">{{ t('Der QR-Code ist ein übertragbarer Abholschein. Senden oder drucken Sie ihn nur für die abholende Person. Er zeigt keine Auftrags-, Preis- oder Kontaktdaten.') }}</p>
+        <div class="wm-pickup-admin">
+          <img v-if="pickupQr" :src="pickupQr" :alt="t('QR-Code für die Fahrzeugabholung')" />
+          <div>
+            <p><strong>{{ pickup.customer_name }}</strong><br />{{ vehicleLabel(vehicle) }}</p>
+            <p v-if="pickup.collected">{{ t('Abgeholt – Code ungültig') }}</p>
+            <p v-else-if="pickup.revoked">{{ t('Widerrufen – Code ungültig') }}</p>
+            <p v-else-if="pickup.ready">{{ t('Abholbereit') }}</p>
+            <p v-else>{{ t('Noch nicht abholbereit') }}</p>
+            <p v-if="pickup.recipient" class="wm-muted">{{ t('E-Mail an') }}: {{ pickup.recipient }}</p>
+          </div>
+        </div>
+        <div class="wm-actions">
+          <NcButton :disabled="busy || !pickup.url || !pickup.recipient" @click="pickupAction('send')">{{ t('Per E-Mail senden') }}</NcButton>
+          <NcButton :disabled="busy || !pickup.url" @click="printPickup">{{ t('Abholschein drucken') }}</NcButton>
+          <NcButton v-if="pickup.url && !pickup.ready" variant="primary" :disabled="busy" @click="pickupAction('ready')">{{ t('Fahrzeug abholbereit') }}</NcButton>
+          <NcButton v-if="pickup.url" :disabled="busy" @click="pickupAction('collected')">{{ t('Als abgeholt markieren') }}</NcButton>
+          <NcButton v-if="!pickup.collected" :disabled="busy" @click="pickupAction('rotate')">{{ t('Neuen Code erstellen') }}</NcButton>
+          <NcButton v-if="pickup.url" :disabled="busy" @click="pickupAction('revoke')">{{ t('Code widerrufen') }}</NcButton>
+        </div>
+      </fieldset>
       <fieldset v-if="master && ['draft', 'open', 'paused'].includes(current.status)" class="wm-no-print">
         <legend>{{ t('Mitarbeiter vorplanen') }}</legend>
         <label>{{ t('Vorgesehener Mitarbeiter') }}

@@ -44,4 +44,15 @@ final class PageController extends Controller {
 		$r->addHeader('Cache-Control', 'no-store');
 		return $r;
 	}
+	#[PublicPage]
+	#[NoCSRFRequired]
+	public function pickup(): TemplateResponse {
+		$this->initialState->provideInitialState('company', $this->company->profile());
+		$this->initialState->provideInitialState('mode', 'pickup');
+		$r = new TemplateResponse('werkstattmanager', 'main', [], 'public');
+		$r->addHeader('Referrer-Policy', 'no-referrer');
+		$r->addHeader('Cache-Control', 'no-store');
+		$r->addHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+		return $r;
+	}
 }

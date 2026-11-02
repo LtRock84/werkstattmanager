@@ -46,7 +46,7 @@ ersetzt keine Buchhaltung.
 
 Bestätigte Termine erscheinen für Meister automatisch in einem schreibgeschützten
 Nextcloud-Kalender. Kunden erhalten nach Mail-Einrichtung auf Wunsch Termin- und
-Abholbereit-Nachrichten.
+Abholbereit-Nachrichten sowie druck- und mailbare, widerrufbare QR-Abholscheine.
 Sieben personalisierte Textvorlagen sind bearbeitbar. Fahrzeugfristen können Kunden
 automatisch zur Terminvereinbarung erinnern; Wunsch, Empfänger und aktuelle
 Fälligkeit werden vor Versand geprüft. Bestehende Kunden werden beim Upgrade

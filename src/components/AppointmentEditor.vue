@@ -37,7 +37,7 @@ watch([arrival, minutes, allocations], () => { ++suggestionRevision; suggested.v
 const vehicles = ref<Vehicle[]>([]), customers = ref<Customer[]>([]), error = ref(''), busy = ref(false), inlineEditor = ref<'customers' | 'vehicles' | null>(null)
 const customerId = ref(''), cancelOpen = ref(false), cancelPrompt = ref<HTMLDivElement | null>(null)
 function askCancel() { cancelOpen.value = true; void nextTick(() => cancelPrompt.value?.focus()) }
-const { dirty } = useDirtySnapshot(() => ({ vehicle: vehicle.value, title: title.value, email: email.value, arrival: arrival.value, start: start.value, pickup: pickup.value, lines: lines.value, minutes: minutes.value, allocations: allocations.value, reason: reason.value, note: note.value, reminder: reminder.value, notify_ready: notifyReady.value, stage: stage.value, checklist: checklist.value }))
+const { dirty } = useDirtySnapshot(() => ({ vehicle: vehicle.value, title: title.value, email: email.value, arrival: arrival.value, start: start.value, pickup: pickup.value, lines: lines.value, minutes: minutes.value, allocations: allocations.value, reason: reason.value, note: note.value, reminder: reminder.value, notifyReady: notifyReady.value, stage: stage.value, checklist: checklist.value }))
 async function cancel() {
   if (!original || busy.value) return
   busy.value = true; error.value = ''
@@ -94,7 +94,8 @@ async function save(status: Appointment['status']) {
       </details>
       <label>{{ t('E-Mail des Kunden (optional)') }}<input v-model="email" type="email" maxlength="255" /></label><p>{{ t('Mit „Termin bestätigen“ wird eine Bestätigung mit Kalenderdatei versendet. Ein Entwurf versendet nichts.') }}</p>
       <label class="wm-check"><input v-model="reminder" type="checkbox" />{{ t('Erinnerung 24 Stunden vorher senden') }}</label>
-      <label class="wm-check"><input v-model="notifyReady" type="checkbox" />{{ t('Kunden per E-Mail benachrichtigen, wenn der Meister „Abholbereit“ markiert') }}</label><p class="wm-muted">{{ t('Benötigt eine Kunden-E-Mail. Pro Termin und E-Mail-Adresse wird die Fertigmeldung einmal versendet. Die Nachricht verwendet die Vorlage aus den Einstellungen.') }}</p>
+      <label class="wm-check"><input v-model="notifyReady" type="checkbox" />{{ t('Abholcode per E-Mail senden und bei Abholbereitschaft erneut senden') }}</label>
+      <p class="wm-muted">{{ t('Nur mit dieser Auswahl enthält die Terminbestätigung den übertragbaren QR-Code. Eine aktivierte Erinnerung und die spätere Abholbereit-Nachricht verwenden denselben Code. Drucken und manueller Versand bleiben in der Auftragsansicht möglich.') }}</p>
       <label v-if="!reception">{{ t('Stand des Termins') }}<select v-model="stage"><option value="planned">{{ t('Bestätigt – Fahrzeug noch nicht eingetroffen') }}</option><option value="arrived">{{ t('Fahrzeug eingetroffen') }}</option><option value="parts_missing">{{ t('Teile fehlen') }}</option><option value="customer_question">{{ t('Rückfrage beim Kunden') }}</option><option value="ready">{{ t('Abholbereit') }}</option><option value="collected">{{ t('Abgeholt') }}</option><option value="no_show">{{ t('Nicht erschienen') }}</option></select></label>
       <label v-if="!reception">{{ t('Interne Hinweise') }}<textarea v-model="note" maxlength="10000" rows="3"></textarea></label>
       <ReceptionChecklist v-if="!reception" v-model="checklist" />

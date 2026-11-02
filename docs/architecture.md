@@ -211,6 +211,12 @@ Vorschläge freier Tage sind reine Frontend-Auswertung der bestehenden serversei
 
 ## Werkstattauswertung ab 0.3.0
 
+## Übertragbarer Abholnachweis ab 0.6.0
+
+`wm_pickup_links` bindet genau einen widerrufbaren Bearer-Nachweis an Auftrag und Fahrzeug. Ein 256-Bit-Token wird ausschließlich im URL-Fragment transportiert; der Server speichert den SHA-256-Wert zur Suche und eine über `ICrypto` verschlüsselte Fassung, damit Druck und späterer Versand denselben Code verwenden. Öffentliche Austausch- und Leseschnittstellen liefern nur Kundenname, reduzierte Fahrzeugkennung und Freigabestatus. Meisteraktionen sind versionsgeprüft und wiederholungssicher.
+
+`AppointmentDelivery` verwendet die bestehende Zustellwarteschlange. `PickupQrCode` erzeugt den PNG-Anhang lokal; die fest gebündelten Laufzeitquellen `chillerlan/php-qrcode 6.0.1` und `php-settings-container 3.3.0` werden über einen begrenzten Namespace-Autoloader geladen. Keine externe QR-Schnittstelle erhält Werkstattdaten. Widerruf, Rotation, Stornierung und Abholung brechen ausstehende Zustellungen ab.
+
 `StatisticsController` und `Statistics` stellen ausschließlich Meistern
 GET `/api/v1/statistics?from=YYYY-MM-DD&to=YYYY-MM-DD&scope=all|customer|fleet`
 und POST `/api/v1/statistics/revenue` bereit. Die zweite Route erwartet ein

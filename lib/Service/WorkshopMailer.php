@@ -70,7 +70,7 @@ final class WorkshopMailer {
 		}
 	}
 	/** Validate before marking transmission as attempted; preflight failures can safely retry. */
-	public function prepare(string $to, string $subject, string $body, string $ics = ''): \Closure {
+	public function prepare(string $to, string $subject, string $body, string $ics = '', array $attachments = []): \Closure {
 		$selection = $this->selection();
 		$name = $this->company->profile()['name'];
 		if (($selection['mode'] ?? '') === 'system') {
@@ -78,6 +78,9 @@ final class WorkshopMailer {
 			$message->setTo([$to])->setSubject($subject)->setPlainBody($body);
 			if ($ics !== '') {
 				$message->attach($this->system->createAttachment($ics, 'werkstatttermin.ics', 'text/calendar; charset=utf-8'));
+			}
+			foreach ($attachments as $attachment) {
+				$message->attach($this->system->createAttachment($attachment['content'], $attachment['name'], $attachment['mime']));
 			}
 			return function () use ($message): string {
 				if ($this->system->send($message)) {
@@ -95,8 +98,15 @@ final class WorkshopMailer {
 		}
 		$message = $service->initiateMessage();
 		$message->setFrom(new Address($selection['address'], $name))->setTo(new Address($to))->setSubject($subject)->setBodyPlain($body);
+		$files = [];
 		if ($ics !== '') {
-			$message->setAttachments(new Attachment($ics, 'werkstatttermin.ics', 'text/calendar; charset=utf-8'));
+			$files[] = new Attachment($ics, 'werkstatttermin.ics', 'text/calendar; charset=utf-8');
+		}
+		foreach ($attachments as $attachment) {
+			$files[] = new Attachment($attachment['content'], $attachment['name'], $attachment['mime']);
+		}
+		if ($files) {
+			$message->setAttachments(...$files);
 		}
 		// Public API gives no remote delivery receipt or provider outbox identifier.
 		return function () use ($service, $message): string {

@@ -18,7 +18,7 @@ Verbindliche Prüfergebnisse und offene Punkte: [Prüfbericht](docs/test-report.
 
 Neu in 0.5.0: **Mitarbeiter vorplanen**, sichtbar am Tablet als unverbindlicher Hinweis. Kollegen dürfen übernehmen; die Zuordnung startet keine Arbeitszeit.
 
-Weitere Funktionen sind der Menüpunkt **Auswertung**, optionale **Abholbereit-Mails**,
+Weitere Funktionen sind der Menüpunkt **Auswertung**, übertragbare und widerrufbare **QR-Abholscheine**, automatische **Abholbereit-Mails**,
 sieben bearbeitbare Nachrichtenvorlagen und automatische **Fahrzeugfristen-Erinnerungen**.
 Das Repository ist öffentlich. Version 0.5.2 ergänzt einen automatisch sichtbaren, schreibgeschützten Werkstattkalender für Meister und Administratoren. Ein eigenes Kalenderkonto und App-Passwort entfallen. Den Stand der Veröffentlichung zeigen die GitHub-Releases. Vergleichspreise bleiben enthalten, Unternehmensnamen und Anbieterlinks werden nicht veröffentlicht.
 
@@ -118,17 +118,19 @@ und verwendet keine fremden Vergleichspreise als eigene Umsätze.
 ## Kundennachrichten und Fahrzeugfristen
 
 Unter **Einstellungen → Kundennachrichten und Fristenerinnerungen** bearbeiten Meister
-sieben fertige Textvorlagen: Bestätigung, Änderung, Absage, aufgehobene Abholzeit,
-Terminerinnerung, Abholbereit und Fristenerinnerung. Platzhalter setzen Kundenname,
+zehn fertige Textvorlagen: Bestätigung, Änderung, Absage, aufgehobene Abholzeit,
+Terminerinnerung, Abholbereit, zwei Abholcode-Nachrichten und Fristenerinnerung. Platzhalter setzen Kundenname,
 Fahrzeugkennung, Termin, Abholung, Leistung, Frist und Werkstatt ein. Nachrichten
 sind reine Texte. Vorlagen gelten für noch nicht versendete Nachrichten;
 Versionsschutz verhindert das Überschreiben fremder Änderungen.
 
-Im Kundentermin die Option **Kunden per E-Mail benachrichtigen …** auswählen und
-eine Kundenadresse hinterlegen. Wenn der Meister den Termin auf **Abholbereit**
-setzt und speichert, wird die Fertigmeldung vorgemerkt. Pro Termin und Adresse
-wird sie einmal versendet. Auftrag fertigmelden oder abnehmen sendet allein keine
-Abholnachricht. Eigene Flottenfahrzeuge bekommen keine Kunden-Fertigmeldung.
+Im Kundentermin eine Kundenadresse hinterlegen. Wenn der Meister den Termin auf
+**Abholbereit** setzt und speichert, wird die Nachricht automatisch vorgemerkt.
+Pro Termin und Adresse wird sie einmal versendet. Auftrag fertigmelden oder
+abnehmen sendet allein keine Abholnachricht. Eigene Flottenfahrzeuge bekommen
+keine Kunden-Fertigmeldung.
+
+Bestätigte Termine erhalten bereits vor der Auftragsanlage einen Abholcode. Terminbestätigung, aktivierte Terminerinnerung und Abholbereit-Nachricht enthalten denselben QR-Code; bei Auftragsübernahme bleibt er erhalten. Meister können ihn in der Auftragsansicht drucken oder erneut versenden. Wer den Code besitzt, kann die reduzierte Abholseite öffnen; bei Verlust lässt er sich ersetzen oder widerrufen. Die Mechaniker-Fertigmeldung allein gibt das Fahrzeug nicht zur Abholung frei.
 
 In **Stammdaten → Kunden / Firmen → Bearbeiten** lässt sich die automatische
 Fristenerinnerung aktivieren. Neue Kunden sind vorausgewählt; bestehende Kunden
@@ -257,5 +259,7 @@ und MariaDB. Sie veröffentlicht nichts im App Store. Ablauf und Grenzen:
 - [Prüfergebnisse](docs/test-report.md)
 
 Lizenz: AGPL-3.0-or-later; vollständiger Text in `LICENSE`. Bibliotheksnachweise werden
-beim Build in `js/third-party-notices.txt` erzeugt. Vor Weitergabe auch den zugehörigen
-Quellstand samt Lockfiles und Buildskripten bereitstellen.
+beim Build in `js/third-party-notices.txt` erzeugt. Für serverseitige QR-PNGs werden
+`chillerlan/php-qrcode 6.0.1` und `chillerlan/php-settings-container 3.3.0` mit ihren
+Lizenztexten in das Releasepaket aufgenommen; es gibt keinen externen QR-Dienst. Vor
+Weitergabe auch den zugehörigen Quellstand samt Lockfiles und Buildskripten bereitstellen.

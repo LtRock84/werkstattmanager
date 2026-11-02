@@ -19,7 +19,7 @@ async function load() {
 async function save() {
   if (!form.value) return
   busy.value = true; error.value = ''; notice.value = ''
-  try { form.value = await put<Settings>('/api/v1/mail-templates', { data: form.value }); baseline.value = JSON.parse(JSON.stringify(form.value)); reset(); notice.value = t('Kundennachrichten gespeichert. Die Vorlagen gelten für noch nicht versendete Nachrichten.') }
+  try { form.value = await put<Settings>('/api/v1/mail-templates', { data: form.value }); baseline.value = JSON.parse(JSON.stringify(form.value)); reset(); notice.value = t('Vorlagen gespeichert. Änderungen gelten für neue Ausdrucke und noch nicht versendete Nachrichten.') }
   catch (e) { error.value = message(e) } finally { busy.value = false }
 }
 function undo() { if (baseline.value && confirmDiscard(dirty.value)) { form.value = JSON.parse(JSON.stringify(baseline.value)); reset() } }
@@ -27,19 +27,19 @@ onMounted(load)
 </script>
 <template>
   <section class="wm-card wm-form" :aria-busy="busy">
-    <h2>{{ t('Kundennachrichten und Fristenerinnerungen') }}</h2>
-    <p>{{ t('Die fertigen Texte werden automatisch mit Kundenname, Fahrzeug und Termindaten ausgefüllt. Sie können Betreff und Text anpassen. Es werden reine Textnachrichten versendet; Platzhalter sind keine Programmbefehle.') }}</p>
+    <h2>{{ t('Kundennachrichten, Abholschein und Fristenerinnerungen') }}</h2>
+    <p>{{ t('Passen Sie Nachrichten und den Text des gedruckten Abholscheins an. Platzhalter werden mit den passenden Daten ausgefüllt; sie sind keine Programmbefehle. Der QR-Code wird beim Drucken oder als Anhang automatisch ergänzt.') }}</p>
     <template v-if="form">
       <label>{{ t('Fristenerinnerung: Tage vor Fälligkeit') }}<input v-model.number="form.reminder_days" type="number" min="1" max="365" :disabled="busy" /></label>
       <p class="wm-guide">{{ t('Standard: 30 Tage vorher. Bei einer jährlichen Inspektion ungefähr elf Monate nach der letzten Erledigung, bei einer zweijährlichen HU ungefähr 23 Monate danach. Maßgeblich ist immer die tatsächliche nächste Fälligkeit. Kilometerfristen werden erst bei erreichtem bestätigtem Kilometerstand erinnert; Fahrleistung wird nicht geschätzt. Bereits überfällige Fristen werden nach Aktivierung ebenfalls einmal gemeldet.') }}</p>
       <label>{{ t('Vorlage auswählen') }}<select v-model="selected" :disabled="busy"><option v-for="(item, key) in form.templates" :key="key" :value="key">{{ t(item.label) }}</option></select></label>
       <template v-if="current">
-        <label>{{ t('Betreff') }}<input v-model="current.subject" maxlength="255" required :disabled="busy" /></label>
-        <label>{{ t('Nachrichtentext') }}<textarea v-model="current.body" rows="12" maxlength="10000" required :disabled="busy" /></label>
+        <label>{{ selected === 'pickup_print' ? t('Überschrift des Abholscheins') : t('Betreff') }}<input v-model="current.subject" maxlength="255" required :disabled="busy" /></label>
+        <label>{{ selected === 'pickup_print' ? t('Text des Abholscheins') : t('Nachrichtentext') }}<textarea v-model="current.body" rows="12" maxlength="10000" required :disabled="busy" /></label>
       </template>
       <p>{{ t('Verfügbare Platzhalter') }}: <code v-for="key in form.placeholders" :key="key" class="wm-mail-token">{{ '{' + key + '}' }}</code></p>
       <p>{{ t('Fristenerinnerungen lassen sich bei jedem Kunden ein- oder ausschalten. Neue Kunden sind vorausgewählt; bei bestehenden Kunden wurde beim Update keine automatische E-Mail aktiviert. Im Kundentermin wählen Sie die Abholbenachrichtigung separat. „Abholbereit“ stellt keine automatische technische Fahrzeugfreigabe dar.') }}</p>
-      <div class="wm-actions"><NcButton :disabled="busy || !dirty" @click="save">{{ t('Kundennachrichten speichern') }}</NcButton><NcButton :disabled="busy || !dirty" @click="undo">{{ t('Änderungen verwerfen') }}</NcButton><NcButton :disabled="busy" @click="load">{{ t('Neu laden') }}</NcButton></div>
+      <div class="wm-actions"><NcButton :disabled="busy || !dirty" @click="save">{{ t('Vorlagen speichern') }}</NcButton><NcButton :disabled="busy || !dirty" @click="undo">{{ t('Änderungen verwerfen') }}</NcButton><NcButton :disabled="busy" @click="load">{{ t('Neu laden') }}</NcButton></div>
     </template>
     <p v-if="error" role="alert" class="wm-error">{{ error }}</p><p v-if="notice" role="status">{{ notice }}</p>
   </section>

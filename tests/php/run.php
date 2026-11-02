@@ -25,6 +25,19 @@ namespace OCP {
         public function set($key, $value);
         public function get($key);
     }
+    interface IURLGenerator
+    {
+        public function linkToRouteAbsolute(string $routeName, array $arguments = []);
+        public function getAbsoluteURL(string $url);
+		public function getWebroot(): string;
+    }
+}
+namespace OCP\Security {
+    interface ICrypto
+    {
+        public function encrypt($plaintext);
+        public function decrypt($ciphertext);
+    }
 }
 namespace OCP\Calendar {
 	interface ICalendarProvider
@@ -244,6 +257,17 @@ namespace {
         {
             return $this->values[$key] ?? null;
         }
+    }
+    final class Crypto implements \OCP\Security\ICrypto
+    {
+        public function encrypt($plaintext) { return 'cipher:' . base64_encode($plaintext); }
+        public function decrypt($ciphertext) { return base64_decode(substr($ciphertext, 7), true); }
+    }
+    final class Urls implements \OCP\IURLGenerator
+    {
+        public function linkToRouteAbsolute(string $routeName, array $arguments = []) { return 'https://werkstatt.example/apps/werkstattmanager/abholung'; }
+        public function getAbsoluteURL(string $url) { return 'https://werkstatt.example' . $url; }
+		public function getWebroot(): string { return '/nextcloud'; }
     }
     $passed = 0;
     function test(string $name, callable $fn): void
@@ -709,5 +733,6 @@ namespace {
     require __DIR__.'/company-mail.php';
     require __DIR__.'/statistics.php';
     require __DIR__.'/customer-mail.php';
+    require __DIR__.'/pickup-pass.php';
     echo "$passed unit scenarios passed. Nextcloud/SQL concurrency integration is separate.\n";
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace OCA\Werkstattmanager\AppInfo;
 
+require_once dirname(__DIR__) . '/ThirdPartyAutoload.php';
+
 use OCA\Werkstattmanager\Calendar\WorkshopCalendarProvider;
 use OCA\Werkstattmanager\Listener\UserDeleted;
 use OCA\Werkstattmanager\Notification\Notifier;

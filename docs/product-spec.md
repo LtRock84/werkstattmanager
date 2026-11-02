@@ -369,3 +369,37 @@ Die App registriert über `OCP\Calendar\ICalendarProvider` für jedes aktuell al
 Die Kalenderansicht liest bestehende Termindaten unmittelbar, speichert keine Kopien und benötigt keine Zugangsdaten. Eine additive Migration ergänzt ausschließlich Abfrageindizes. Bereits hinterlegte externe CalDAV-Konfigurationen bleiben zur Upgrade-Kompatibilität aktiv und unterdrücken den nativen Kalender, damit keine Duplikate entstehen. Ein Administrator kann Zugang und verschlüsseltes Altpasswort entfernen und damit auf den nativen Kalender wechseln.
 
 Bei einem Wechsel bleiben bereits in den externen Kalender kopierte Ereignisse dort bestehen. Die Einstellungsansicht weist vor der Aktion auf die einmalige manuelle Bereinigung hin. Ereignisse, die über einen Tageswechsel reichen, müssen in jedem tatsächlich überlappten Abfragefenster erscheinen; dies gilt auch für die 15-Minuten-Marker von Annahme und Abholung.
+
+## QR-Code in automatischen Terminnachrichten (0.6.1, 02.11.2026)
+
+Ein bestätigter Termin erhält bereits vor der Auftragsanlage einen eigenen Abholcode. Nur wenn der Meister beziehungsweise die Terminannahme die Auswahl „Abholcode per E-Mail senden und bei Abholbereitschaft erneut senden“ aktiviert, enthalten Terminbestätigung, Terminänderung, eine aktivierte Terminerinnerung und die automatische Abholbereit-Nachricht denselben gültigen QR-Code als PNG-Anhang. Ohne diese Auswahl wird kein Code automatisch versendet; Druck und manueller Versand aus dem Auftrag bleiben möglich. Fehlt der Link in einer individuell gespeicherten Vorlage, ergänzt das System eine kurze Abholanleitung mit Link, ohne den gespeicherten Text zu verändern. Bei der späteren Übernahme in einen Auftrag bleibt der Code erhalten. Ein Wechsel von Kundenadresse oder Fahrzeug erzeugt einen neuen Schlüssel; Terminabsage, Widerruf und Abholung machen den Code ungültig. Ohne hinterlegte E-Mail kann keine Nachricht versendet werden; eine Terminerinnerung muss weiterhin im Termin aktiviert werden. Bei widerrufenem Code wird keine dieser Nachrichten ohne gültigen Code versendet.
+
+## Übertragbarer Abholnachweis per QR-Code (0.6.0, 02.11.2026)
+
+Die Druckausgabe enthält neben dem QR-Code eine verständliche, unter „Stammdaten & Vorlagen“ bearbeitbare Vorlage „Abholschein (Druck)“ mit Überschrift und reinem Text. Kundenname, Fahrzeug, Auftragsnummer und Werkstatt können über Platzhalter eingefügt werden. Der QR-Code wird automatisch ergänzt und kann durch Vorlagentext nicht entfernt werden. Änderungen gelten für künftige Ausdrucke; gespeicherte individuelle Kundennachrichten bleiben erhalten. Bestehende Clients ohne die neue Druckvorlage dürfen ihre vorhandenen Nachrichten weiterhin speichern, ohne die Druckvorlage zurückzusetzen.
+
+Für jeden neu angelegten Arbeitsauftrag wird genau ein widerrufbarer Abholnachweis
+erzeugt. Der Nachweis gilt nur für diesen Auftrag und dieses Fahrzeug. Meister können
+ihn aus der Auftragsansicht drucken oder an die aktuell zur Fahrzeugakte gehörende,
+gültige Kundenadresse senden. Ein frei eingegebener Empfänger ist nicht zulässig.
+Derselbe QR-Code wird einmal erneut versendet, sobald der verknüpfte Termin oder der Auftrag ausdrücklich als abholbereit markiert wird und eine gültige Kunden-E-Mail hinterlegt ist. Das reine Abschließen der Mechanikerarbeit gilt nicht automatisch als
+Abholfreigabe.
+
+Der QR-Code enthält einen kryptografisch zufälligen Schlüssel im URL-Fragment und
+keine Stamm- oder Auftragsdaten. Der Server speichert den Suchwert gehasht und den
+für Druck und Wiederholversand benötigten Schlüssel verschlüsselt. Nach dem Öffnen
+wird der Schlüssel gegen eine kurze eingeschränkte Sitzung getauscht. Die öffentliche
+Seite zeigt ausschließlich Kundenname, Kennzeichen beziehungsweise Fahrzeugnummer,
+Marke/Modell und den Zustand „noch nicht abholbereit“ oder „abholbereit“. E-Mail,
+Telefon, Anschrift, Arbeiten, Preise, Mängel, Notizen, FIN und Mitarbeiter bleiben
+intern. Besitz des Codes ist ein übertragbarer Abholnachweis, keine amtliche
+Identitätsprüfung und keine technische Fahrzeugfreigabe.
+
+Stornierung, Kennzeichnung „abgeholt“, manueller Widerruf oder Erzeugung eines neuen
+Codes machen den alten Link sofort unbrauchbar. Ein erneuter Code erhält einen neuen
+Schlüssel; bestehende Ausdrucke und Nachrichten werden dadurch ungültig. Öffentliche
+Endpunkte sind begrenzt, liefern keine technischen Fehlerdetails und setzen
+`no-store` sowie `no-referrer`. Versand erfolgt über die vorhandene Werkstatt-Mail-
+Konfiguration und die begrenzte Zustellwarteschlange; der QR-Code wird als PNG
+angehängt und der Link steht zusätzlich im reinen Nachrichtentext. Vorlagen für
+Erstversand und Abholbereitschaft sind in den Kundennachrichten anpassbar.

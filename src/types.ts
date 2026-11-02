@@ -1,4 +1,24 @@
-export type Role = 'master' | 'tablet' | 'driver' | 'reception'
+export type Role = 'master' | 'tablet' | 'driver' | 'reception' | 'pickup'
+export interface PickupPublicView {
+  customer_name: string
+  vehicle: Pick<Vehicle, 'plate' | 'number' | 'make' | 'model'>
+  ready: boolean
+}
+export interface PickupPassAdmin {
+  id: string
+  version: number
+  url: string | null
+  customer_name: string
+  print_title: string
+  print_body: string
+  recipient: string
+  revoked: boolean
+  ready: boolean
+  collected: boolean
+  email_on_ready: boolean
+  initial_sent_at: number | null
+  ready_sent_at: number | null
+}
 export interface Base {
   id: string
   version: number

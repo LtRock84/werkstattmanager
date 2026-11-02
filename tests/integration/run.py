@@ -27,6 +27,8 @@ ROOT = Path(__file__).resolve().parents[2]
 NC = 'nextcloud:35.0.1-apache@sha256:b1ae671e9815401b0e837b19b9c778e89887721d67f0c8f9d34aa1d27a9a208f'
 if os.environ.get('WM_TEST_NEXTCLOUD') == '35.0.0':
     NC = 'nextcloud:35.0.0-apache@sha256:e883eacf7b01fe8f07e1dbc98a64d2a1910855dcd3002ee7fa2c55fe31a39138'
+elif os.environ.get('WM_TEST_NEXTCLOUD') == '35.0.2':
+    NC = 'nextcloud:35.0.2-apache@sha256:a588aa5353703b44106a6129adaaf7bf22521b7a4754f9f529b3228d6aa390c5'
 DB = {
     'postgres': 'postgres:17-alpine@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24',
     'mariadb': 'mariadb:11.8@sha256:6422478cb8e159f080fb1d8ccf65101e26fe51385787fde7d16c3b165a331f15',
@@ -127,6 +129,38 @@ def workflow(base, passwords):
             {'data': {'version': order['version'], 'request_id': str(uuid.uuid4()), **data}})
     orders = [m.call('/api/v1/orders', {'data': {'vehicle_id': vehicle['id'], 'title': name,
         'request_id': str(uuid.uuid4()), 'minutes': 45}}) for name in ['CI A', 'CI B']]
+    pickup = m.call('/api/v1/orders/' + orders[0]['id'] + '/pickup')
+    tablets[0].call('/api/v1/orders/' + orders[0]['id'] + '/pickup', expected=403)
+    templates = m.call('/api/v1/mail-templates')
+    original_print = dict(templates['templates']['pickup_print'])
+    templates['templates']['pickup_print']['subject'] = 'Testschein {fahrzeug}'
+    templates['templates']['pickup_print']['body'] = 'Für {kundenname}: {fahrzeug} abholen.'
+    saved = m.call('/api/v1/mail-templates', {'data': templates}, method='PUT')
+    printed = m.call('/api/v1/orders/' + orders[0]['id'] + '/pickup')
+    assert printed['print_title'] == 'Testschein CI-TEST'
+    assert 'CI-TEST abholen.' in printed['print_body'] and '{fahrzeug}' not in printed['print_body']
+    saved['templates']['pickup_print'] = original_print
+    m.call('/api/v1/mail-templates', {'data': saved}, method='PUT')
+    token = urllib.parse.urlsplit(pickup['url']).fragment
+    assert re.fullmatch('[a-f0-9]{64}', token)
+    class PickupClient(Client):
+        def __init__(self):
+            self.base = base
+            self.opener = urllib.request.build_opener(urllib.request.ProxyHandler({}),
+                urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+            page = self.opener.open(base + '/apps/werkstattmanager/abholung', timeout=30).read().decode()
+            self.csrf = self.token(page)
+    public = PickupClient()
+    public.call('/public/v1/pickup', expected=401)
+    view = public.call('/public/v1/pickup/session', {'token': token})
+    assert set(view) == {'customer_name', 'vehicle', 'ready'}
+    assert set(view['vehicle']) == {'plate', 'number', 'make', 'model'}
+    assert view['vehicle']['plate'] == 'CI-TEST' and not view['ready']
+    m.call('/api/v1/orders/' + orders[0]['id'] + '/pickup/rotate', {'data': {
+        'version': pickup['version'], 'request_id': str(uuid.uuid4())}})
+    public.call('/public/v1/pickup', expected=404)
+    public.call('/public/v1/pickup/session', {'token': token}, expected=404)
+    print('PASS pickup HTTP: master/tablet permissions, public data minimization and rotation invalidation')
     def race(attempts):
         barrier = threading.Barrier(2)
         def start(args):
@@ -355,6 +389,7 @@ def main():
                 previous_version=ET.parse(Path(stage)/'werkstattmanager/appinfo/info.xml').getroot().findtext('version')
                 old_customer=old_client.call('/api/v1/records/customers',{'data':{'name':'CI existing customer','email':'upgrade@example.invalid'}})
                 preserved_order=old_client.call('/api/v1/orders', {'data':dict(vehicle_id=preserved['id'], title='CI preserved unplanned order', status='draft', request_id=str(uuid.uuid4()))})
+                preserved_pickup=old_client.call('/api/v1/orders/'+preserved_order['id']+'/pickup')['url'] if previous_version == '0.6.0' else None
                 old_appointment=None
                 if previous_version.startswith('0.2.') or previous_version == '0.5.1':
                     old_appointment=old_client.call('/api/v1/appointments', {'data':dict(vehicle_id=preserved['id'],title='CI preserved appointment',arrival='2026-12-07T07:00:00Z',minutes=35,status='confirmed' if previous_version == '0.5.1' else 'draft',note='CI preserved internal note',request_id=str(uuid.uuid4()))})
@@ -376,6 +411,9 @@ def main():
                 if 'deadline_emails' not in old_customer:
                     assert upgraded_customer.pop('deadline_emails') is False
                 assert upgraded_customer==old_customer
+                if preserved_pickup is not None:
+                    assert current.call('/api/v1/orders/'+preserved_order['id']+'/pickup')['url']==preserved_pickup
+                    print('PASS pickup token survives 0.6.0 upgrade unchanged')
                 upgraded_order=current.call('/api/v1/records/orders?id='+preserved_order['id'])['items'][0]
                 if 'planned_employee_id' not in preserved_order:
                     assert upgraded_order.pop('planned_employee_id') is None
@@ -438,7 +476,7 @@ def main():
             customer_mail.check(base, passwords, Client)
             import company_mail
             company_mail.check(base, passwords, Client, occ, run, app)
-            expected_orders = (6 if os.environ.get('WM_TEST_DELIVERY') == '1' else 5) + extra_orders + (1 if old_rank_order else 0) + (1 if preserved_order else 0)
+            expected_orders = (7 if os.environ.get('WM_TEST_DELIVERY') == '1' else 5) + extra_orders + (1 if old_rank_order else 0) + (1 if preserved_order else 0)
             assert len(Client(base, 'ci-master', passwords['master']).call('/api/v1/records/orders')['items']) == expected_orders
             occ('app:disable', 'werkstattmanager')
             occ('app:enable', 'werkstattmanager')

@@ -14,7 +14,16 @@ def check(base, passwords, Client):
     saved=m.call('/api/v1/mail-templates',{'data':dict(original,reminder_days=31)},method='PUT')
     m.call('/api/v1/mail-templates',{'data':original},method='PUT',expected=409)
     assert saved['reminder_days']==31
-    m.call('/api/v1/mail-templates',{'data':dict(original,version=saved['version'])},method='PUT')
+    restored=m.call('/api/v1/mail-templates',{'data':dict(original,version=saved['version'])},method='PUT')
+    original_print=dict(restored['templates']['pickup_print'])
+    restored['templates']['pickup_print']['body']='Eigener Schein für {kundenname} und {fahrzeug}'
+    edited=m.call('/api/v1/mail-templates',{'data':restored},method='PUT')
+    legacy=dict(edited,templates=dict(edited['templates']))
+    del legacy['templates']['pickup_print']
+    preserved=m.call('/api/v1/mail-templates',{'data':legacy},method='PUT')
+    assert preserved['templates']['pickup_print']['body']=='Eigener Schein für {kundenname} und {fahrzeug}'
+    preserved['templates']['pickup_print']=original_print
+    m.call('/api/v1/mail-templates',{'data':preserved},method='PUT')
     customer=m.call('/api/v1/records/customers',{'data':{'name':'CI Reminder Rights','email':'rights@example.invalid'}})
     assert customer['deadline_emails'] is True
     customer=m.call('/api/v1/records/customers',{'id':customer['id'],'data':dict(customer,deadline_emails=False)})

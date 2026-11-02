@@ -17,6 +17,7 @@ final class Orders {
 		private Journal $journal,
 		private ?ServiceLibrary $library = null,
 		private ?PlanningLedger $ledger = null,
+		private ?PickupPasses $pickup = null,
 	) {
 	}
 	public function create(array $input): array {
@@ -72,6 +73,7 @@ final class Orders {
 			$this->store->update('vehicles', $this->store->get('vehicles', $v['vehicle_id']), []);
 			$v['planned_employee_id'] = $this->plannedEmployee($input['planned_employee_id'] ?? null);
 			$order = $this->store->insert('orders', $v);
+			$this->pickup?->ensureForOrder($order);
 			$this->library?->usage()->order($order);
 			if (!empty($input['defect_id'])) {
 				$d = $this->store->get('defects', Rules::text($input['defect_id'], 32, true));
@@ -250,6 +252,9 @@ final class Orders {
 				$changes['completed_at'] = null;
 			}
 			$o = $this->store->update('orders', $o, $changes);
+			if ($action === 'cancel') {
+				$this->pickup?->cancelOrder($id);
+			}
 			if (in_array($action, ['release', 'cancel'], true)) {
 				$this->library?->usage()->order($o);
 			}

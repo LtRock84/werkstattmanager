@@ -19,6 +19,7 @@ final class AppointmentBook {
 		private ServiceLibrary $library,
 		private PlanningLedger $ledger,
 		private IConfig $config,
+		private ?PickupPasses $pickupPasses = null,
 	) {
 	}
 	public function view(string $from, string $to): array {
@@ -133,7 +134,7 @@ final class AppointmentBook {
 				'note' => Rules::text($input['note'] ?? '', 10000),
 				'override_reason' => $reason,
 				'reminder' => ($input['reminder'] ?? false) === true,
-				'notify_ready' => ($input['notify_ready'] ?? $old['notify_ready'] ?? false) === true,
+				'notify_ready' => ($input['notify_ready'] ?? false) === true && $email !== '' && $vrow['kind'] === 'customer',
 				'order_id' => $old['order_id'] ?? null,
 			];
 			if ($v['notify_ready'] && $email === '') {
@@ -169,6 +170,16 @@ final class AppointmentBook {
 			$row = $old
 				? $this->store->update('appointments', $old, $v)
 				: $this->store->insert('appointments', $v);
+			$this->pickupPasses?->syncAppointment($row, $old);
+			if ($row['order_id']) {
+				if ($status === 'cancelled') {
+					$this->pickupPasses?->cancelOrder($row['order_id']);
+				} elseif ($row['stage'] === 'ready' && ($old['stage'] ?? null) !== 'ready') {
+					$this->pickupPasses?->markReady($row['order_id'], false);
+				} elseif ($row['stage'] === 'collected' && ($old['stage'] ?? null) !== 'collected') {
+					$this->pickupPasses?->markCollected($row['order_id']);
+				}
+			}
 			$customerFields = ['title', 'arrival', 'pickup', 'customer_email', 'status'];
 			$changed
 				= !$old
@@ -206,7 +217,7 @@ final class AppointmentBook {
 				}
 			}
 			// Reminder validity uses the current schedule, not the last delivery revision.
-			if ($row['stage'] === 'ready' && $row['notify_ready'] && $status === 'confirmed' && $vrow['kind'] === 'customer') {
+			if ($row['stage'] === 'ready' && $row['notify_ready'] && $status === 'confirmed' && $vrow['kind'] === 'customer' && !($this->pickupPasses?->readyDeliveryExists($row) ?? false)) {
 				$this->queue($row, 'email', 'ready');
 			}
 			if (
@@ -316,7 +327,7 @@ final class AppointmentBook {
 				. $suffix,
 		);
 		$existing = $this->store->find('deliveries', ['event_key' => $key], 1)[0] ?? null;
-		if ($existing && (!in_array($kind, ['ready', 'reminder'], true) || !in_array($existing['status'], $kind === 'ready' ? ['cancelled', 'pending'] : ['cancelled'], true))) {
+		if ($existing && (!in_array($kind, ['ready', 'reminder'], true) || !in_array($existing['status'], ['cancelled', 'pending'], true))) {
 			return;
 		}
 		$vehicle = $this->store->get('vehicles', $row['vehicle_id']);
@@ -396,6 +407,7 @@ final class AppointmentBook {
 				'first_day' => $a['first_day'],
 				'last_day' => $a['last_day'],
 			]);
+			$this->pickupPasses?->bindAppointment($a, $o);
 			$this->store->update('appointments', $a, ['order_id' => $o['id']]);
 			$this->journal->record(
 				$this->access->uid(),

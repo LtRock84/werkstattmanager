@@ -1,6 +1,7 @@
 # Release und Store-Veröffentlichung
 
-Stand 2026-10-20: stabile Version0.5.2 in Veröffentlichungsprüfung; zuletzt veröffentlichte stabile Version0.5.1, öffentliches Quellprojekt.
+Stand 2026-10-20: stabile Version 0.5.2 auf GitHub und im Nextcloud App Store veröffentlicht.
+Das unveränderte signierte Paket wurde zusätzlich auf Nextcloud 35.0.2 geprüft; siehe [Prüfbericht](test-report.md).
 Ein internes Kandidatenpaket ist keine App-Store-Freigabe; veröffentlicht wird ausschließlich das abschließend signierte und installierte Endarchiv.
 
 ## Automatische Prüfungen
@@ -13,8 +14,8 @@ Ein internes Kandidatenpaket ist keine App-Store-Freigabe; veröffentlicht wird 
 - Node 24.18.0/npm 11.16.0: Typecheck, ESLint, Frontendtests, vollständiger npm-Audit und Build.
 - Offizielles aktuelles App-Store-XSD, Versionsgleichheit, Paketgrenzen und identische
   Prüfsummen zweier aufeinanderfolgender Paketbauten.
-- Installation exakt dieses Artefakts in vier wegwerfbaren Instanzen: Nextcloud
-  35.0.0 und 35.0.1 jeweils mit PostgreSQL 17 und MariaDB 11.8. Echte konkurrierende
+- Installation exakt dieses Artefakts in sechs wegwerfbaren Instanzen: Nextcloud
+  35.0.0, 35.0.1 und 35.0.2 jeweils mit PostgreSQL 17 und MariaDB 11.8. Echte konkurrierende
   Starts, parallele Aufträge, Pause/Übernahme, Abnahme, Rechte, Fahrerzugänge,
   Terminplanung, Auswertung, Kundennachrichten und Datenerhalt nach Neustart.
 - Isoliertes HTTPS/SMTP/CalDAV/Cron einschließlich Kalenderänderung/-absage,
@@ -103,3 +104,9 @@ Die stabile Kanalzuordnung ersetzt keine betriebliche Abnahme. Physisches iPad, 
 Die stabile Versionskennung lautet `0.5.2`, der neue unveränderliche GitHub-Tag `v0.5.2`. Weder Pre-release noch Nightly aktivieren. `CHANGELOG.md` enthält einen Store-kompatiblen Abschnitt `## 0.5.2` mit Added/Changed/Fixed; der Store importiert den Abschnitt der Paketversion. Referenz: [offizielle Metadatendokumentation](https://github.com/nextcloud/appstore/blob/master/docs/developer.rst#changelog), geprüft20.10.2026.
 
 Neben der vollständigen CI-Matrix ist der echte Upgradepfad von der bereits veröffentlichten signierten0.5.1 ausdrücklich abzunehmen: bestätigte Termine und alte CalDAV-Einstellungen bleiben erhalten; nur der ausdrückliche Administratorwechsel aktiviert den nativen Kalender. Extern kopierte alte Ereignisse werden dabei nicht gelöscht. Das endgültig signierte Paket wird zusätzlich frisch auf MariaDB/NC35.0.0 und als0.5.1-Upgrade auf PostgreSQL/NC35.0.1 einschließlich nativer Nextcloud-Integrität geprüft. Das lokal geprüfte Kandidatenpaket und ein erfolgreiches Build ersetzen diese Signatur-/Releaseprüfungen nicht. Konkrete Ergebnisse gehören zum Actions-Lauf und dem veröffentlichten Release dieses Quellstands.
+
+## 0.6.1 – übertragbarer Abholcode
+
+0.6.0 war ausschließlich ein interner Zwischenstand und wird nicht veröffentlicht. Das nächste öffentliche stabile Update von0.5.2 ist0.6.1 unter dem unveränderlichen Tag `v0.6.1`. Der Store-Changelog muss deshalb im Abschnitt0.6.1 die vollständige Abholcode-Funktion und nicht nur die abschließende Opt-in-Korrektur enthalten.
+
+Veröffentlicht wird ausschließlich ein mit dem vorhandenen Nextcloud-Zertifikat dateisigniertes Archiv. Zusätzlich werden SHA-256 und RSA/SHA-512-Archivsignatur als GitHub-Assets bereitgestellt. Vor der Store-Einreichung müssen der konkrete GitHub-Commit und seine CI erfolgreich sein, das signierte Archiv eine frische Installation sowie ein Upgrade von0.5.2 bestehen und die öffentlichen Downloads ohne Anmeldung bytegleich erreichbar sein. Der automatische E-Mail-Versand des Abholcodes bleibt eine ausdrückliche Auswahl; Drucken und manueller Versand bleiben davon unabhängig.

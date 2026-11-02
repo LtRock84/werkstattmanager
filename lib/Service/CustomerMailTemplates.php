@@ -21,7 +21,8 @@ final class CustomerMailTemplates {
 	}
 	public function data(): array {
 		$row = $this->store->find('communications', ['id' => self::ID], 1)[0] ?? null;
-		return ['version' => $row['version'] ?? 0, 'reminder_days' => $row['reminder_days'] ?? 30, 'templates' => $row['templates'] ?? CustomerMailText::defaults()];
+		$stored = is_array($row['templates'] ?? null) ? $row['templates'] : [];
+		return ['version' => $row['version'] ?? 0, 'reminder_days' => $row['reminder_days'] ?? 30, 'templates' => array_replace(CustomerMailText::defaults(), $stored)];
 	}
 	public function settings(): array {
 		$this->access->master();
@@ -29,14 +30,18 @@ final class CustomerMailTemplates {
 	}
 	public function save(array $input): array {
 		$this->access->master();
-		$templates = CustomerMailText::validate($input['templates'] ?? null);
 		$days = Rules::integer($input['reminder_days'] ?? 30, 1, 365) ?? 30;
-		return $this->store->transaction(function () use ($input, $templates, $days) {
+		return $this->store->transaction(function () use ($input, $days) {
 			$this->ledger->lock();
 			$old = $this->store->find('communications', ['id' => self::ID], 1)[0] ?? null;
 			if (($old['version'] ?? 0) !== ($input['version'] ?? null)) {
 				throw new Problem('conflict', 'Nachrichtenvorlagen wurden inzwischen geändert. Bitte neu laden.', 409);
 			}
+			$incoming = $input['templates'] ?? null;
+			if (is_array($incoming) && !array_key_exists('pickup_print', $incoming)) {
+				$incoming['pickup_print'] = $this->data()['templates']['pickup_print'];
+			}
+			$templates = CustomerMailText::validate($incoming);
 			$value = ['templates' => $templates, 'reminder_days' => $days];
 			$old ? $this->store->update('communications', $old, $value) : $this->store->insert('communications', ['id' => self::ID] + $value);
 			$this->journal->record($this->access->uid(), 'mail.templates_saved', details: ['reminder_days' => $days]);
@@ -52,6 +57,7 @@ final class CustomerMailTemplates {
 		return CustomerMailText::render($templates[$kind], [
 			'kundenname' => $payload['customer_name'] ?? 'liebe Kundin, lieber Kunde',
 			'fahrzeug' => $payload['vehicle_label'] ?? '',
+			'auftragsnummer' => $payload['order_number'] ?? 'Nicht vorhanden',
 			'termin' => $local($payload['arrival'] ?? null),
 			'abholung' => $local($payload['pickup'] ?? null),
 			'leistung' => $payload['title'] ?? '',
@@ -59,6 +65,7 @@ final class CustomerMailTemplates {
 			'faellig_am' => !empty($payload['due_date']) ? (new \DateTimeImmutable($payload['due_date']))->format('d.m.Y') : 'Nach Kilometerstand',
 			'faellig_km' => isset($payload['due_km']) ? number_format($payload['due_km'], 0, ',', '.') . ' km' : 'Keine Kilometergrenze',
 			'werkstatt' => $this->company->profile()['name'] ?: 'Ihre Werkstatt',
+			'abholcode_link' => $payload['pickup_url'] ?? '',
 		]);
 	}
 }

@@ -34,6 +34,10 @@ name=f'werkstattmanager-{version}'+('-candidate' if args.candidate else '')+'.ta
 files=[]
 for directory in ['appinfo','lib','templates','js','css','img','l10n','licenses']:
     files.extend(p for p in (root/directory).rglob('*') if p.is_file() and not p.name.startswith('.'))
+for directory in ['vendor/chillerlan/php-qrcode/src','vendor/chillerlan/php-settings-container/src']:
+    files.extend(p for p in (root/directory).rglob('*.php') if p.is_file())
+for license_path in ['vendor/chillerlan/php-qrcode/LICENSE-ASL-2.0','vendor/chillerlan/php-qrcode/LICENSE-MIT','vendor/chillerlan/php-qrcode/NOTICE','vendor/chillerlan/php-settings-container/LICENSE']:
+    files.append(root/license_path)
 files.extend(root/p for p in ['LICENSE','README.md','CHANGELOG.md','composer.json'])
 if (root/'composer.lock').exists(): files.append(root/'composer.lock')
 import importlib.util

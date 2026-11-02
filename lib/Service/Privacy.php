@@ -102,6 +102,18 @@ final class Privacy {
 				'employees' => ['name' => 'Anonymisiert'],
 				'defects' => ['reporter' => ''],
 			};
+			if ($kind === 'customers') {
+				foreach ($this->all('vehicles', ['customer_id' => $id]) as $vehicle) {
+					foreach ($this->all('pickup_links', ['vehicle_id' => $vehicle['id']]) as $link) {
+						$this->store->update('pickup_links', $link, ['revoked' => true, 'email_on_ready' => false, 'recipient' => null]);
+						foreach ($this->all('deliveries', ['pickup_link_id' => $link['id']]) as $delivery) {
+							if (in_array($delivery['status'], ['pending', 'failed'], true)) {
+								$this->store->update('deliveries', $delivery, ['status' => 'cancelled']);
+							}
+						}
+					}
+				}
+			}
 			$this->store->update($kind, $row, $changes);
 			$this->journal->record($this->access->uid(), 'privacy.anonymized', null, null, null, [
 				'kind' => $kind,
@@ -150,6 +162,10 @@ final class Privacy {
 				foreach ($this->all('service_usage', ['origin' => 'a:' . $a['id']]) as $usage) {
 					$this->store->delete('service_usage', $usage['id']);
 				}
+				foreach ($this->all('pickup_links', ['appointment_id' => $a['id']]) as $link) {
+					$deleted[$link['id']] = true;
+					$this->store->delete('pickup_links', $link['id']);
+				}
 				$this->store->delete('appointments', $a['id']);
 			}
 			// Export/backup is an explicit operator step; attachment deletion is deferred and recoverable until cleanup.
@@ -162,6 +178,10 @@ final class Privacy {
 						$deleted[$r['id']] = true;
 						$this->store->delete($kind, $r['id']);
 					}
+				}
+				foreach ($this->all('pickup_links', ['order_id' => $o['id']]) as $link) {
+					$deleted[$link['id']] = true;
+					$this->store->delete('pickup_links', $link['id']);
 				}
 				$deleted[$o['id']] = true;
 				foreach ($this->all('service_usage', ['origin' => 'o:' . $o['id']]) as $usage) {

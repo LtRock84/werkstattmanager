@@ -11,6 +11,7 @@ use OCA\Werkstattmanager\Service\Attachments;
 use OCA\Werkstattmanager\Service\Catalog;
 use OCA\Werkstattmanager\Service\Defects;
 use OCA\Werkstattmanager\Service\Orders;
+use OCA\Werkstattmanager\Service\PickupPasses;
 use OCA\Werkstattmanager\Service\Privacy;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -31,6 +32,7 @@ final class ApiController extends Controller {
 		private Defects $defects,
 		private Attachments $attachments,
 		private Privacy $privacy,
+		private PickupPasses $pickup,
 		private IConfig $config,
 		private IGroupManager $groups,
 		private IL10N $l10n,
@@ -86,6 +88,14 @@ final class ApiController extends Controller {
 	#[NoAdminRequired]
 	public function orderAction(string $id, string $operation, array $data): JSONResponse {
 		return $this->respond(fn () => $this->orders->action($id, $operation, $data));
+	}
+	#[NoAdminRequired]
+	public function pickup(string $id): JSONResponse {
+		return $this->respond(fn () => $this->pickup->masterView($id));
+	}
+	#[NoAdminRequired]
+	public function pickupAction(string $id, string $operation, array $data): JSONResponse {
+		return $this->respond(fn () => $this->pickup->action($id, $operation, $data));
 	}
 	#[NoAdminRequired]
 	public function action(string $operation, array $data): JSONResponse {
