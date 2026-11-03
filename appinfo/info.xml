@@ -8,7 +8,7 @@ Manage customer vehicles and your own fleet, appointments with daily capacity, a
  <description lang="de">Werkstattmanager führt Fahrzeugakten, Termine, Arbeitsaufträge und Werkstattauswertungen in Nextcloud zusammen. Vor dem Produktivbetrieb Rollen, Hintergrundjobs, Sicherungen und optionale Integrationen für die eigene Installation einrichten und die eigenen Abläufe und Geräte in einem Pilotbetrieb prüfen.
 
 Fahrzeugakten für Kunden und eigene Flotte, Terminbuch mit Tageskapazitäten, Leistungskatalog und Preisrechner. Schnelle Werkstattaufträge mit unverbindlicher Mitarbeiter-Vorplanung, Tablet-Zeiterfassung, Teileanforderungen und externe Mängelmeldungen per Fahrzeug-QR-Code. Übertragbare und widerrufbare Abholcodes können ausgedruckt oder auf ausdrücklichen Wunsch per E-Mail versandt werden. Auswertung eigener Plan- und Istumsätze sowie Arbeitszeiten. Bestätigte Termine erscheinen automatisch in einem schreibgeschützten Nextcloud-Kalender für Meister. Vergleichspreise bleiben ohne Unternehmensnamen und Anbieterlinks als datierte Orientierungswerte sichtbar. Anpassbare Kundennachrichten, optionale Abholbereit-Mails mit Abhol-QR-Code und Fahrzeugfristen-Erinnerungen.</description>
- <version>0.6.1</version><licence>AGPL-3.0-or-later</licence><author>Thomas Keilhaupt</author><namespace>Werkstattmanager</namespace><category>organization</category>
+ <version>0.6.2</version><licence>AGPL-3.0-or-later</licence><author>Thomas Keilhaupt</author><namespace>Werkstattmanager</namespace><category>organization</category>
  <website>https://github.com/LtRock84/werkstattmanager</website>
  <bugs>https://github.com/LtRock84/werkstattmanager/issues</bugs>
  <repository type="git">https://github.com/LtRock84/werkstattmanager.git</repository>
@@ -16,7 +16,7 @@ Fahrzeugakten für Kunden und eigene Flotte, Terminbuch mit Tageskapazitäten, L
  <screenshot>https://raw.githubusercontent.com/LtRock84/werkstattmanager/v0.5.1-beta.1/docs/screenshots/0.5.1-beta.1/auftrag.png</screenshot>
  <screenshot>https://raw.githubusercontent.com/LtRock84/werkstattmanager/v0.5.1-beta.1/docs/screenshots/0.5.1-beta.1/tablet.png</screenshot>
  <donation title="Projektkosten freiwillig unterstützen – keine Spendenbescheinigung" type="paypal">https://www.paypal.me/Werkstattmanager</donation>
- <dependencies><php min-version="8.3" max-version="8.5"/><database>pgsql</database><database>mysql</database><nextcloud min-version="35" max-version="35"/></dependencies>
+ <dependencies><php min-version="8.3" max-version="8.5"/><database>pgsql</database><database>mysql</database><nextcloud min-version="34" max-version="35"/></dependencies>
  <background-jobs><job>OCA\Werkstattmanager\BackgroundJob\Maintenance</job><job>OCA\Werkstattmanager\BackgroundJob\AppointmentDispatch</job></background-jobs>
  <repair-steps><post-migration><step>OCA\Werkstattmanager\Repair\InstallLibrary</step><step>OCA\Werkstattmanager\Repair\InstallPlanning</step><step>OCA\Werkstattmanager\Repair\InstallUsage</step></post-migration><install><step>OCA\Werkstattmanager\Repair\InstallLibrary</step><step>OCA\Werkstattmanager\Repair\InstallPlanning</step><step>OCA\Werkstattmanager\Repair\InstallUsage</step></install></repair-steps>
  <navigations><navigation><name>Werkstattmanager</name><route>werkstattmanager.page.index</route><icon>app.svg</icon><order>20</order></navigation></navigations>
