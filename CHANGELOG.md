@@ -14,6 +14,8 @@
 - Große unterstützte Fahrerfotos werden vor dem Upload automatisch auf dem Gerät verkleinert.
 - Ältere Fahrer-Codes bleiben gültig, können aufgrund ihrer bisherigen Einweg-Speicherung jedoch erst nach Austausch erneut angezeigt werden.
 
+- Nextcloud 34 zusätzlich freigegeben. Grundfunktionen wurden mit fiktiven Daten auf Nextcloud 34.0.5 geprüft.
+
 ## 0.6.1 – 2026-11-02
 
 ### Added

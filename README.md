@@ -183,7 +183,7 @@ weder die Lizenz noch die steuerlichen Pflichten des Empfängers.
 
 ## Voraussetzungen und Installation auf einer Testinstanz
 
-Ziel: Nextcloud 35, PHP 8.3–8.5 mit GD und Fileinfo. Reale Integration geprüft mit
+Ziel: Nextcloud 34 und 35, PHP 8.3–8.5 mit GD und Fileinfo. Grundfunktionen wurden auf Nextcloud 34.0.5 mit fiktiven Daten geprüft. Reale Integration geprüft mit
 Version 0.4.0 auf Nextcloud 35.0.0/35.0.1 mit PHP 8.5.11, PostgreSQL 17 und
 MariaDB 11.8 in allen vier Kombinationen. PHP-Fachtests bestehen unter 8.3/8.4/8.5.
 Vor einem Pilotbetrieb müssen die tatsächliche Serverumgebung und ihre Integrationen

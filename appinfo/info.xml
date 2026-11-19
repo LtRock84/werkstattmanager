@@ -16,7 +16,7 @@ Fahrzeugakten für Kunden und eigene Flotte, Terminbuch mit Tageskapazitäten, L
  <screenshot>https://raw.githubusercontent.com/LtRock84/werkstattmanager/v0.5.1-beta.1/docs/screenshots/0.5.1-beta.1/auftrag.png</screenshot>
  <screenshot>https://raw.githubusercontent.com/LtRock84/werkstattmanager/v0.5.1-beta.1/docs/screenshots/0.5.1-beta.1/tablet.png</screenshot>
  <donation title="Projektkosten freiwillig unterstützen – keine Spendenbescheinigung" type="paypal">https://www.paypal.me/Werkstattmanager</donation>
- <dependencies><php min-version="8.3" max-version="8.5"/><database>pgsql</database><database>mysql</database><nextcloud min-version="35" max-version="35"/></dependencies>
+ <dependencies><php min-version="8.3" max-version="8.5"/><database>pgsql</database><database>mysql</database><nextcloud min-version="34" max-version="35"/></dependencies>
  <background-jobs><job>OCA\Werkstattmanager\BackgroundJob\Maintenance</job><job>OCA\Werkstattmanager\BackgroundJob\AppointmentDispatch</job></background-jobs>
  <repair-steps><post-migration><step>OCA\Werkstattmanager\Repair\InstallLibrary</step><step>OCA\Werkstattmanager\Repair\InstallPlanning</step><step>OCA\Werkstattmanager\Repair\InstallUsage</step></post-migration><install><step>OCA\Werkstattmanager\Repair\InstallLibrary</step><step>OCA\Werkstattmanager\Repair\InstallPlanning</step><step>OCA\Werkstattmanager\Repair\InstallUsage</step></install></repair-steps>
  <navigations><navigation><name>Werkstattmanager</name><route>werkstattmanager.page.index</route><icon>app.svg</icon><order>20</order></navigation></navigations>
