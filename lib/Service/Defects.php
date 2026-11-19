@@ -70,7 +70,7 @@ final class Defects {
 			return ['active' => true, 'token' => null];
 		}
 		$token = $this->crypto->decrypt($link['token_cipher']);
-		if (!is_string($token) || !preg_match('/^[a-f0-9]{64}$/D', $token) || !hash_equals($link['token_hash'], hash('sha256', $token))) {
+		if (!preg_match('/^[a-f0-9]{64}$/D', $token) || !hash_equals($link['token_hash'], hash('sha256', $token))) {
 			throw new \RuntimeException('Invalid encrypted driver token');
 		}
 		return ['active' => true, 'token' => $token];
