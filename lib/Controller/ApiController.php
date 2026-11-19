@@ -33,6 +33,7 @@ final class ApiController extends Controller {
 		private Attachments $attachments,
 		private Privacy $privacy,
 		private PickupPasses $pickup,
+		private \OCA\Werkstattmanager\Service\UpdateNotice $updateNotice,
 		private IConfig $config,
 		private IGroupManager $groups,
 		private IL10N $l10n,
@@ -88,6 +89,18 @@ final class ApiController extends Controller {
 	#[NoAdminRequired]
 	public function orderAction(string $id, string $operation, array $data): JSONResponse {
 		return $this->respond(fn () => $this->orders->action($id, $operation, $data));
+	}
+	#[NoAdminRequired]
+	public function updateNotice(): JSONResponse {
+		return $this->respond(fn () => $this->updateNotice->view());
+	}
+	#[NoAdminRequired]
+	public function confirmUpdateNotice(string $version): JSONResponse {
+		return $this->respond(fn () => $this->updateNotice->confirm($version));
+	}
+	#[NoAdminRequired]
+	public function vehicleLink(string $id): JSONResponse {
+		return $this->respond(fn () => $this->defects->linkView(Rules::text($id, 32, true)));
 	}
 	#[NoAdminRequired]
 	public function pickup(string $id): JSONResponse {

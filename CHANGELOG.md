@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.2 – 2026-11-19 (in Entwicklung)
+
+### Added
+
+- Aktive neue Fahrer-QR-Codes wieder anzeigen und drucken; Meister sehen auch den Status älterer Codes.
+- Auftragstermine mit Kapazitätsprüfung ändern und verknüpfte Kundentermine aus dem Auftrag bearbeiten.
+- Benutzerbezogener Update-Dialog mit hervorgehobenen Funktionen und Bestätigung.
+
+### Changed
+
+- Mehrere Auftragsvorlagen können kombiniert werden; Beginn und Fertigstellung sind direkt sichtbar.
+- Große unterstützte Fahrerfotos werden vor dem Upload automatisch auf dem Gerät verkleinert.
+- Ältere Fahrer-Codes bleiben gültig, können aufgrund ihrer bisherigen Einweg-Speicherung jedoch erst nach Austausch erneut angezeigt werden.
+
 ## 0.6.1 – 2026-11-02
 
 ### Added

@@ -207,7 +207,7 @@ final class Schema {
 			'completed_date' => 's',
 		],
 		'mileage' => ['vehicle_id' => 'id', 'value' => 'i', 'date' => 's', 'source' => 's'],
-		'links' => ['vehicle_id' => 'id', 'token_hash' => 's', 'revoked' => 'b'],
+		'links' => ['vehicle_id' => 'id', 'token_hash' => 's', 'token_cipher' => 't', 'revoked' => 'b'],
 		'pickup_links' => [
 			'order_id' => 'id',
 			'appointment_id' => 'id',

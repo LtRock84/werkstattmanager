@@ -28,20 +28,19 @@ const vehicle = ref(props.vehicle?.id ?? ''),
   query = ref('')
 const serviceLines = ref<ServiceLine[]>([])
 const overrideReason = ref('')
-const selectedTemplate = ref<Template | null>(null)
-const { dirty } = useDirtySnapshot(() => ({ vehicle: vehicle.value, title: title.value, description: description.value, steps: steps.value, minutes: minutes.value, start: start.value, end: end.value, priority: priority.value, lines: serviceLines.value, override: overrideReason.value, plannedEmployee: plannedEmployee.value }))
+const selectedTemplates = ref<Template[]>([])
+const { dirty } = useDirtySnapshot(() => ({ templates: selectedTemplates.value.map(template => template.id), vehicle: vehicle.value, title: title.value, description: description.value, steps: steps.value, minutes: minutes.value, start: start.value, end: end.value, priority: priority.value, lines: serviceLines.value, override: overrideReason.value, plannedEmployee: plannedEmployee.value }))
 let automaticTitle = ''
-watch([serviceLines, selectedTemplate], ([lines, template]) => {
+watch([serviceLines, selectedTemplates], ([lines, templates]) => {
   const extra = lineMinutes(lines)
-  minutes.value = template
-    ? (template.minutes == null || extra == null ? null : template.minutes + extra)
+  minutes.value = templates.length
+    ? (templates.some(template => template.minutes == null) || extra == null ? null : templates.reduce((sum, template) => sum + (template.minutes ?? 0), 0) + extra)
     : (lines.length ? extra : null)
-  const next = [template?.title, ...lines.map(l => l.title)].filter(Boolean).join(' / ').slice(0, 255)
+  const next = [...templates.map(template => template.title), ...lines.map(l => l.title)].filter(Boolean).join(' / ').slice(0, 255)
   if (!title.value.trim() || title.value === automaticTitle) title.value = next
   automaticTitle = next
 }, { deep: true })
 const details = ref(false)
-const chosenTemplate = ref('')
 const busy = ref(false),
   error = ref(''),
   saved = ref(false)
@@ -88,11 +87,9 @@ onMounted(async () => {
   }
 })
 function choose(v: Template) {
-  serviceLines.value = []
-  selectedTemplate.value = v
-  chosenTemplate.value = v.id
-  description.value = [props.initialDescription, v.description].filter(Boolean).join('\n')
-  steps.value = v.steps.join('\n')
+  selectedTemplates.value = selectedTemplates.value.some(item => item.id === v.id)
+    ? selectedTemplates.value.filter(item => item.id !== v.id)
+    : [...selectedTemplates.value, v]
 }
 function append(v: Snippet) {
   steps.value = [steps.value, v.text].filter(Boolean).join('\n')
@@ -104,8 +101,8 @@ function data() {
     service_lines: serviceLines.value,
     override_reason: overrideReason.value,
     title: title.value,
-    description: description.value,
-    steps: [...new Set([...serviceLines.value.flatMap(l => [l.quantity + ' × ' + l.title, ...l.steps]), ...steps.value.split('\n').map(x => x.trim()).filter(Boolean)])],
+    description: [description.value, ...selectedTemplates.value.map(template => template.description)].filter(Boolean).join('\n'),
+    steps: [...new Set([...selectedTemplates.value.flatMap(template => template.steps), ...serviceLines.value.flatMap(l => [l.quantity + ' × ' + l.title, ...l.steps]), ...steps.value.split('\n').map(x => x.trim()).filter(Boolean)])],
     minutes: minutes.value || null,
     planned_start: iso(start.value),
     due_at: iso(end.value),
@@ -118,6 +115,10 @@ async function save(status: 'draft' | 'open') {
   error.value = ''
   if (!vehicle.value || !title.value.trim()) {
     error.value = t('Bitte Fahrzeug und Titel angeben.')
+    return
+  }
+  if (start.value && !minutes.value) {
+    error.value = t('Für einen geplanten Beginn bitte die Arbeitsdauer ergänzen.')
     return
   }
   if (start.value && end.value && end.value < start.value) {
@@ -194,7 +195,7 @@ async function saveTemplate() {
         <p class="wm-muted">
           {{
             t(
-              'Eine Vorlage anklicken oder unten einen eigenen Titel eingeben. Eine andere Vorlage ersetzt Hinweise, Schritte und Zeitvorgabe; ein eigener Titel bleibt erhalten.',
+              'Eine oder mehrere Vorlagen auswählen oder unten einen eigenen Titel eingeben. Hinweise und Arbeitsschritte der ausgewählten Vorlagen werden ergänzt.',
             )
           }}
         </p>
@@ -202,7 +203,7 @@ async function saveTemplate() {
           <NcButton
             v-for="v in quick"
             :key="v.id"
-            :aria-pressed="chosenTemplate === v.id"
+            :aria-pressed="selectedTemplates.some(item => item.id === v.id)"
             @click="choose(v)"
           >
             {{ v.favorite ? '★ ' : '' }}{{ v.title
@@ -219,8 +220,8 @@ async function saveTemplate() {
       </fieldset>
       <ExistingWorkNotice :vehicle-id="vehicle" />
       <ServicePicker v-model="serviceLines" :vehicle-class="vehicles.find(v => v.id === vehicle)?.vehicle_class ?? 'car'" @draft-change="pendingWork = $event" />
-      <p v-if="selectedTemplate && serviceLines.length" class="wm-guide">
-        {{ t('Die Gesamtzeit besteht aus Vorlagenzeit und zusätzlichen Leistungen. Bereits in der Vorlage enthaltene Arbeiten nicht erneut auswählen. Fehlt eine Zeitangabe, bleibt die Gesamtdauer offen.') }}
+      <p v-if="selectedTemplates.length && serviceLines.length" class="wm-guide">
+        {{ t('Die Gesamtzeit besteht aus Vorlagenzeiten und zusätzlichen Leistungen. Bereits in der Vorlage enthaltene Arbeiten nicht erneut auswählen. Fehlt eine Zeitangabe, bleibt die Gesamtdauer offen.') }}
       </p>
       <label>{{ t('Auftragstitel (Pflichtfeld)')
         }}<input
@@ -255,12 +256,16 @@ async function saveTemplate() {
         </select>
       </label>
       <p class="wm-muted">{{ t('Der Name wird am Tablet angezeigt. Kollegen dürfen übernehmen; die Vorplanung startet keine Arbeitszeit.') }}</p>
+      <div class="wm-two">
+        <label>{{ t('Geplanter Beginn (optional)') }}<input v-model="start" type="datetime-local" /></label><label>{{ t('Fertig bis (optional)') }}<input v-model="end" type="datetime-local" :min="start" /></label>
+      </div>
+      <p class="wm-muted">{{ t('Für einen geplanten Beginn ist eine Arbeitsdauer nötig. Die Zeiten verwenden die Zeitzone dieses Geräts und starten keine Arbeitszeit.') }}</p>
       <details
         class="wm-help"
         :open="details"
         @toggle="details = ($event.target as HTMLDetailsElement).open"
       >
-        <summary>{{ t('Hinweise, Arbeitsschritte und Termine ergänzen (optional)') }}</summary>
+        <summary>{{ t('Hinweise und Arbeitsschritte ergänzen (optional)') }}</summary>
         <div class="wm-form">
           <label>{{ t('Beschreibung / Hinweise')
             }}<textarea v-model="description" rows="3" maxlength="10000"></textarea>
@@ -276,12 +281,6 @@ async function saveTemplate() {
           <label>{{ t('Arbeitsschritte – eine Zeile je Schritt')
             }}<textarea v-model="steps" rows="4"></textarea>
           </label>
-          <div class="wm-two">
-            <label>{{ t('Geplanter Beginn') }}<input v-model="start" type="datetime-local" /></label><label>{{ t('Fertig bis') }}<input v-model="end" type="datetime-local" :min="start" /></label>
-          </div>
-          <p class="wm-muted">
-            {{ t('Termine in der Zeitzone dieses Geräts. Sie starten keine Arbeitszeit.') }}
-          </p>
         </div>
       </details>
       <div class="wm-guide">

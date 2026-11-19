@@ -51,6 +51,12 @@ def check(base, passwords, Client, cafile=None):
     m = Client(base, 'ci-master', passwords['master'], cafile=cafile)
     t = Client(base, 'ci-tablet', passwords['tablet'], cafile=cafile)
     prefix = 'TLS' if cafile else 'HTTP'
+    notice = m.call('/api/v1/update-notice')
+    assert notice == {'version': '0.6.2', 'pending': True}
+    t.call('/api/v1/update-notice', {'version': '0.6.1'}, expected=409)
+    assert m.call('/api/v1/update-notice', {'version': notice['version']}) == {
+        'version': notice['version'], 'pending': False}
+    assert t.call('/api/v1/update-notice')['pending'] is True
     v = m.call('/api/v1/records/vehicles', {'data': {'kind': 'fleet', 'plate': 'CI-DRIVER-' + prefix, 'notes': 'PRIVATE VEHICLE NOTE'}})
     other = m.call('/api/v1/records/vehicles', {'data': {'kind': 'fleet', 'plate': 'CI-OTHER-' + prefix}})
     m.call('/api/v1/actions/mileage', {'data': dict(vehicle_id=v['id'], value=10000, date='2026-10-01')})
@@ -60,6 +66,9 @@ def check(base, passwords, Client, cafile=None):
     t.call('/api/v1/actions/vehicle-link', {'data': {'vehicle_id': v['id']}}, expected=403)
     deadline = m.call('/api/v1/records/deadlines', {'data': dict(vehicle_id=v['id'], title='CI repeating service', due_date='2026-10-06', due_km=10100, repeat_months=1, repeat_km=1000)})
     link = m.call('/api/v1/actions/vehicle-link', {'data': {'vehicle_id': v['id']}})['token']
+    link_state = m.call('/api/v1/vehicles/' + v['id'] + '/driver-link')
+    assert link_state == {'active': True, 'token': link}
+    t.call('/api/v1/vehicles/' + v['id'] + '/driver-link', expected=403)
     other_link = m.call('/api/v1/actions/vehicle-link', {'data': {'vehicle_id': other['id']}})['token']
     d, outsider = Public(), Public()
     d.call('/public/v1/vehicle', expected=401)
@@ -171,12 +180,16 @@ def check(base, passwords, Client, cafile=None):
         t.call('/api/v1/export/' + kind, expected=403)
     print('PASS ' + prefix + ' connected administration: customer/vehicle relation, QR role/fleet restriction, same-vehicle duplicate merge, recurring deadline once, reasoned time correction with originals, ten CSV exports and tablet denial')
     rotated = m.call('/api/v1/actions/vehicle-link', {'data': {'vehicle_id': v['id']}})['token']
+    assert m.call('/api/v1/vehicles/' + v['id'] + '/driver-link') == {
+        'active': True, 'token': rotated}
     d.call('/public/v1/vehicle', expected=403)
     d.call('/public/v1/defects', {'data': dict(data['data'], request_id=str(uuid.uuid4()))}, expected=403)
     d.photo(row['id'], images[0], expected=403)
     d.call('/public/v1/session', {'token': link}, expected=404)
     d.call('/public/v1/session', {'token': rotated})
     m.call('/api/v1/actions/vehicle-link', {'data': {'vehicle_id': v['id'], 'revoke': True}})
+    assert m.call('/api/v1/vehicles/' + v['id'] + '/driver-link') == {
+        'active': False, 'token': None}
     d.call('/public/v1/vehicle', expected=403)
     d.call('/public/v1/session', {'token': rotated}, expected=404)
     assert outsider.call('/public/v1/vehicle')['vehicle']['plate'] == other['plate']

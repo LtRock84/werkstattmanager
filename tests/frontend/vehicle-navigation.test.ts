@@ -1,6 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 vi.mock('@nextcloud/l10n', () => ({ translate: (_app: string, s: string) => s }))
+vi.mock('qrcode', () => ({ default: { toDataURL: async () => 'data:image/png;base64,VEVTVA==' } }))
 vi.mock('@nextcloud/initial-state', () => ({ loadState: () => 'master' }))
 vi.mock('@nextcloud/vue/components/NcButton', () => ({
   default: {
@@ -60,6 +61,20 @@ beforeEach(() => {
   }))
 })
 describe('vehicle sections and returning from details', () => {
+  it('shows an active older driver code and allows a newly issued code to be displayed again', async () => {
+    api.get.mockResolvedValue({ active: true, token: null })
+    const w = mount(VehicleDetail, { props: { vehicle } }); await flushPromises()
+    await w.findAll('button').find(b => b.text() === 'Fahrer-QR')!.trigger('click'); await flushPromises()
+    expect(w.text()).toContain('Ein älterer Fahrer-QR-Code ist aktiv')
+    expect(w.text()).toContain('kann nicht erneut angezeigt werden')
+    api.get.mockResolvedValue({ active: true, token: 'a'.repeat(64) })
+    await w.findAll('button').find(b => b.text() === 'Historie')!.trigger('click'); await flushPromises()
+    await w.findAll('button').find(b => b.text() === 'Fahrer-QR')!.trigger('click'); await flushPromises()
+    expect(w.text()).toContain('kann erneut gedruckt werden')
+    expect(w.find('img[alt="QR-Code zur Mängelmeldung"]').exists()).toBe(true)
+    w.unmount()
+  })
+
   it('shows a real connection failure and recovers through refresh', async () => {
     api.list.mockRejectedValueOnce(Object.assign(new Error('No response'), { isAxiosError: true }))
     const w = mount(App)

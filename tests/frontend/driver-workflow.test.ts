@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 vi.mock('@nextcloud/l10n', () => ({ translate: (_: string, s: string) => s }))
 const api = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn(), upload: vi.fn() }))
+vi.mock('../../src/driver-photo', () => ({ prepareDriverPhoto: async (file: File) => file }))
 vi.mock('../../src/api', () => ({ ...api, message: (e: Error) => e.message }))
 vi.mock('@nextcloud/vue/components/NcButton', () => ({ default: { props: { disabled: Boolean }, template: '<button type="button" :disabled="disabled"><slot /></button>' } }))
 import DriverForm from '../../src/components/DriverForm.vue'

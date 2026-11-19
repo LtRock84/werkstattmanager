@@ -8,6 +8,7 @@ use OCA\Werkstattmanager\Db\Store;
 use OCA\Werkstattmanager\Domain\Problem;
 use OCA\Werkstattmanager\Domain\Rules;
 use OCP\ISession;
+use OCP\Security\ICrypto;
 
 final class Defects {
 	public function __construct(
@@ -15,6 +16,7 @@ final class Defects {
 		private Access $access,
 		private Journal $journal,
 		private ISession $session,
+		private ICrypto $crypto,
 	) {
 	}
 	public function link(string $vehicle, bool $revoke = false): array {
@@ -29,7 +31,7 @@ final class Defects {
 				$links = $this->store->find('links', ['vehicle_id' => $vehicle], 500, $offset);
 				foreach ($links as $l) {
 					if (!$l['revoked']) {
-						$this->store->update('links', $l, ['revoked' => true]);
+						$this->store->update('links', $l, ['revoked' => true, 'token_cipher' => null]);
 					}
 				}
 				if (count($links) < 500) {
@@ -48,10 +50,30 @@ final class Defects {
 			$this->store->insert('links', [
 				'vehicle_id' => $vehicle,
 				'token_hash' => hash('sha256', $token),
+				'token_cipher' => $this->crypto->encrypt($token),
 				'revoked' => false,
 			]);
 			return ['token' => $token];
 		});
+	}
+	public function linkView(string $vehicle): array {
+		$this->access->master();
+		$v = $this->store->get('vehicles', $vehicle);
+		if ($v['kind'] !== 'fleet' || $v['archived']) {
+			throw new Problem('vehicle', 'Fahrerzugang nur für aktive Flottenfahrzeuge.');
+		}
+		$link = $this->store->find('links', ['vehicle_id' => $vehicle, 'revoked' => false], 1)[0] ?? null;
+		if (!$link) {
+			return ['active' => false, 'token' => null];
+		}
+		if (empty($link['token_cipher'])) {
+			return ['active' => true, 'token' => null];
+		}
+		$token = $this->crypto->decrypt($link['token_cipher']);
+		if (!is_string($token) || !preg_match('/^[a-f0-9]{64}$/D', $token) || !hash_equals($link['token_hash'], hash('sha256', $token))) {
+			throw new \RuntimeException('Invalid encrypted driver token');
+		}
+		return ['active' => true, 'token' => $token];
 	}
 	public function exchange(string $token): array {
 		if (!preg_match('/^[a-f0-9]{64}$/D', $token)) {

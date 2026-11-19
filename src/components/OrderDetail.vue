@@ -4,6 +4,7 @@ import QRCode from 'qrcode'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import Modal from './Modal.vue'
 import EmployeePlan from './EmployeePlan.vue'
+import AppointmentEditor from './AppointmentEditor.vue'
 import { useDirtySnapshot, confirmDiscard } from '../dirty'
 import { pickupPrintHtml } from '../pickup-print'
 import { all, command, get, post, upload, message } from '../api'
@@ -16,6 +17,7 @@ import {
   stamp,
   statusText,
   localInput,
+  iso,
 } from '../format'
 import type {
   Order,
@@ -28,6 +30,7 @@ import type {
   Attachment,
   Snippet,
   PickupPassAdmin,
+  Appointment,
 } from '../types'
 const printReport = () => window.print()
 const props = defineProps<{
@@ -55,6 +58,8 @@ const employee = ref(''),
   notice = ref('')
 const overrideReason = ref('')
 const plannedEmployee = ref(props.order.planned_employee_id ?? '')
+const scheduleStart = ref(localInput(props.order.planned_start ?? null)), scheduleEnd = ref(localInput(props.order.due_at ?? null)), scheduleMinutes = ref<number | null>(props.order.minutes ?? null), scheduleReason = ref('')
+const linkedAppointment = ref<Appointment | null>(null), editingAppointment = ref(false)
 const pickup = ref<PickupPassAdmin | null>(null)
 const pickupQr = ref('')
 const partForm = ref(false),
@@ -70,7 +75,7 @@ const correcting = ref<Interval | null>(null),
   correctionReason = ref(''),
   changeReason = ref('')
 const { dirty, reset: resetDraft } = useDirtySnapshot(() => ({ note: note.value, steps: selectedSteps.value, reason: reason.value, resolved: resolved.value, override: overrideReason.value, part: partForm.value ? [partTitle.value, quantity.value, partNumber.value, partNote.value, partPriority.value, partFile.value?.name] : null, correction: correcting.value ? [correctionStart.value, correctionEnd.value, correctionReason.value] : null, changeReason: changeReason.value }))
-const planDirty = computed(() => plannedEmployee.value !== (current.value.planned_employee_id ?? ''))
+const planDirty = computed(() => plannedEmployee.value !== (current.value.planned_employee_id ?? '') || scheduleStart.value !== localInput(current.value.planned_start ?? null) || scheduleEnd.value !== localInput(current.value.due_at ?? null) || scheduleMinutes.value !== (current.value.minutes ?? null) || !!scheduleReason.value)
 function close() { if (!busy.value && confirmDiscard(dirty.value || planDirty.value)) emit('close') }
 const running = computed(() => active.value.find((a) => a.order_id === current.value.id))
 const elapsed = computed(() => total(intervals.value))
@@ -88,7 +93,11 @@ async function load() {
   ])
   ;[intervals.value, parts.value, attachments.value, active.value, snippets.value, defects.value] =
     values
-  if (props.master) await loadPickup()
+  if (props.master) {
+    await loadPickup()
+    const result = await get<{ appointment: Appointment | null }>(`/api/v1/orders/${id}/appointment`)
+    linkedAppointment.value = result?.appointment ?? null
+  }
 }
 async function loadPickup() {
   pickup.value = await get<PickupPassAdmin>(`/api/v1/orders/${current.value.id}/pickup`)
@@ -188,6 +197,28 @@ async function savePlan() {
   } finally {
     busy.value = false
   }
+}
+async function saveSchedule() {
+  if (busy.value) return
+  busy.value = true; error.value = ''; notice.value = ''
+  try {
+    current.value = await command<Order>(`/api/v1/orders/${current.value.id}/reschedule`, {
+      version: current.value.version, minutes: scheduleMinutes.value || null, planned_start: iso(scheduleStart.value), due_at: iso(scheduleEnd.value), override_reason: scheduleReason.value,
+    })
+    scheduleStart.value = localInput(current.value.planned_start ?? null); scheduleEnd.value = localInput(current.value.due_at ?? null); scheduleReason.value = ''
+    notice.value = t('Auftragsplanung gespeichert.'); emit('changed')
+  } catch (e) { error.value = message(e) } finally { busy.value = false }
+}
+async function appointmentSaved(appointment: Appointment) {
+  editingAppointment.value = false
+  linkedAppointment.value = appointment.status === 'confirmed' ? appointment : null
+  try {
+    const updated = await all('orders', { id: current.value.id })
+    if (updated[0]) current.value = updated[0]
+    scheduleStart.value = localInput(current.value.planned_start ?? null); scheduleEnd.value = localInput(current.value.due_at ?? null)
+    scheduleMinutes.value = current.value.minutes ?? null
+    notice.value = t('Kundentermin gespeichert.'); emit('changed')
+  } catch (e) { error.value = message(e) }
 }
 async function requestPart(pause: boolean) {
   if (busy.value) return
@@ -372,7 +403,12 @@ async function reload() {
           <NcButton v-if="pickup.url" :disabled="busy" @click="pickupAction('revoke')">{{ t('Code widerrufen') }}</NcButton>
         </div>
       </fieldset>
-      <fieldset v-if="master && ['draft', 'open', 'paused'].includes(current.status)" class="wm-no-print">
+      <fieldset v-if="master && linkedAppointment" class="wm-no-print">
+        <legend>{{ t('Verknüpfter Kundentermin') }}</legend>
+        <p>{{ t('Änderungen an Ankunft, Arbeitsbeginn, Arbeitstagen oder Abholung aktualisieren auch die Auftragsplanung.') }}</p>
+        <NcButton :disabled="busy" @click="editingAppointment = true">{{ t('Kundentermin ändern') }}</NcButton>
+      </fieldset>
+      <fieldset v-if="master && !linkedAppointment && ['draft', 'open', 'paused'].includes(current.status)" class="wm-no-print">
         <legend>{{ t('Mitarbeiter vorplanen') }}</legend>
         <label>{{ t('Vorgesehener Mitarbeiter') }}
           <select v-model="plannedEmployee" :disabled="busy">
@@ -395,6 +431,19 @@ async function reload() {
           <small>{{ t('Fertig bis') }}</small><strong>{{ stamp(current.due_at) }}</strong>
         </div>
       </div>
+      <fieldset v-if="master && linkedAppointment" class="wm-no-print">
+        <legend>{{ t('Verknüpfter Kundentermin') }}</legend>
+        <p>{{ t('Änderungen an Ankunft, Arbeitsbeginn, Arbeitstagen oder Abholung aktualisieren auch die Auftragsplanung.') }}</p>
+        <NcButton :disabled="busy" @click="editingAppointment = true">{{ t('Kundentermin ändern') }}</NcButton>
+      </fieldset>
+      <fieldset v-if="master && !linkedAppointment && ['draft', 'open', 'paused'].includes(current.status)" class="wm-no-print">
+        <legend>{{ t('Auftragstermin ändern') }}</legend>
+        <p class="wm-muted">{{ t('Für einen geplanten Beginn benötigt der Auftrag eine Sollzeit. Kundentermine ändern Sie im Terminbuch.') }}</p>
+        <label>{{ t('Geplante Arbeitsdauer (Minuten)') }}<input v-model.number="scheduleMinutes" type="number" min="1" max="100000" /></label>
+        <div class="wm-two"><label>{{ t('Geplanter Beginn') }}<input v-model="scheduleStart" type="datetime-local" /></label><label>{{ t('Fertig bis') }}<input v-model="scheduleEnd" type="datetime-local" :min="scheduleStart" /></label></div>
+        <label v-if="error.includes('kapazität') || scheduleReason">{{ t('Begründung für Überbuchung') }}<input v-model="scheduleReason" maxlength="2000" /></label>
+        <NcButton :disabled="busy" @click="saveSchedule">{{ t('Auftragstermin speichern') }}</NcButton>
+      </fieldset>
       <ul v-if="current.service_lines?.length"><li v-for="(l, i) in current.service_lines" :key="i">{{ l.quantity }} × {{ l.title }} · {{ l.minutes == null ? t('Ohne Zeitvorgabe') : l.quantity * l.minutes + ' min' }}</li></ul>
       <ul v-if="current.steps.length">
         <li v-for="(s, n) in current.steps" :key="n">{{ s }}</li>
@@ -672,4 +721,5 @@ async function reload() {
       </footer>
     </div>
   </Modal>
+  <AppointmentEditor v-if="editingAppointment && linkedAppointment" :appointment="linkedAppointment" :day="linkedAppointment.arrival.slice(0, 10)" @close="editingAppointment = false" @saved="appointmentSaved" />
 </template>

@@ -53,6 +53,10 @@ final class PlanningController extends Controller {
 		return $this->respond(fn () => $this->book->view($from, $to));
 	}
 	#[NoAdminRequired]
+	public function orderAppointment(string $id): JSONResponse {
+		return $this->respond(fn () => $this->book->forOrder(Rules::text($id, 32, true)));
+	}
+	#[NoAdminRequired]
 	public function saveAppointment(array $data): JSONResponse {
 		return $this->respond(fn () => $this->book->save($data));
 	}

@@ -60,6 +60,15 @@ def check(base, passwords, Client, occ):
     assert getcount() == 1
     o = m.call('/api/v1/orders/'+o['id']+'/release', {'data':dict(version=o['version'],request_id=str(uuid.uuid4()))})
     assert getcount() == 1
+    linked = m.call('/api/v1/orders/' + o['id'] + '/appointment')['appointment']
+    assert linked['id'] == a['id']
+    linked = m.call('/api/v1/appointments', {'data':dict(
+        linked, work_start='2026-11-02T08:00:00Z', pickup='2026-11-02T14:00:00Z',
+        allocations=[{'date':'2026-11-02','minutes':60}], request_id=str(uuid.uuid4()))})
+    planned = m.call('/api/v1/records/orders?id=' + o['id'])['items'][0]
+    assert planned['planned_start'] == linked['work_start'] and planned['due_at'] == linked['pickup']
+    assistant.call('/api/v1/orders/' + o['id'] + '/appointment', expected=403)
+    o = planned
     assistant.call('/api/v1/orders/'+o['id']+'/plan', {'data':dict(version=o['version'],request_id=str(uuid.uuid4()),planned_employee_id=None)}, expected=403)
     current = next(x for x in m.call('/api/v1/appointments?from=2026-11-02&to=2026-11-02')['items'] if x['id'] == a['id'])
     current = m.call('/api/v1/appointments', {'data':dict(current,note='SECRET APPOINTMENT',checklist=dict(condition_note='SECRET CHECKLIST'),request_id=str(uuid.uuid4()))})

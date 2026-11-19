@@ -4,7 +4,7 @@ import NcButton from '@nextcloud/vue/components/NcButton'
 import QRCode from 'qrcode'
 import Modal from './Modal.vue'
 import { auditEntry } from '../audit'
-import { all, post, url, upload, message } from '../api'
+import { all, get, post, url, upload, message } from '../api'
 import { t, vehicleLabel, stamp, date, statusText, orderNumber } from '../format'
 import type { Vehicle, Order, Defect, Deadline, Attachment, Audit, Mileage } from '../types'
 const props = withDefaults(defineProps<{ vehicle: Vehicle; active?: boolean }>(), { active: true })
@@ -29,6 +29,7 @@ const km = ref<number | null>(props.vehicle.mileage),
   kmDate = ref(new Date().toLocaleDateString('sv-SE')),
   qr = ref(''),
   link = ref(''),
+  linkActive = ref<boolean | null>(null),
   busy = ref(false),
   error = ref(''),
   notice = ref('')
@@ -82,18 +83,29 @@ async function saveKm() {
     busy.value = false
   }
 }
+async function showLink(token?: string | null) {
+  link.value = token ? location.origin + url('/fahrer') + '#' + token : ''
+  qr.value = link.value ? await QRCode.toDataURL(link.value, { width: 360, margin: 2 }) : ''
+}
+watch(tab, async current => {
+  if (current !== 'driver' || v.value.kind !== 'fleet' || v.value.archived) return
+  busy.value = true
+  error.value = ''
+  try {
+    const state = await get<{ active: boolean; token: string | null }>(`/api/v1/vehicles/${v.value.id}/driver-link`)
+    linkActive.value = state.active
+    await showLink(state.token)
+  } catch (e) { error.value = message(e) } finally { busy.value = false }
+})
 async function createLink(revoke = false) {
+  if (linkActive.value && !window.confirm(revoke ? t('Den Fahrerzugang wirklich widerrufen?') : t('Der bisherige Fahrer-QR-Code wird ungültig. Neuen Code erzeugen?'))) return
   busy.value = true
   try {
     const r = await post<{ token?: string }>('/api/v1/actions/vehicle-link', {
       data: { vehicle_id: v.value.id, revoke },
     })
-    qr.value = ''
-    link.value = ''
-    if (r.token) {
-      link.value = location.origin + url('/fahrer') + '#' + r.token
-      qr.value = await QRCode.toDataURL(link.value, { width: 360, margin: 2 })
-    }
+    linkActive.value = !revoke
+    await showLink(r.token)
     notice.value = revoke
       ? t('Fahrerlinks widerrufen.')
       : t('Neuer Link erstellt. Bisherige QR-Codes sind jetzt ungültig.')
@@ -262,8 +274,11 @@ const tabs = [
               )
             }}
           </p>
+          <p v-if="linkActive === false" role="status">{{ t('Für dieses Fahrzeug ist kein Fahrer-QR-Code aktiv.') }}</p>
+          <p v-else-if="linkActive && !qr" role="status">{{ t('Ein älterer Fahrer-QR-Code ist aktiv. Er kann nicht erneut angezeigt werden. Für den erneuten Druck einen neuen Code erzeugen; der alte wird dabei ungültig.') }}</p>
+          <p v-else-if="linkActive && qr" role="status">{{ t('Ein Fahrer-QR-Code ist aktiv und kann erneut gedruckt werden.') }}</p>
           <div class="wm-actions wm-no-print">
-            <NcButton :disabled="busy" variant="primary" @click="createLink()">
+            <NcButton :disabled="busy || linkActive === null" variant="primary" @click="createLink()">
               {{ t('Neuen Fahrzeug-QR-Code erzeugen') }}
 </NcButton><NcButton :disabled="busy" @click="createLink(true)">
               {{ t('Alle Fahrerlinks widerrufen') }}

@@ -1,5 +1,16 @@
 # Prüfbericht – Werkstattmanager
 
+## Entwicklungsstand 0.6.2 – 19.11.2026
+
+Erfolgreich: Node 24.18.0/npm 11.16.0, dessen SHA-256 gegen das offizielle Node-Manifest geprüft wurde, führte Typecheck, ESLint, 120 Frontendtests, Abhängigkeits-Kompatibilitätstest, Produktionsbuild und vier Bundle-Rollenstarts aus. `npm audit` und `npm audit --omit=dev` melden keine bekannte Schwachstelle. 94 PHP-Fachszenarien liefen mit PHP-WASM in einer isolierten Dateikopie, darunter verschlüsselte Fahrer-QR-Wiederanzeige, Legacy-Code, Rechte, Auftragsumplanung mit Kapazitätsprüfung und verknüpftem Termin sowie benutzerspezifische Updatebestätigung. PHP-Syntaxprüfung der geänderten Controller, Services, Migration und Routen bestanden. PHP-WASM benötigte einen lokalen Socket und wurde dafür außerhalb der Sandbox ausgeführt.
+
+Vorherige Fehlversuche: ein erwartetes Testdatum war falsch normalisiert; anschließend fehlten Routen beziehungsweise QR-Bibliotheken in der isolierten Testkopie. Ein Frontendtest verwendete nach der ergänzten Terminabfrage eine nicht mehr passende Aufrufanzahl. Nach Korrektur und vollständiger Testkopie bestanden die oben genannten Läufe.
+
+Das offizielle aktuelle App-Store-XSD (SHA-256 `a8ec208d4be9e507dc28b24e1bb7d8fafa45cbf00ed4b460f1545b131369d362`) validiert die Metadaten. Der interne, unsignierte Dokumentationskandidat bestand Paketgrenzen und Offline-Store-Inventar; die zugehörige Prüfsumme steht im nicht ausgelieferten Übergabeprotokoll. Eine frische Nextcloud-35.0.2/PostgreSQL-17-Installation und ein Upgrade von 0.6.1 auf 0.6.2 mit Nextcloud 35.0.0/MariaDB 11.8 bestanden jeweils mit der vollständigen SQL-/HTTP-/CSRF-/Rollenprüfung, Foto-Uploadgrenzen, Disable/Enable und Neustart mit Datenerhalt.
+
+Nicht ausgeführt: vollständiger PHP-Codingstandard und Psalm, weil die dafür nötige vollständige Composer-Entwicklungsumgebung lokal nicht sicher bereitgestellt werden konnte; der Versuch mit einem ungebundenen Composer-Container wurde von der automatischen Freigabe abgelehnt. Ein echter Foto-Upload von einem Smartphone, physischer QR-Druck, Smartphone-/iPad-Abnahme, Zielinstallation und dortige Appversion sowie Betriebsabnahmen bleiben offen. Ein interner unsignierter Kandidat ist keine Produktionsfreigabe. Bestehende, nur als Hash gespeicherte Fahrer-Codes können nicht rekonstruiert werden.
+
+
 Stand 2026-10-20. Stabile Version 0.5.2 veröffentlicht; Umfang und Grenzen der
 zusätzlichen Kompatibilitätsprüfungen stehen im jeweiligen Nachtrag.
 Dieser Bericht beschreibt die Reichweite der Prüfungen ohne standortspezifische

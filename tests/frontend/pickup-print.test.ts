@@ -26,13 +26,14 @@ describe('pickup print document', () => {
     const order = { id: 'o1', vehicle_id: 'v1', title: 'Test', status: 'open', steps: [], version: 1 } as unknown as Order
     const vehicle = { id: 'v1', plate: 'TEST 1', archived: false } as Vehicle
     const pass = { url: 'https://example.invalid/#token', customer_name: 'Erika', print_title: 'Alt', print_body: 'Alter Text' }
-    api.get.mockResolvedValueOnce(pass).mockResolvedValueOnce({ ...pass, print_title: 'Neuer Titel', print_body: 'Neuer Text' })
+    let pickupCalls = 0
+    api.get.mockImplementation(async (path: string) => path.endsWith('/appointment') ? { appointment: null } : ++pickupCalls === 1 ? pass : { ...pass, print_title: 'Neuer Titel', print_body: 'Neuer Text' })
     const open = vi.fn(), write = vi.fn(), close = vi.fn(), listener = vi.fn()
     const popup = { opener: window, document: { open, write, close }, addEventListener: listener, focus: vi.fn(), print: vi.fn(), close: vi.fn() }
     vi.spyOn(window, 'open').mockReturnValue(popup as unknown as Window)
     const w = mount(OrderDetail, { props: { order, vehicle, employees: [], master: true } }); await flushPromises()
     await w.findAll('button').find(b => b.text() === 'Abholschein drucken')!.trigger('click'); await flushPromises()
-    expect(api.get).toHaveBeenCalledTimes(2)
+    expect(pickupCalls).toBe(2)
     expect(write.mock.calls[0][0]).toContain('Neuer Titel')
     expect(write.mock.calls[0][0]).toContain('Neuer Text')
     expect(listener).toHaveBeenCalledWith('load', expect.any(Function), { once: true })

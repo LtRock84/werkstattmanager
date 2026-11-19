@@ -19,6 +19,8 @@ namespace OCP {
     interface IConfig
     {
         public function getAppValue(string $app, string $key, string $default = '');
+        public function getUserValue($userId, $appName, $key, $default = '');
+        public function setUserValue($userId, $appName, $key, $value, $preCondition = null);
     }
     interface ISession
     {
@@ -31,6 +33,9 @@ namespace OCP {
         public function getAbsoluteURL(string $url);
 		public function getWebroot(): string;
     }
+}
+namespace OCP\App {
+    interface IAppManager { public function getAppVersion(string $appId, bool $useCache = true): string; }
 }
 namespace OCP\Security {
     interface ICrypto
@@ -240,6 +245,9 @@ namespace {
     final class Config implements \OCP\IConfig
     {
         public array $values = [];
+        public array $users = [];
+        public function getUserValue($userId, $appName, $key, $default = '') { return $this->users[$userId][$appName][$key] ?? $default; }
+        public function setUserValue($userId, $appName, $key, $value, $preCondition = null) { $this->users[$userId][$appName][$key] = $value; }
         public function setAppValue(string $app, string $key, string $value): void { $this->values[$key] = $value; }
         public function getAppValue(string $app, string $key, string $default = '')
         {
@@ -560,9 +568,48 @@ namespace {
         )[0];
         same(1000, $audit['details']['before']['started']);
     });
+    test('update notices are confirmed per user and current version', function () {
+        [$s, $u, $a] = setup();
+        $config = new Config();
+        $apps = new class implements \OCP\App\IAppManager { public string $version = '0.6.2'; public function getAppVersion(string $appId, bool $useCache = true): string { return $this->version; } };
+        $notices = new \OCA\Werkstattmanager\Service\UpdateNotice($a, $config, $apps);
+        same(true, $notices->view()['pending']);
+        rejects(fn() => $notices->confirm('0.6.1'), 'conflict');
+        $notices->confirm('0.6.2'); same(false, $notices->view()['pending']);
+        $u->uid = 'tablet'; same(true, $notices->view()['pending']);
+        $u->uid = 'master'; $apps->version = '0.6.3'; same(true, $notices->view()['pending']);
+    });
+    test('driver link status, encrypted recovery, legacy and permissions', function () {
+        [$s, $u, $a, $c, $j, $o, $v] = setup();
+        $d = new Defects($s, $a, $j, new Session(), new Crypto());
+        same(['active' => false, 'token' => null], $d->linkView($v['id']));
+        $token = $d->link($v['id'])['token'];
+        same(['active' => true, 'token' => $token], $d->linkView($v['id']));
+        $row = $s->find('links', ['vehicle_id' => $v['id']])[0];
+        same(false, $row['token_cipher'] === $token);
+        $u->uid = 'tablet'; rejects(fn() => $d->linkView($v['id']), 'forbidden'); $u->uid = 'master';
+        $row = $s->update('links', $row, ['token_cipher' => null]);
+        same(['active' => true, 'token' => null], $d->linkView($v['id']));
+        $new = $d->link($v['id'])['token'];
+        rejects(fn() => $d->exchange($token), 'link');
+        same($new, $d->linkView($v['id'])['token']);
+        $d->link($v['id'], true);
+        same(['active' => false, 'token' => null], $d->linkView($v['id']));
+    });
+    test('order rescheduling validates state, conflicts and linked appointments', function () {
+        [$s, $u, $a, $c, $j, $o, $v] = setup();
+        $order = create($o, $v);
+        $changed = $o->action($order['id'], 'reschedule', payload(['version' => $order['version'], 'minutes' => 45, 'planned_start' => '2026-12-01T09:00:00Z', 'due_at' => '2026-12-01T12:00:00Z']));
+        same('2026-12-01T09:00:00Z', $changed['planned_start']);
+        rejects(fn() => $o->action($order['id'], 'reschedule', payload(['version' => $order['version']])), 'conflict');
+        rejects(fn() => $o->action($order['id'], 'reschedule', payload(['version' => $changed['version'], 'minutes' => 45, 'planned_start' => '2026-12-02T09:00:00Z', 'due_at' => '2026-12-01T09:00:00Z'])), 'schedule');
+        $s->insert('appointments', ['order_id' => $order['id'], 'status' => 'confirmed']);
+        rejects(fn() => $o->action($order['id'], 'reschedule', payload(['version' => $changed['version']])), 'appointment');
+        $u->uid = 'tablet'; rejects(fn() => $o->action($order['id'], 'reschedule', payload(['version' => $changed['version']])), 'forbidden');
+    });
     test('driver sees only approved summary; revoke invalidates session', function () {
         [$s, $u, $a, $c, $j, $o, $v] = setup();
-        $d = new Defects($s, $a, $j, new Session());
+        $d = new Defects($s, $a, $j, new Session(), new Crypto());
         $token = $d->link($v['id'])['token'];
         $view = $d->exchange($token);
         same(false, array_key_exists('vin', $view['vehicle']));
@@ -586,7 +633,7 @@ namespace {
     test('driver duplicate target must belong to same vehicle', function () {
         [$s, $u, $a, $c, $j, $o, $v] = setup();
         $v2 = $c->save('vehicles', ['kind' => 'fleet', 'plate' => 'TEST-2']);
-        $d = new Defects($s, $a, $j, new Session());
+        $d = new Defects($s, $a, $j, new Session(), new Crypto());
         $d->exchange($d->link($v['id'])['token']);
         $r1 = $d->report(payload(['description' => 'one']));
         $d->exchange($d->link($v2['id'])['token']);
@@ -623,7 +670,7 @@ namespace {
     });
     test('duplicate links cannot form a cycle and are cleared when reopening', function () {
         [$s, $u, $a, $c, $j, $o, $v] = setup();
-        $d = new Defects($s, $a, $j, new Session());
+        $d = new Defects($s, $a, $j, new Session(), new Crypto());
         $d->exchange($d->link($v['id'])['token']);
         $one = $d->report(payload(['description' => 'one']));
         $two = $d->report(payload(['description' => 'two']));

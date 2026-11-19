@@ -109,7 +109,7 @@ final class Orders {
 			$action,
 			$input,
 		) {
-			if (in_array($action, ['release','rework','cancel'], true)) {
+			if (in_array($action, ['release','rework','cancel','reschedule'], true)) {
 				$this->ledger?->lock();
 			}
 			$o = $this->catalog->visibleOrder($id);
@@ -119,6 +119,36 @@ final class Orders {
 					'Auftrag wurde inzwischen geändert. Bitte aktualisieren.',
 					409,
 				);
+			}
+			if ($action === 'reschedule') {
+				if (!in_array($o['status'], ['draft', 'open', 'paused'], true)) {
+					throw new Problem('state', 'Zeitplanung nur für Entwürfe, offene oder pausierte Aufträge ändern.', 409);
+				}
+				if ($this->store->find('appointments', ['order_id' => $id, 'status' => 'confirmed'], 1)) {
+					throw new Problem('appointment', 'Dieser Auftrag ist mit einem Kundentermin verknüpft. Bitte den Termin im Terminbuch ändern.', 409);
+				}
+				if (count($o['planning_days'] ?? []) > 1) {
+					throw new Problem('planning', 'Mehrere geplante Arbeitstage können hier nicht geändert werden. Bitte die bestehende Tagesplanung beibehalten.', 409);
+				}
+				$minutes = Rules::integer($input['minutes'] ?? null, 1, 100000);
+				$start = Rules::date($input['planned_start'] ?? null, true);
+				$due = Rules::date($input['due_at'] ?? null, true);
+				Rules::schedule($start, $due);
+				if ($start && !$minutes) {
+					throw new Problem('validation', 'Für eine verbindliche Tagesplanung bitte die Arbeitsdauer ergänzen.');
+				}
+				$allocations = $this->ledger?->allocations(null, $minutes ?? 0, $start) ?? [];
+				$reason = Rules::text($input['override_reason'] ?? '', 2000);
+				if ($o['status'] !== 'draft') {
+					$this->ledger?->check(['allocations' => $allocations, 'planned_start' => $start, 'vehicle_id' => $o['vehicle_id']], $reason, $id);
+				}
+				$changes = ['minutes' => $minutes, 'planned_start' => $start, 'due_at' => $due, 'planning_days' => $allocations];
+				if ($this->ledger) {
+					$changes += $this->ledger->bounds($allocations, $start);
+				}
+				$o = $this->store->update('orders', $o, $changes);
+				$this->journal->record($this->access->uid(), 'order.rescheduled', $o['vehicle_id'], $id, details: ['override_reason' => $reason]);
+				return $o;
 			}
 			if ($action === 'plan') {
 				if (!in_array($o['status'], ['draft', 'open', 'paused'], true)) {

@@ -403,3 +403,15 @@ Endpunkte sind begrenzt, liefern keine technischen Fehlerdetails und setzen
 Konfiguration und die begrenzte Zustellwarteschlange; der QR-Code wird als PNG
 angehängt und der Link steht zusätzlich im reinen Nachrichtentext. Vorlagen für
 Erstversand und Abholbereitschaft sind in den Kundennachrichten anpassbar.
+
+### Lokaler Arbeitsstand: Rückmeldungen zur Auftragsannahme und Fahrerfotos (19.11.2026)
+
+Bei der Auftragserstellung sind Beginn und Fertigstellung unmittelbar sichtbar. Ein geplanter Beginn setzt eine Arbeitsdauer voraus; die bestehende serverseitige Kapazitätsprüfung bleibt maßgeblich. Mehrere Auftragsvorlagen können gleichzeitig ausgewählt werden. Ihre Hinweise und Schritte werden beim Speichern ergänzt; ihre Zeiten und die Zeiten zusätzlich gewählter Katalogleistungen werden addiert, sofern alle Zeiten bekannt sind. Ein manuell eingegebener Titel bleibt erhalten.
+
+Fahrerfotos in JPEG, PNG oder WebP werden vor der Übertragung lokal auf dem Gerät geprüft und, wenn sie die Servergrenzen von 12 Megapixeln oder 8 MiB überschreiten, als verkleinertes JPEG vorbereitet. Die ursprüngliche Datei wird nicht verändert. Der Server prüft Uploads weiterhin unabhängig. Ein Übertragungsfehler nach dem Speichern des Mangels kann erneut versucht werden. Nicht unterstützte oder nicht lesbare Bilder melden einen Fehler.
+
+Fahrer-QR: Die Fahrzeugakte zeigt, ob ein Fahrer-Code aktiv ist. Ab Version 0.6.2 neu erzeugte Tokens werden neben dem Prüfhash mit Nextcloud verschlüsselt gespeichert und können vom Meister erneut angezeigt und gedruckt werden. Widerruf und Austausch entfernen die verschlüsselte Fassung. Ältere aktive Tokens wurden nur als Einweg-Hash gespeichert und sind nicht rekonstruierbar; ein Austausch ist für erneutes Drucken erforderlich und macht den bisherigen Code ungültig.
+
+Auftragsplanung: Der Meister kann bei unabhängigen Entwürfen, offenen und pausierten Aufträgen Sollzeit, geplanten Beginn und Fertigstellung ändern. Die bestehende Kapazitätsprüfung und eine gegebenenfalls begründete Überbuchung gelten weiterhin. Mehrtägige unabhängige Planungen werden durch diese vereinfachte Änderung nicht überschrieben. Ein verknüpfter bestätigter Kundentermin wird im Termineditor geändert; Änderungen an Ankunft, Arbeitsbeginn, Arbeitstagen und Abholung aktualisieren auch die entsprechenden Auftragsplanungsfelder. Bestehende Auftragsinhalte und Sollzeit bleiben bei der Terminänderung erhalten.
+
+Update-Hinweise: Angemeldete Meister, Tablet-Nutzer und Terminannahme sehen bei einer neuen Appversion einen Dialog mit hervorgehobenen Funktionen und Änderungen. Die Bestätigung wird je Nextcloud-Benutzer und Version gespeichert; ohne erfolgreiche Bestätigung erscheint der Dialog erneut. Öffentliche Fahrer- und Abholseiten sind ausgenommen. Bei jeder Veröffentlichung sind der Dialog und das Änderungsprotokoll für die Version zu aktualisieren; der Build prüft die Versionszuordnung.

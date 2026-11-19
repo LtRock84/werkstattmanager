@@ -16,6 +16,7 @@ export function auditEntry(entry: Audit) {
     'deadline.completed': t('Termin oder Frist erledigt'),
     'mileage.confirmed': t('Kilometerstand bestätigt'),
     'order.created': t('Auftrag erstellt'),
+    'order.rescheduled': t('Auftragstermin geändert'),
     'order.plan': entry.details.after_employee_id ? t('Mitarbeiter für Auftrag vorgeplant') : t('Mitarbeiter-Vorplanung aufgehoben'),
     'order.release': t('Auftrag für die Werkstatt freigegeben'),
     'order.start': t('Arbeit gestartet – Zeiterfassung begonnen'),

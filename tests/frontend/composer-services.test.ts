@@ -46,6 +46,20 @@ describe.each(['order', 'appointment'] as const)('%s service title', (kind) => {
   })
 })
 describe('template and appointment regression', () => {
+  it('combines selected templates without losing selected services', async () => {
+    const w = mount(OrderComposer, { props: { vehicle } }); await flushPromises()
+    w.findComponent(ServicePicker).vm.$emit('update:modelValue', [oil]); await flushPromises()
+    await w.findAll('button').find(b => b.text().includes('Inspektion'))!.trigger('click')
+    await w.findAll('button').find(b => b.text().includes('Kontrolle'))!.trigger('click'); await flushPromises()
+    expect((w.find('input[required]').element as HTMLInputElement).value).toBe('Inspektion / Kontrolle / Ölwechsel')
+    expect((w.find('input[type="number"]').element as HTMLInputElement).value).toBe('')
+    await w.findAll('button').find(b => b.text().includes('Kontrolle'))!.trigger('click'); await flushPromises()
+    expect((w.find('input[type="number"]').element as HTMLInputElement).value).toBe('75')
+    await w.findAll('button').find(b => b.text() === 'Entwurf speichern')!.trigger('click'); await flushPromises()
+    expect(api.command).toHaveBeenCalledWith('/api/v1/orders', expect.objectContaining({ steps: expect.arrayContaining(['Prüfen', '1 × Ölwechsel']) }))
+    w.unmount()
+  })
+
   it('adds extra service quantities to template time and restores template time after removal', async () => {
     const w = mount(OrderComposer, { props: { vehicle } }); await flushPromises()
     await w.findAll('button').find(b => b.text().includes('Inspektion'))!.trigger('click')

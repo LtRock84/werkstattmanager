@@ -37,6 +37,11 @@ final class AppointmentBook {
 		}
 		return ['items' => $items, 'days' => $days, 'settings' => $this->ledger->settings()];
 	}
+	public function forOrder(string $id): array {
+		$this->access->master();
+		$this->store->get('orders', $id);
+		return ['appointment' => $this->store->find('appointments', ['order_id' => $id, 'status' => 'confirmed'], 1)[0] ?? null];
+	}
 	public function save(array $input): array {
 		$this->access->appointments();
 		return $this->store->transaction(function () use ($input) {
@@ -170,6 +175,15 @@ final class AppointmentBook {
 			$row = $old
 				? $this->store->update('appointments', $old, $v)
 				: $this->store->insert('appointments', $v);
+			$scheduleChanged = $old && $row['status'] === 'confirmed' && $row['order_id'] && (
+				$old['work_start'] !== $row['work_start'] || $old['pickup'] !== $row['pickup'] || $old['arrival'] !== $row['arrival'] || $old['allocations'] !== $row['allocations']
+			);
+			if ($scheduleChanged) {
+				$order = $this->store->get('orders', $row['order_id']);
+				$changes = ['planned_start' => $row['work_start'], 'due_at' => $row['pickup'], 'planning_days' => $row['allocations']];
+				$changes += $this->ledger->bounds($row['allocations'], $row['work_start']);
+				$this->store->update('orders', $order, $changes);
+			}
 			$this->pickupPasses?->syncAppointment($row, $old);
 			if ($row['order_id']) {
 				if ($status === 'cancelled') {
@@ -236,7 +250,7 @@ final class AppointmentBook {
 					'title' => $row['title'],
 					'arrival' => $arrival,
 					'reason' => $reason,
-					'order_unchanged' => (bool)$row['order_id'],
+					'order_unchanged' => (bool)$row['order_id'] && !$scheduleChanged,
 					'checklist_changes' => array_values(array_filter(array_map(
 						static fn (string $field): ?array => ($beforeChecklist[$field] === $row['checklist'][$field]) ? null : ['field' => $field, 'before' => $beforeChecklist[$field], 'after' => $row['checklist'][$field]],
 						array_keys($row['checklist']),

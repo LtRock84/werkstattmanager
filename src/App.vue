@@ -22,6 +22,7 @@ import type {
   FailedNotification,
 } from './types'
 import CompanyHeader from './components/CompanyHeader.vue'
+import UpdateNotice from './components/UpdateNotice.vue'
 import CompanySettings from './components/CompanySettings.vue'
 import DriverForm from './components/DriverForm.vue'
 import PickupPass from './components/PickupPass.vue'
@@ -979,4 +980,5 @@ async function erase() {
       @saved="entitySaved"
     />
   </div>
+  <UpdateNotice v-if="role !== 'driver' && role !== 'pickup'" />
 </template>

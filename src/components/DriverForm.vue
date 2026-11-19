@@ -6,6 +6,7 @@ import { get, post, upload, message } from '../api'
 import { t, vehicleLabel, stamp } from '../format'
 import type { DriverView } from '../types'
 import { requestId as newRequestId } from '../request-id'
+import { prepareDriverPhoto } from '../driver-photo'
 const view = ref<DriverView | null>(null),
   error = ref(''),
   notice = ref(''),
@@ -47,8 +48,11 @@ async function submit() {
   error.value = ''
   notice.value = ''
   try {
-    if (files.value.length > 5 || files.value.some((f) => f.size > 8 * 1024 * 1024))
-      throw new Error(t('Maximal fünf Fotos mit jeweils höchstens 8 MB.'))
+    if (files.value.length > 5) throw new Error(t('Maximal fünf Fotos auswählen.'))
+    // Prepare before saving so an unreadable image can be corrected without a partial report.
+    const prepared: File[] = []
+    for (const file of files.value) prepared.push(await prepareDriverPhoto(file))
+    files.value = prepared
     if (!received.value) {
       const r = await post<{ id: string }>('/public/v1/defects', {
         data: {
@@ -156,7 +160,7 @@ async function more() {
               }}<input v-model="reporter" maxlength="255" autocomplete="name" /></label>
           </div>
         </fieldset>
-        <label>{{ t('Fotos: maximal fünf, jeweils 8 MB und 12 Megapixel')
+        <label>{{ t('Fotos: maximal fünf; große Fotos werden automatisch verkleinert')
           }}<input
             ref="photoInput"
             type="file"
@@ -181,7 +185,7 @@ async function more() {
           <p>
             {{
               t(
-                'JPEG, PNG oder WebP, höchstens 8 MB und 12 Megapixel je Foto. Bei einer Fehlermeldung ein kleineres Bild wählen. Sie können den Mangel auch ohne Foto melden.',
+                'JPEG, PNG oder WebP. Große Fotos werden vor dem Hochladen auf diesem Gerät verkleinert. Sie können den Mangel auch ohne Foto melden.',
               )
             }}
           </p>

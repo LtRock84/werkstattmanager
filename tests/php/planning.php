@@ -436,3 +436,30 @@ test('configured calendar still queues with revoked credentials and stops after 
     $book->save(appointment($v, ['id' => $a['id'], 'version' => $a['version'], 'title' => 'Neuer Titel']));
     same(2, count($s->find('deliveries', ['appointment_id' => $a['id'], 'channel' => 'calendar'])));
 });
+
+test('rescheduling checks capacity and linked appointment updates its order once', function () {
+    [$s, $u, $v, $lib, $ledger, $book, $orders] = planSetup();
+    $a = $book->save(appointment($v));
+    $order = $book->convert($a['id'], $a['version']);
+    $linked = $book->forOrder($order['id'])['appointment'];
+    $updated = $book->save(payload(array_replace($linked, [
+        'arrival' => '2026-10-07T06:00:00Z', 'work_start' => '2026-10-07T07:00:00Z',
+        'pickup' => '2026-10-07T14:00:00Z', 'allocations' => [['date' => '2026-10-07', 'minutes' => 60]],
+    ])));
+    $changedOrder = $s->get('orders', $order['id']);
+    same('2026-10-07T07:00:00Z', $changedOrder['planned_start']);
+    same('2026-10-07T14:00:00Z', $changedOrder['due_at']);
+    same(60, $ledger->days('2026-10-07', '2026-10-07')[0]['used']);
+    rejects(fn() => $orders->action($order['id'], 'reschedule', payload(['version' => $changedOrder['version'], 'minutes' => 60])), 'appointment');
+    $u->uid = 'tablet'; rejects(fn() => $book->forOrder($order['id']), 'forbidden');
+});
+
+test('rescheduling an independent order respects capacity and allows a justified override', function () {
+    [$s, $u, $v, $lib, $ledger, $book, $orders] = planSetup();
+    $order = $orders->create(payload(['vehicle_id' => $v['id'], 'title' => 'Reparatur', 'minutes' => 60, 'status' => 'open']));
+    $move = ['version' => $order['version'], 'minutes' => 60, 'planned_start' => '2026-10-10T07:00:00Z'];
+    rejects(fn() => $orders->action($order['id'], 'reschedule', payload($move)), 'overbooked');
+    $changed = $orders->action($order['id'], 'reschedule', payload($move + ['override_reason' => 'Sonderschicht']));
+    same('2026-10-10T07:00:00Z', $changed['planned_start']);
+    same(60, $ledger->days('2026-10-10', '2026-10-10')[0]['used']);
+});
