@@ -9,7 +9,11 @@ use OCP\App\IAppManager;
 use OCP\IConfig;
 
 final class UpdateNotice {
-	public function __construct(private Access $access, private IConfig $config, private IAppManager $apps) {
+	public function __construct(
+		private Access $access,
+		private IConfig $config,
+		private IAppManager $apps,
+	) {
 	}
 	public function view(): array {
 		$this->access->role();
