@@ -12,18 +12,18 @@ beforeEach(() => {
 })
 describe('update notice', () => {
   it('requires a successful confirmation before dismissing the current version', async () => {
-    api.get.mockResolvedValue({ version: '0.6.2', pending: true })
+    api.get.mockResolvedValue({ version: '0.6.3', pending: true })
     api.post.mockRejectedValueOnce(new Error('Offline')).mockResolvedValueOnce({ pending: false })
     const wrapper = mount(UpdateNotice); await flushPromises()
     expect(wrapper.text()).toContain('Neue Funktionen')
     await wrapper.find('button').trigger('click'); await flushPromises()
     expect(wrapper.text()).toContain('Offline'); expect(wrapper.find('dialog').exists()).toBe(true)
     await wrapper.find('button').trigger('click'); await flushPromises()
-    expect(api.post).toHaveBeenCalledWith('/api/v1/update-notice', { version: '0.6.2' })
+    expect(api.post).toHaveBeenCalledWith('/api/v1/update-notice', { version: '0.6.3' })
     expect(wrapper.find('dialog').exists()).toBe(false); wrapper.unmount()
   })
   it('does not show the dialog after this user has confirmed', async () => {
-    api.get.mockResolvedValue({ version: '0.6.2', pending: false })
+    api.get.mockResolvedValue({ version: '0.6.3', pending: false })
     const wrapper = mount(UpdateNotice); await flushPromises()
     expect(wrapper.find('dialog').exists()).toBe(false); wrapper.unmount()
   })

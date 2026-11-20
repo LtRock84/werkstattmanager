@@ -3,7 +3,7 @@ import { nextTick, onMounted, ref } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import { get, post, message } from '../api'
 import { t } from '../format'
-const notesVersion = '0.6.2'
+const notesVersion = '0.6.3'
 const state = ref<{ version: string; pending: boolean } | null>(null), busy = ref(false), error = ref('')
 const dialog = ref<HTMLDialogElement>()
 async function load() {

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.6.2 – 2026-11-19 (in Entwicklung)
+## 0.6.3 – 2026-11-20
 
 ### Added
 

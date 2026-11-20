@@ -1,5 +1,19 @@
 # Prüfbericht – Werkstattmanager
 
+## Releasevorbereitung 0.6.3 – 20.11.2026
+
+Die bisher unter 0.6.2 vorbereiteten neuen Funktionen erhalten die eigenständige
+Versionsnummer 0.6.3, da 0.6.2 bereits im App Store veröffentlicht ist. Update-Dialog,
+Metadaten und Integrationstest wurden entsprechend angepasst. Der GitHub-Lauf für
+den neuen Commit und die signierte Installation/Upgradeprüfung stehen noch aus.
+
+Lokal erfolgreich: Node 24.22.1/npm 11.19.1, 120 Frontendtests, Typecheck,
+ESLint, Abhängigkeitstest, Produktionsbuild und vier Bundle-Starts. Die vorhandene
+XSD-Kopie validiert die Metadaten; Paketgrenzen des unsignierten Kandidaten bestanden.
+Der PHP-WASM-Teststart scheiterte am URL-kodierten Pfad mit Leerzeichen; daraus folgt
+kein PHP-Testergebnis. Die dokumentierten Tests von 0.6.2 gelten für den damaligen
+Stand und ersetzen keine Prüfung des neuen Endpakets.
+
 ## Entwicklungsstand 0.6.2 – 19.11.2026
 
 Erfolgreich: Node 24.18.0/npm 11.16.0, dessen SHA-256 gegen das offizielle Node-Manifest geprüft wurde, führte Typecheck, ESLint, 120 Frontendtests, Abhängigkeits-Kompatibilitätstest, Produktionsbuild und vier Bundle-Rollenstarts aus. `npm audit` und `npm audit --omit=dev` melden keine bekannte Schwachstelle. 94 PHP-Fachszenarien liefen mit PHP-WASM in einer isolierten Dateikopie, darunter verschlüsselte Fahrer-QR-Wiederanzeige, Legacy-Code, Rechte, Auftragsumplanung mit Kapazitätsprüfung und verknüpftem Termin sowie benutzerspezifische Updatebestätigung. PHP-Syntaxprüfung der geänderten Controller, Services, Migration und Routen bestanden. PHP-WASM benötigte einen lokalen Socket und wurde dafür außerhalb der Sandbox ausgeführt.
