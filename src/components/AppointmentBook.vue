@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import { bookRange, shiftBookDay, appointmentMinutesOn, matchesAppointment } from '../planning'
 import { statusText } from '../format'
@@ -17,6 +17,8 @@ const visibleAppointments = computed(() => book.value?.items.filter(a => matches
 const waitingCount = computed(() => book.value?.items.filter(a => a.status === 'confirmed' && ['parts_missing', 'customer_question'].includes(a.stage)).length ?? 0)
 const readyCount = computed(() => book.value?.items.filter(a => a.status === 'confirmed' && a.stage === 'ready').length ?? 0)
 const error = ref(''), busy = ref(false), editing = ref<Appointment | null>(null), editor = ref(false), capacityOpen = ref(false), deliveries = ref<Delivery[]>([]), submitted = ref<Delivery[]>([])
+const dayLoading = ref(false)
+const dayOverviewHeading = ref<HTMLElement | null>(null)
 const week = ref<Record<string, CapacityLimit>>({}), dayOverride = ref<CapacityDay | null>(null)
 const weekdays = [t('Montag'), t('Dienstag'), t('Mittwoch'), t('Donnerstag'), t('Freitag'), t('Samstag'), t('Sonntag')]
 const stageLabels: Record<string, string> = { planned: t('Bestätigt'), arrived: t('Fahrzeug eingetroffen'), parts_missing: t('Teile fehlen'), customer_question: t('Rückfrage beim Kunden'), ready: t('Abholbereit'), collected: t('Abgeholt'), no_show: t('Nicht erschienen') }
@@ -68,6 +70,12 @@ async function setStage(a: Appointment, stage: Appointment['stage']) {
   try { await command('/api/v1/appointments', { ...a, stage }); notice.value = t('Terminstand gespeichert:') + ' ' + stageLabels[stage]; await load() } catch (e) { error.value = message(e) } finally { busy.value = false }
 }
 function move(direction: number) { selectedDay.value = shiftBookDay(selectedDay.value, mode.value, direction); void load() }
+async function openDay(day: string) {
+  selectedDay.value = day; mode.value = 'day'; query.value = ''; filter.value = 'all'
+  book.value = null; dayLoading.value = true
+  try { await load(); await nextTick(); dayOverviewHeading.value?.focus() }
+  finally { dayLoading.value = false }
+}
 function print() { window.print() }
 </script>
 <template>
@@ -78,6 +86,7 @@ function print() { window.print() }
     <p role="status">{{ visibleAppointments.length }} {{ t('passende Termine im gewählten Zeitraum. Auslastung zählt weiterhin alle Arbeiten.') }}</p>
     <p v-if="notice" role="status" class="wm-success">{{ notice }}</p>
     <p v-if="error" role="alert" class="wm-error">{{ error }}</p>
+    <p v-if="dayLoading" role="status">{{ t('Tagesübersicht wird geladen …') }}</p>
     <div v-if="capacityOpen" class="wm-card wm-form">
 <h2>{{ t('Verfügbare Arbeitszeit je Wochentag') }}</h2><p>{{ t('Minuten aller verfügbaren Mechaniker zusammen. Zum Beispiel zwei Mechaniker mit je 6 Stunden: 720 Minuten. Das anfängliche Budget von 480 Minuten bitte anpassen.') }}</p>
       <div v-for="(name, i) in weekdays" :key="i" class="wm-capacity-row"><strong>{{ name }}</strong><label>{{ t('Arbeitsminuten') }}<input v-if="week[String(i + 1)]" v-model.number="week[String(i + 1)].minutes" type="number" min="0" /></label><label>{{ t('Maximale Fahrzeuge (optional)') }}<input v-if="week[String(i + 1)]" v-model.number="week[String(i + 1)].max_vehicles" type="number" min="1" /></label><label v-if="week[String(i + 1)]" class="wm-check"><input v-model="week[String(i + 1)].closed" type="checkbox" />{{ t('Geschlossen') }}</label></div>
@@ -86,7 +95,8 @@ function print() { window.print() }
     <div v-if="dayOverride" class="wm-card wm-form"><h2>{{ t('Abweichende Kapazität') }} · {{ date(dayOverride.date) }}</h2><label>{{ t('Arbeitsminuten') }}<input v-model.number="dayOverride.minutes" type="number" min="0" /></label><label>{{ t('Maximale Fahrzeuge') }}<input v-model.number="dayOverride.max_vehicles" type="number" min="1" /></label><label class="wm-check"><input v-model="dayOverride.closed" type="checkbox" />{{ t('Geschlossen') }}</label><div class="wm-actions"><NcButton @click="dayOverride = null">{{ t('Abbrechen') }}</NcButton><NcButton :disabled="busy" @click="saveDay">{{ t('Tag speichern') }}</NcButton></div></div>
     <div class="wm-book-days" :class="{ 'wm-book-month': mode === 'month' }">
       <article v-for="d in book?.days" :key="d.date" class="wm-card wm-book-day" :class="{ 'wm-overbooked': d.overbooked, 'wm-not-print-day': d.date !== selectedDay }">
-<h2>{{ new Date(d.date + 'T12:00:00Z').toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) }}</h2><p><strong>{{ (d.used / 60).toLocaleString('de-DE', { maximumFractionDigits: 1 }) }} {{ t('von') }} {{ (d.minutes / 60).toLocaleString('de-DE', { maximumFractionDigits: 1 }) }} {{ t('Stunden verplant') }}</strong></p><p>{{ (d.free / 60).toLocaleString('de-DE', { maximumFractionDigits: 1 }) }} {{ t('Stunden frei') }} · {{ d.percent }} % · {{ d.vehicle_count }} {{ t('Fahrzeuge') }}{{ d.max_vehicles ? ' / ' + d.max_vehicles : '' }}</p><p v-if="d.closed">{{ t('Geschlossen') }}</p><p v-if="d.overbooked" role="status">{{ t('Überbucht – Tagesplanung prüfen') }}</p><progress :value="Math.min(100, d.percent)" max="100" :aria-label="t('Auslastung')"></progress>
+<h2 :ref="mode === 'day' ? (el) => { dayOverviewHeading = el as HTMLElement | null } : undefined" tabindex="-1"><button v-if="mode !== 'day'" type="button" class="wm-day-open" @click="openDay(d.date)">{{ new Date(d.date + 'T12:00:00Z').toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) }}<span>{{ t('Alle Termine dieses Tages anzeigen') }}</span></button><span v-if="mode !== 'day'" class="wm-day-print">{{ new Date(d.date + 'T12:00:00Z').toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) }}</span><template v-else>{{ new Date(d.date + 'T12:00:00Z').toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) }}</template></h2><p><strong>{{ (d.used / 60).toLocaleString('de-DE', { maximumFractionDigits: 1 }) }} {{ t('von') }} {{ (d.minutes / 60).toLocaleString('de-DE', { maximumFractionDigits: 1 }) }} {{ t('Stunden verplant') }}</strong></p><p>{{ (d.free / 60).toLocaleString('de-DE', { maximumFractionDigits: 1 }) }} {{ t('Stunden frei') }} · {{ d.percent }} % · {{ d.vehicle_count }} {{ t('Fahrzeuge') }}{{ d.max_vehicles ? ' / ' + d.max_vehicles : '' }}</p><p v-if="d.closed">{{ t('Geschlossen') }}</p><p v-if="d.overbooked" role="status">{{ t('Überbucht – Tagesplanung prüfen') }}</p><progress :value="Math.min(100, d.percent)" max="100" :aria-label="t('Auslastung')"></progress>
+        <p>{{ t('Angezeigte Termine') }}: {{ appointmentsFor(d.date).length }}</p>
         <div v-for="a in appointmentsFor(d.date)" :key="a.id" class="wm-appointment"><button class="wm-appointment-open" @click="edit(a)"><strong>{{ a.title }}</strong><span>{{ vehicles[a.vehicle_id] ? vehicleLabel(vehicles[a.vehicle_id]) : t('Fahrzeug wird geladen …') }}</span><span>{{ t('Ankunft') }}: {{ stamp(a.arrival) }}</span><span>{{ t('An diesem Tag') }}: {{ appointmentMinutesOn(a, d.date) ?? '–' }} min · {{ t('insgesamt') }} {{ a.minutes ?? '–' }} min</span><span v-if="a.order_id && linkedOrders[a.order_id]">{{ t('Arbeitsauftrag') }}: {{ statusText(linkedOrders[a.order_id].status) }}</span><span>{{ a.status === 'draft' ? t('Entwurf') : a.status === 'cancelled' ? t('Abgesagt') : stageLabels[a.stage] }}</span></button><p v-if="a.checklist?.callback_note" class="wm-guide">{{ t('Rückfrage') }}: {{ a.checklist.callback_note }}</p><NcButton :disabled="busy" @click="followUp(a)">{{ t('Folgetermin vorbereiten') }}</NcButton><NcButton v-if="!reception && a.status === 'confirmed'" :disabled="busy" @click="convert(a)">{{ a.order_id ? t('Arbeitsauftrag öffnen') : t('Arbeitsauftrag erstellen') }}</NcButton><div v-if="!reception && a.status === 'confirmed'" class="wm-actions"><NcButton v-if="a.stage === 'planned' || a.stage === 'no_show'" :disabled="busy" @click="setStage(a, 'arrived')">{{ t('Ankunft bestätigen') }}</NcButton><NcButton v-if="a.order_id && linkedOrders[a.order_id]?.status === 'completed' && !['ready','collected'].includes(a.stage)" :disabled="busy" @click="setStage(a, 'ready')">{{ t('Abholbereit setzen') }}</NcButton><NcButton v-if="a.stage === 'ready'" :disabled="busy" @click="setStage(a, 'collected')">{{ t('Abholung bestätigen') }}</NcButton></div></div>
         <p v-if="!appointmentsFor(d.date).length">{{ query || filter !== 'all' ? t('Keine passenden Termine für diesen Filter.') : t('Keine Kundentermine eingetragen.') }}</p><div class="wm-actions"><NcButton @click="edit(undefined, d.date)">+ {{ t('Termin') }}</NcButton><NcButton v-if="!reception" @click="overrideDay(d)">{{ t('Kapazität ändern') }}</NcButton></div>
       </article>

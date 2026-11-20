@@ -55,6 +55,30 @@ describe('calendar inside appointment intake', () => {
   })
 })
 describe('dynamic service suggestions and reception controls', () => {
+  it('opens all appointments for a selected day and edits the selected appointment', async () => {
+    const second = { ...a, id: 'a2', title: 'Reifenwechsel', arrival: '2026-10-06T08:00:00Z' }
+    api.get.mockImplementation(async (url: string) => url.includes('/appointments?') ? { ...data(), items: [a, second], days: url.includes('from=2026-10-06&to=2026-10-06') ? [day('2026-10-06')] : data().days } : { items: [] })
+    const w = mount(AppointmentBook, { props: { reception: true }, attachTo: document.body }); await flushPromises()
+    await w.find('input[type="search"]').setValue('Inspektion')
+    expect(w.text()).not.toContain('Reifenwechsel')
+    await w.findAll('.wm-day-open')[1].trigger('click'); await flushPromises()
+    expect(api.get).toHaveBeenCalledWith('/api/v1/appointments?from=2026-10-06&to=2026-10-06')
+    expect((w.find('input[type="search"]').element as HTMLInputElement).value).toBe('')
+    expect(w.findAll('.wm-appointment-open')).toHaveLength(2)
+    expect(document.activeElement?.tagName).toBe('H2')
+    await w.findAll('.wm-appointment-open')[1].trigger('click'); await flushPromises()
+    expect(w.findComponent(AppointmentEditor).props('appointment')?.id).toBe('a2')
+    expect(w.text()).toContain('Terminänderungen speichern')
+    await w.findComponent(AppointmentEditor).find('input[maxlength="255"][required]').setValue('Reifenwechsel geändert')
+    await w.findComponent(AppointmentEditor).find('form').trigger('submit'); await flushPromises()
+    expect(api.command).toHaveBeenCalledWith('/api/v1/appointments', expect.objectContaining({ id: 'a2', version: 1, title: 'Reifenwechsel geändert' }))
+    w.unmount()
+  })
+  it('opens an empty selected day with a clear empty message', async () => {
+    const w = mount(AppointmentBook, { props: { reception: true } }); await flushPromises()
+    await w.findAll('.wm-day-open')[0].trigger('click'); await flushPromises()
+    expect(w.text()).toContain('Keine Kundentermine eingetragen.'); w.unmount()
+  })
   it('places usage ahead of favourites, limits suggestions to eight and searches the complete catalogue', async () => {
     const items = Array.from({ length: 10 }, (_, i) => ({ id: String(i), seed_key: String(i), title: 'Leistung ' + i, synonyms: [], category: 'Prüfung', archived: false, vehicle_classes: ['car'], usage_count: i, favorite: i === 0, position: i, steps: [], includes: [] } as unknown as ServiceDefinition))
     api.get.mockResolvedValue({ items })

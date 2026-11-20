@@ -1,5 +1,18 @@
 # Prüfbericht – Werkstattmanager
 
+## Tagesübersicht – lokaler Entwicklungsstand (20.11.2026)
+
+Erfolgreich: Node 24.22.1/npm 11.19.1, 122 Frontendtests, Typecheck, ESLint,
+Produktionsbuild und vier Rollen-Bundle-Starttests. Neue Komponententests prüfen
+die Tagesauswahl, Aufhebung eines Suchfilters, mehrere Termine, Fokus, Öffnen und
+Speichern eines bestimmten Termins sowie einen leeren Tag. Die Implementierung
+verwendet den vorhandenen Termineditor und die bestehende serverseitige API;
+Backend, Datenmodell und Berechtigungen wurden nicht geändert.
+
+Nicht ausgeführt: reale Browser-/Geräteabnahme, Installation oder Upgrade auf
+einer Nextcloud-Zielinstanz und eine neue GitHub-CI. Dieser lokale Stand ist keine
+Veröffentlichung und verändert das bereits veröffentlichte 0.6.3-Paket nicht.
+
 ## Releasevorbereitung 0.6.3 – 20.11.2026
 
 Die bisher unter 0.6.2 vorbereiteten neuen Funktionen erhalten die eigenständige

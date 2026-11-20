@@ -822,6 +822,10 @@
 .wm-book-toolbar { position: sticky; top: 0; background: var(--color-main-background); padding: 10px; z-index: 2; }
 .wm-book-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 16px; margin-block: 16px; }
 .wm-book-day { min-width: 0; }
+.wm-day-open { display: flex; flex-direction: column; gap: 4px; width: 100%; min-height: 48px; padding: 8px; text-align: start; font: inherit; color: inherit; background: var(--color-background-hover); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; }
+.wm-day-open span { font-size: 13px; font-weight: normal; }
+.wm-day-open:hover { border-color: var(--color-primary-element); }
+.wm-day-print { display: none; }
 .wm-book-day progress { width: 100%; accent-color: var(--color-primary-element); }
 .wm-overbooked { border: 2px solid var(--color-error, #b00020); }
 .wm-appointment { border-block-start: 1px solid var(--color-border); padding-block: 12px; }
@@ -833,6 +837,7 @@
   .wm-main { padding: 0; }
   .wm-book-days { display: block; }
   .wm-book-day { break-inside: avoid; border: 1px solid #777; margin-block: 10px; color: #000; background: #fff; }
+  .wm-day-print { display: inline; }
   .wm-appointment-open { display: flex !important; color: #000; background: #fff; }
 }
 

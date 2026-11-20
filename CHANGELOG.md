@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.4 – 2026-11-20
+
+### Added
+
+- Im Terminbuch öffnet ein Klick auf das Datum die Tagesübersicht mit allen Terminen. Terminkarten führen direkt zum Bearbeiten; Such- und Statusfilter werden für die Übersicht zurückgesetzt.
+
 ## 0.6.3 – 2026-11-20
 
 ### Added

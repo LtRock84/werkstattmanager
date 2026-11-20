@@ -1,5 +1,16 @@
 # Werkstattmanager – verbindliche Produktspezifikation
 
+## Tagesübersicht: Termine öffnen und bearbeiten (20.11.2026)
+
+In der Wochen- und Monatsansicht öffnet die Datumsschaltfläche per Klick oder
+Tastatur die Tagesansicht. Sie setzt Such- und Statusfilter zurück, damit alle
+Termine dieses Tages sichtbar sind; die Anzahl der angezeigten Termine wird genannt.
+Einzelne Terminkarten öffnen den vorhandenen vollständigen Termineditor. Für
+abgesagte Termine bleiben dessen bisherige Bearbeitungsbeschränkungen bestehen.
+Leere Tage werden als terminfrei angezeigt. Bestehende Rollen und serverseitige
+Berechtigungen gelten unverändert. Der tatsächliche Veröffentlichungsstand ist
+am jeweiligen GitHub-Release beziehungsweise im App Store zu prüfen.
+
 Stand 2026-10-11. Eine Werkstattorganisation pro Installation,
 beliebig viele Meister und Tablets.
 

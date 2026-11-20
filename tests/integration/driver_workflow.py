@@ -52,7 +52,7 @@ def check(base, passwords, Client, cafile=None):
     t = Client(base, 'ci-tablet', passwords['tablet'], cafile=cafile)
     prefix = 'TLS' if cafile else 'HTTP'
     notice = m.call('/api/v1/update-notice')
-    assert notice == {'version': '0.6.3', 'pending': True}
+    assert notice == {'version': '0.6.4', 'pending': True}
     t.call('/api/v1/update-notice', {'version': '0.6.1'}, expected=409)
     assert m.call('/api/v1/update-notice', {'version': notice['version']}) == {
         'version': notice['version'], 'pending': False}
